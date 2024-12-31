@@ -1,0 +1,36 @@
+summary
+---
+principled software developer with 25 years experience in programming and programming infrastructure. Proficient in OOP, REST, AWS, and other relevant technologies. Background in cognitive science and data modeling.
+
+work experience
+---
+
+- worked with clients and domain experts to gather use cases
+- designed well stuctured domain models from use cases
+- designed relational schema to work with business objects (or the other way around, as necessary)
+- developed back-end implementation of use cases in coordination with UI designers
+- wrote shell scripts to extract, transform, and load data from various sources (CSV, fixed width, Access MDB files)
+- debugged and refactored many many lines of legacy code
+- wrote clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated
+- maintained instance of git server and issue tracker (on VPS)
+- developed RESTful APIs to support external client applications
+- developed applications to track union membership and dues
+- developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed
+- developed a Vagrant development environment to handle heterogenous project structure  and technical debt
+- developed deployment scripts, managed passwordless SSH access to deployment servers
+
+
+These are examples of things that would go under work experience:
+
+- Developed and maintained database schemas, ensuring data integrity and efficient querying
+- Participated in code refactoring initiatives to improve code quality, maintainability, and readability
+- Developed and maintained scalable backend systems using programming languages such as Java, Python, or Ruby
+- Designed and implemented RESTful APIs to facilitate communication between frontend and backend systems
+- Optimized database queries and improved overall performance by XX%
+- Performed code reviews to ensure adherence to coding standards, best practices, and maintainable codebase
+- Utilized version control tools (e.g., Git) for collaborative development and code management
+- Troubleshot production issues by analyzing logs, identifying root causes, and implementing fixes promptly
+- Developed efficient algorithms for complex business logic requirements
+- Researched technologies/frameworks/tools that could enhance the efficiency of backend development process
+- Integrated payment gateways or other financial systems into backend infrastructure securely
+- Conducted regular code reviews to ensure adherence to coding standards and best practices

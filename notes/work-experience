@@ -1,0 +1,36 @@
+spit balling..
+
+- developed applications for
+    - employer dues/fringes remittances
+    - member dues collection and accounting
+    - dues/fringes reciprocity, from fund to fund
+    
+- REST APIs
+    - [lineco]
+    - [zenith]
+    - [ctww]
+
+- Application APIs
+    - bac
+
+- designed integration processes, implemented with shell and sql scripts
+    - from flat files
+    - from csv files
+    - from other databases
+
+- designed information schema
+    - remittances
+    - dues collection
+
+- set up gitlab, maintained gitlab
+    - originally from source, then from omnibus
+    - migrated from mysql to postgresql (then upgraded from last version suppporting mysql to current)
+
+- established git workflows
+
+- developed a system of shell scripts to run various tasks for various applications in cron
+
+- attempted to instruct developers with coding principles and organization
+- deciphered and untangled lots legacy code
+
+- worked with AWS: EC2, RDS
