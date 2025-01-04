@@ -1,1 +1,3 @@
-Creating a C.V. with the assistance of [this](https://latex-tutorial.com/cv-latex-guide/) tutorial.
+Creating a C.V.
+
+`tutorial.tex` comes from: https://latex-tutorial.com/cv-latex-guide/
