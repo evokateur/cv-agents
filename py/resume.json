@@ -1,0 +1,39 @@
+{
+  "name": "John Doe",
+  "contact": {
+    "email": "john.doe@example.com",
+    "phone": "+1-555-555-5555",
+    "linkedin": "https://linkedin.com/in/johndoe",
+    "github": "https://github.com/johndoe"
+  },
+  "summary": "Experienced software developer with a strong background in full-stack development.",
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University of Example",
+      "start_date": "2016-08",
+      "end_date": "2020-05"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Tech Solutions Inc.",
+      "location": "San Francisco, CA",
+      "start_date": "2020-06",
+      "end_date": "Present",
+      "responsibilities": [
+        "Developed and maintained web applications using React and Node.js.",
+        "Led a team of three developers to implement new features."
+      ]
+    }
+  ],
+  "skills": ["JavaScript", "Python", "React", "Node.js", "Docker"],
+  "projects": [
+    {
+      "name": "Personal Portfolio",
+      "description": "A personal website to showcase my work and achievements.",
+      "link": "https://johndoe.dev"
+    }
+  ]
+}
