@@ -2,5 +2,5 @@
 
 cd `dirname "$0"`
 
-python3 script.py
-pdflatex resume.tex
+python3 fill-template.py
+pdflatex cv.tex
