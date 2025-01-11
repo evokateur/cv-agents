@@ -64,11 +64,14 @@
     "Node.js",
     "Docker"
   ],
-  "projects": [
+  "languages": [
     {
-      "name": "Personal Portfolio",
-      "description": "A personal website to showcase my work and achievements.",
-      "link": "https://johndoe.dev"
+      "language": "English",
+      "level": "Native"
+    },
+    {
+      "language": "French",
+      "level": "A2-B1"
     }
   ]
 }
