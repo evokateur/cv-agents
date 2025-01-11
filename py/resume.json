@@ -1,34 +1,69 @@
 {
-  "name": "John Doe",
+  "name": "Wesley Hinkle",
   "contact": {
-    "email": "john.doe@example.com",
-    "phone": "+1-555-555-5555",
-    "linkedin": "https://linkedin.com/in/johndoe",
-    "github": "https://github.com/johndoe"
+    "email": "wesley@evokateur.net",
+    "phone": "+1-510-384-8010",
+    "linkedin": "https://www.linkedin.com/in/wesley-hinkle-a552084",
+    "github": "https://github.com/evokateur"
   },
-  "summary": "Experienced software developer with a strong background in full-stack development.",
+  "summary": "",
   "education": [
     {
-      "degree": "Bachelor of Science in Computer Science",
-      "institution": "University of Example",
-      "start_date": "2016-08",
-      "end_date": "2020-05"
+      "degree": "B.A. in Cognitive Science",
+      "institution": "University of California, Berkeley",
+      "start_date": "2006",
+      "end_date": "2009"
     }
   ],
   "experience": [
     {
       "title": "Software Engineer",
-      "company": "Tech Solutions Inc.",
-      "location": "San Francisco, CA",
-      "start_date": "2020-06",
-      "end_date": "Present",
+      "company": "MultiEmployer, Inc.",
+      "location": "Berkeley, CA",
+      "start_date": "March 2009",
+      "end_date": "July 2024",
       "responsibilities": [
-        "Developed and maintained web applications using React and Node.js.",
-        "Led a team of three developers to implement new features."
+        "worked with clients and domain experts to gather use cases",
+        "designed well stuctured domain models from use cases",
+        "designed relational schema to work with business objects (or the other way around, as necessary)",
+        "developed back-end implementation of use cases in coordination with UI designers",
+        "wrote shell and  SQL scripts to extract, transform, and load data from various sources (CSV, fixed width, Access MDB files)",
+        "debugged and refactored many many lines of legacy code",
+        "strived to write clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
+        "instituted and maintained Gitlab instance on VPS",
+        "developed RESTful APIs to support external client applications",
+        "developed applications to track union membership and dues",
+        "developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed",
+        "created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
+        "wrote shell scripts for deployment, managed passwordless SSH access to deployment servers"
       ]
     }
   ],
-  "skills": ["JavaScript", "Python", "React", "Node.js", "Docker"],
+  "skills": [
+    "OOP",
+    "REST",
+    "AWS",
+    "Data Modeling",
+    "Symfony",
+    "SOLID",
+    "MySQL",
+    "Git",
+    "Java",
+    "PHP",
+    "Apache",
+    "GitLab",
+    "Design Patterns",
+    "Shell Scripting",
+    "SQL",
+    "Linux",
+    "Laravel",
+    "UML",
+    "MSSQL",
+    "JavaScript",
+    "Python",
+    "Node.js",
+    "Docker"
+  ],
   "projects": [
     {
       "name": "Personal Portfolio",
