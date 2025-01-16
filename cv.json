@@ -23,19 +23,20 @@
       "start_date": "March 2009",
       "end_date": "July 2024",
       "responsibilities": [
-        "worked with clients and domain experts to gather use cases",
-        "designed well stuctured domain models from use cases",
-        "designed relational schema to work with business objects (or the other way around, as necessary)",
-        "developed back-end implementation of use cases in coordination with UI designers",
-        "wrote shell and  SQL scripts to extract, transform, and load data from various sources (CSV, fixed width, Access MDB files)",
-        "debugged and refactored many many lines of legacy code",
-        "strived to write clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
-        "instituted and maintained Gitlab instance on VPS",
-        "developed RESTful APIs to support external client applications",
-        "developed applications to track union membership and dues",
-        "developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed",
-        "created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
-        "wrote shell scripts for deployment, managed passwordless SSH access to deployment servers"
+        "Worked with clients and domain experts to gather use cases",
+        "Designed well stuctured domain models from use cases",
+        "Designed relational schema to work with business objects (or the other way around, as necessary)",
+        "Developed back-end implementation of use cases in coordination with UI designers",
+        "Wrote shell and  SQL scripts to extract, transform, and integrate legacy data from various sources (CSV, fixed width, Access MDB files)",
+        "Debugged and refactored many many lines of legacy code",
+        "Strived to write clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
+        "Instituted and maintained Gitlab instance on VPS",
+        "Developed RESTful APIs to support external client applications",
+        "Developed applications to track union membership and dues",
+        "Developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed",
+        "Created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
+        "Wrote shell scripts for deployment, managed passwordless SSH access to deployment servers",
+        "Developed a system using cron and shell scripts to manage recurring enterprise tasks (generally having to do with data integration)"
       ]
     }
   ],
