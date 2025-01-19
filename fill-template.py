@@ -10,7 +10,7 @@ def json_to_latex_template(json_data, template_file="template.tex", output_file=
     template = template.replace("xXsummary", json_data["summary"])
     
     education_items = "\n".join(
-        [f"\\item {edu['degree']} from {edu['institution']} ({edu['start_date']} -- {edu['end_date']})" 
+        [f"\\item {edu['degree']} at {edu['institution']} ({edu['start_date']} -- {edu['end_date']})" 
          for edu in json_data["education"]]
     )
     template = template.replace("xXeducation", education_items)
