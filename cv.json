@@ -6,7 +6,7 @@
     "linkedin": "https://www.linkedin.com/in/wesley-hinkle-a552084",
     "github": "https://github.com/evokateur"
   },
-  "summary": "Results-driven Software Developer with 25 years of experience in designing and developing scalable, efficient, and secure software applications. Proficient in a range of programming languages, including Java, PHP, and Python, with expertise in OOP, RESTful APIs, and data modeling. Skilled in using Git and GitLab for version control and collaboration. Strong understanding of computer science principles, including SOLID principles, design patterns, and UML. Experienced in working with relational databases, including MySQL, Microsoft SQL Server. Very proficient in SQL, as well as shell scripts.",
+  "summary": "Software Developer with 25 years experience in designing and developing scalable, efficient, and secure software applications. A bottom-up systems thinker. Capable of working with a range of programming languages with expertise in OOP, RESTful APIs, and data modeling. Skilled in using tools for version control and collaboration. Strong understanding of software design principles, including SOLID principles, design patterns, and UML. Experienced with relational databases, including MySQL, Microsoft SQL Server. Very proficient in SQL, as well as shell scripts.",
   "education": [
     {
       "degree": "Undergraduate",
@@ -31,9 +31,9 @@
         "Debugged and refactored many many lines of legacy code",
         "Advocated clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
         "Instituted and maintained Gitlab instance on VPS",
-        "Developed RESTful APIs to support external client applications, such ",
+        "Developed RESTful APIs to support external client applications",
         "Developed applications to track union membership and dues",
-        "Developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed",
+        "Developed applications to generate employer remittances (including ACH files) for union fringes and deductions based on various measurements of work completed",
         "Created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
         "Wrote shell scripts for deployment, managed passwordless SSH access to deployment servers",
         "Developed a system using cron and shell scripts to manage recurring enterprise tasks (generally having to do with data integration)"
