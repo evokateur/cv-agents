@@ -50,3 +50,5 @@ Things I would like to work in:
 - My style of processing, that is, being a bottom up systems thinker (hinting at neurodiversity)
 - That my focus is less on tools and more on the architecture of the code. The language one works with being less important than the way it's structured (as taught at U.C. Berkeley).
 - My ability to contribute to a team with good established methods and processes.
+
+Example cover letter from Indeed: https://www.indeed.com/career-advice/cover-letter-samples/software-engineer
