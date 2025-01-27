@@ -15,6 +15,3 @@ Sincelerly,
 Wesley Hinkle
 +1-510-384-8010
 wesley@evokateur.net
-
-
-
