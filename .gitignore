@@ -4,6 +4,9 @@
 *.log
 *.out
 *.pdf
+*.swp
 *.synctex.gz
 cv.tex
+cover-letter.tex
 !notes/*
+!examples/*

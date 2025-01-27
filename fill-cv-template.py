@@ -1,6 +1,6 @@
 import json
 
-def json_to_latex_template(json_data, template_file="template.tex", output_file="cv.tex"):
+def json_to_latex_template(json_data, template_file="cv-template.tex", output_file="cv.tex"):
     with open(template_file, "r") as file:
         template = file.read()
     
