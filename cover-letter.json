@@ -1,12 +1,14 @@
 {
-  "name": "Wesley Hinkle",
-  "contact": {
-    "email": "wesley@evokateur.net",
-    "phone": "+1-510-384-8010"
-  },
-  "introduction": "I am writing to apply for the Associate Software Engineer position with Up and Yonder Technologies. As an engineer with more than 10 years of experience with coding and project development, I believe I can add value to your team and help your organization accomplish its goals. I've always been interested in the development of middleware software platforms and would love to contribute to your current beta project for the construction of Up and Yonder's H20 Middleware Platform.",
-  "education": "As an undergraduate at Blue Lake University, I gained cyber security and software development experience through my computer science internship with renowned computer scientists from Blue Lake. I've also developed and released several of my own programs, including the Giggawhat Design Suite and Lightdrawn Navigation for mobile.",
-  "qualities": "My excellent attention to detail and quest for perfection allow me to produce quality code that requires less debugging. I pair excellent technical knowledge with collaboration and communication to ensure I support my team members while producing high-quality work.",
-  "experience": "During my time working with Smith \\& Rodriguez Technology Services and Products, I helped implement a new software review system that improved efficiency by 55\\% for the team. I also received positive feedback for my ability to both understand software and communicate its uses to potential customers and partners. As a lead software engineer with Smith \\& Rodriguez, I managed a small team of coding professionals and finished more than 50 software development projects over the course of the year.",
-  "closing": "I'm grateful that you've taken the time to consider me for the position. Please contact me if you have questions or want to discuss my candidacy further. I'm positive I can help Up \\& Yonder Technologies strive for greatness."
+    "name": "Wesley Hinkle",
+    "contact": {
+        "email": "wesley@evokateur.net",
+        "phone": "+1-510-384-8010"
+    },
+    "paragraphs": [
+        "I am writing to apply for the Associate Software Engineer position with Up and Yonder Technologies. As an engineer with more than 10 years of experience with coding and project development, I believe I can add value to your team and help your organization accomplish its goals. I've always been interested in the development of middleware software platforms and would love to contribute to your current beta project for the construction of Up and Yonder's H20 Middleware Platform.",
+        "As an undergraduate at Blue Lake University, I gained cyber security and software development experience through my computer science internship with renowned computer scientists from Blue Lake. I've also developed and released several of my own programs, including the Giggawhat Design Suite and Lightdrawn Navigation for mobile.",
+        "My excellent attention to detail and quest for perfection allow me to produce quality code that requires less debugging. I pair excellent technical knowledge with collaboration and communication to ensure I support my team members while producing high-quality work.",
+        "During my time working with Smith \\& Rodriguez Technology Services and Products, I helped implement a new software review system that improved efficiency by 55\\% for the team. I also received positive feedback for my ability to both understand software and communicate its uses to potential customers and partners. As a lead software engineer with Smith \\& Rodriguez, I managed a small team of coding professionals and finished more than 50 software development projects over the course of the year.",
+        "I'm grateful that you've taken the time to consider me for the position. Please contact me if you have questions or want to discuss my candidacy further. I'm positive I can help Up \\& Yonder Technologies strive for greatness."
+    ]
 }
