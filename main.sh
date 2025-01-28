@@ -5,5 +5,5 @@ cd `dirname "$0"`
 python3 fill-cv-template.py
 pdflatex cv.tex
 
-cp cover-letter-template.tex cover-letter.tex
+python3 fill-cover-letter-template.py
 pdflatex cover-letter.tex

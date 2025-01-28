@@ -1,0 +1,52 @@
+\documentclass[12pt]{letter} % Default font size of the document, can use values of 10pt, 11pt or 12pt, but you may need to adjust margins if reducing font size
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{fouriernc} % Use the URW Schoolbook L font, similar to New Century Schoolbook
+
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\geometry{
+	paper=a4paper, % Paper size, change to letterpaper for US letter size
+	top=2cm, % Top margin
+	bottom=2.5cm, % Bottom margin
+	left=3.25cm, % Left margin
+	right=3.25cm, % Right margin
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+\begin{document}
+
+\begin{letter}{}
+
+\begin{center}
+	\large\bfseries % Font size and styling
+	xXname \\
+	xXphone \\
+	xXemail \\
+\end{center}
+
+\date{\raggedright\today} % Left-aligned date of the letter, use \today for the current date
+
+\vspace{1cm} % Vertical whitespace
+
+\signature{xXname} % Your name for the signature at the bottom
+
+\opening{Dear Hiring Manager,}
+
+xXintroduction
+
+xXeducation
+
+xXqualities
+
+xXexperience
+
+xXclosing
+
+\closing{Sincerely,}
+
+\end{letter}
+
+\end{document}
