@@ -1,14 +1,17 @@
 {
     "name": "Wesley Hinkle",
     "contact": {
+        "city": "Oakland",
+        "state": "CA",
         "email": "wesley@evokateur.net",
         "phone": "+1-510-384-8010"
     },
     "paragraphs": [
-        "I am writing to apply for the Associate Software Engineer position with Up and Yonder Technologies. As an engineer with more than 10 years of experience with coding and project development, I believe I can add value to your team and help your organization accomplish its goals. I've always been interested in the development of middleware software platforms and would love to contribute to your current beta project for the construction of Up and Yonder's H20 Middleware Platform.",
-        "As an undergraduate at Blue Lake University, I gained cyber security and software development experience through my computer science internship with renowned computer scientists from Blue Lake. I've also developed and released several of my own programs, including the Giggawhat Design Suite and Lightdrawn Navigation for mobile.",
-        "My excellent attention to detail and quest for perfection allow me to produce quality code that requires less debugging. I pair excellent technical knowledge with collaboration and communication to ensure I support my team members while producing high-quality work.",
-        "During my time working with Smith \\& Rodriguez Technology Services and Products, I helped implement a new software review system that improved efficiency by 55\\% for the team. I also received positive feedback for my ability to both understand software and communicate its uses to potential customers and partners. As a lead software engineer with Smith \\& Rodriguez, I managed a small team of coding professionals and finished more than 50 software development projects over the course of the year.",
-        "I'm grateful that you've taken the time to consider me for the position. Please contact me if you have questions or want to discuss my candidacy further. I'm positive I can help Up \\& Yonder Technologies strive for greatness."
+        "I am excited to apply for the [Software Engineer/Developer] position at [Company Name]. As a bottom-up systems thinker with a deep focus on logic, structure, and efficiency, I bring a unique problem-solving approach to software development. My ability to break down complex systems into modular, scalable solutions has allowed me to build and optimize applications that streamline critical processes.",
+        " In my previous role, I developed applications to streamline employer dues and fringes remittances, member dues collection, and reciprocity between funds. I designed and implemented REST APIs to facilitate data exchange with union clients such as Lineco, Zenith, and CTWW, while also developing application APIs to support mobile apps for BAC. Additionally, I established data integration pipelines using shell and SQL scripts, enabling seamless imports from flat files, CSVs, and various databases.",
+        "Beyond development, I have played a key role in DevOps and infrastructure management. I set up and maintained GitLab, migrating from MySQL to PostgreSQL, and implemented structured Git workflows and release tagging strategies. My experience extends to automating system processes using cron jobs and shell scripts, optimizing build processes, and integrating WordPress with PHP frameworks under version control.",
+        "Collaboration and mentorship are central to my approach. I have worked closely with teams to refactor and modernize legacy code, advocating for clean, maintainable, and orthogonal development practices. I also have hands-on experience managing AWS environments, including EC2 and RDS, ensuring efficient cloud-based deployments.",
+        "I take pride in my ability to analyze and untangle legacy codebases, identify patterns, and refactor them into clean, scalable architectures. My passion for logical design extends to mentoring developers, advocating for best practices, and ensuring that software is both functional and sustainable. Additionally, I have hands-on experience managing AWS environments, including EC2 and RDS, for cloud-based deployments.",
+        "I am eager to bring my technical expertise and problem-solving mindset to your team. I would welcome the opportunity to discuss how my skills align with your needs. Thank you for your time and consideration—I look forward to the possibility of contributing to your success."
     ]
 }

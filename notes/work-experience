@@ -10,7 +10,7 @@ spit balling..
     - [zenith]
     - [ctww]
 
-- Application APIs
+- Application APIs for mobile apps
     - bac
 
 - designed integration processes, implemented with shell and sql scripts
@@ -18,19 +18,26 @@ spit balling..
     - from csv files
     - from other databases
 
-- designed information schema
-    - remittances
+- data modeling
+    - employer union remittances
     - dues collection
+    - ach files
 
 - set up gitlab, maintained gitlab
     - originally from source, then from omnibus
     - migrated from mysql to postgresql (then upgraded from last version suppporting mysql to current)
 
-- established git workflows
+- established build processes for all the aps
+
+- integrating wordpress with PHP frameworks with version control strategies
+
+- established git workflows and release tag schema
 
 - developed a system of shell scripts to run various tasks for various applications in cron
 
 - mentored developers with coding principles and organization
 - deciphered and untangled lots legacy code
+
+- advocated clean, orthogonal, maintainable code
 
 - worked with AWS: EC2, RDS

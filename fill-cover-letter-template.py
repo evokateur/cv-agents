@@ -5,6 +5,8 @@ def json_to_latex_template(json_data, template_file="cover-letter-template.tex",
         template = file.read()
     
     template = template.replace("xXname", json_data["name"])
+    template = template.replace("xXcity", json_data["contact"]["city"])
+    template = template.replace("xXstate", json_data["contact"]["state"])
     template = template.replace("xXemail", json_data["contact"]["email"])
     template = template.replace("xXphone", json_data["contact"]["phone"])
     template = template.replace("xXphone", json_data["contact"]["phone"])

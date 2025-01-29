@@ -1,79 +1,76 @@
 {
-  "name": "Wesley Hinkle",
-  "contact": {
-    "email": "wesley@evokateur.net",
-    "phone": "+1-510-384-8010",
-    "linkedin": "https://www.linkedin.com/in/wesley-hinkle-a552084",
-    "github": "https://github.com/evokateur"
-  },
-  "summary": "Software Developer with 25 years experience in designing and developing scalable, efficient, and secure software applications. Bottom-up systems thinker. Capable of working with a range of programming languages with expertise in OOP, RESTful APIs, and data modeling. Skilled in using tools for version control and collaboration. Strong understanding of software design principles, including SOLID principles, design patterns, and UML. Experienced with relational databases, including MySQL, Microsoft SQL Server. Very proficient in SQL, as well as shell scripts.",
-  "education": [
-    {
-      "degree": "Undergraduate",
-      "institution": "University of California, Berkeley",
-      "start_date": "2006",
-      "end_date": "2009"
-    }
-  ],
-  "experience": [
-    {
-      "title": "Software Engineer",
-      "company": "MultiEmployer, Inc.",
-      "location": "Berkeley, CA",
-      "start_date": "March 2009",
-      "end_date": "July 2024",
-      "responsibilities": [
-        "Worked with clients and domain experts to gather use cases",
-        "Designed well stuctured domain models from use cases",
-        "Designed relational schema to work with business objects (or the other way around, as necessary)",
-        "Developed back-end implementation of use cases in coordination with UI designers",
-        "Wrote shell and  SQL scripts to extract, transform, and integrate legacy data from various sources (CSV, flat files, Access MDB files)",
-        "Debugged and refactored many many lines of legacy code",
-        "Advocated clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
-        "Instituted and maintained Gitlab instance on VPS",
-        "Developed RESTful APIs to support external client applications",
-        "Developed applications to track union membership and dues",
-        "Developed applications to generate employer remittances (including ACH files) for union fringes and deductions based on various measurements of work completed",
-        "Created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
-        "Wrote shell scripts for deployment, managed passwordless SSH access to deployment servers",
-        "Developed a system using cron and shell scripts to manage recurring enterprise tasks (generally having to do with data integration)"
-      ]
-    }
-  ],
-  "skills": [
-    "OOP",
-    "REST",
-    "AWS",
-    "Data Modeling",
-    "Symfony",
-    "SOLID",
-    "MySQL",
-    "Git",
-    "Java",
-    "PHP",
-    "Apache",
-    "GitLab",
-    "Design Patterns",
-    "Shell Scripting",
-    "SQL",
-    "Linux",
-    "Laravel",
-    "UML",
-    "MSSQL",
-    "JavaScript",
-    "Python",
-    "Node.js",
-    "Docker",
-    "\\LaTeX"
-  ],
-  "languages": [
-    {
-      "language": "English",
-      "level": "Native"
+    "name": "Wesley Hinkle",
+    "contact": {
+        "email": "wesley@evokateur.net",
+        "phone": "+1-510-384-8010",
+        "linkedin": "https://www.linkedin.com/in/wesley-hinkle-a552084",
+        "github": "https://github.com/evokateur"
     },
-    {
-      "language": "French",
-      "level": "A2-B1"
-    }
-  ]
+    "summary": "Software Developer with 25 years experience in designing and developing scalable, efficient, and secure software applications. Bottom-up systems thinker. Capable of working with a range of programming languages with expertise in OOP, RESTful APIs, and data modeling. Skilled in using tools for version control and collaboration. Strong understanding of software design principles, including SOLID principles, design patterns, and UML. Experienced with relational databases, including MySQL, Microsoft SQL Server. Very proficient in SQL, as well as shell scripts.",
+    "education": [
+        {
+            "degree": "Undergraduate",
+            "institution": "University of California, Berkeley",
+            "start_date": "2006",
+            "end_date": "2009"
+        }
+    ],
+    "experience": [
+        {
+            "title": "Software Engineer / Developer",
+            "company": "MultiEmployer, Inc.",
+            "location": "Berkeley, CA",
+            "start_date": "March 2009",
+            "end_date": "July 2024",
+            "responsibilities": [
+                "Developed enterprise applications for employer dues/fringes remittances, member dues collection and accounting, and fund-to-fund reciprocity.",
+                "Designed and implemented REST APIs for third-party integrations with [Lineco], [Zenith], and [CTWW].",
+                "Built and maintained application APIs for mobile apps, including integration with BAC.",
+                "Engineered data integration processes using shell scripts and SQL, handling imports from flat files, CSVs, and relational databases.",
+                "Led data modeling efforts for employer union remittances, dues collection, and ACH transactions.",
+                "Managed and maintained GitLab, initially setting it up from source and later transitioning to Omnibus, including a migration from MySQL to PostgreSQL.",
+                "Established and optimized build pipelines for multiple applications, ensuring reliable deployments.",
+                "Integrated WordPress with PHP frameworks while implementing version control strategies.",
+                "Designed and enforced Git workflows and a structured release tag schema.",
+                "Developed a system of shell scripts to automate application tasks via cron jobs.",
+                "Mentored developers in coding best practices, software architecture, and maintainability.",
+                "Refactored and untangled legacy codebases, advocating for clean, modular, and maintainable code.",
+                "Worked with AWS services, including EC2 and RDS, for cloud-based application hosting and database management."
+            ]
+        }
+    ],
+    "skills": [
+        "OOP",
+        "REST",
+        "AWS",
+        "Data Modeling",
+        "Symfony",
+        "SOLID",
+        "MySQL",
+        "Git",
+        "Java",
+        "PHP",
+        "Apache",
+        "GitLab",
+        "Design Patterns",
+        "Shell Scripting",
+        "SQL",
+        "Linux",
+        "Laravel",
+        "UML",
+        "MSSQL",
+        "JavaScript",
+        "Docker",
+        "\\LaTeX"
+    ],
+    "languages": [
+        {
+            "language": "English",
+            "level": "Native"
+        },
+        {
+            "language": "French",
+            "level": "A2-B1"
+        }
+    ]
 }
