@@ -3,7 +3,21 @@
 cd `dirname "$0"`
 
 python3 fill-cv-template.py
+
+if [ $? -ne 0 ]
+then
+    echo "fill-cv-template.py failed, exiting"
+    exit 1
+fi
+
 pdflatex cv.tex
 
 python3 fill-cover-letter-template.py
+
+if [ $? -ne 0 ]
+then
+    echo "fill-cover-letter-template.py failed, exiting"
+    exit 1
+fi
+
 pdflatex cover-letter.tex
