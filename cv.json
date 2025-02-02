@@ -23,18 +23,19 @@
             "start_date": "March 2009",
             "end_date": "July 2024",
             "responsibilities": [
-                "Developed enterprise applications for employer remittances for dues/fringes, member dues collection and accounting, and local-to-local reciprocity.",
+                "Developed enterprise applications for employer remittances for local dues \\& fringes, local-to-local reciprocity, and member dues collection and accounting.",
                 "Designed and implemented REST APIs for third-party integrations.",
                 "Built and maintained application APIs for client mobile apps.",
                 "Engineered data integration processes using shell scripts and SQL, handling imports from flat files, CSV, Access MDBs, and other relational databases.",
                 "Led data modeling efforts for employer union remittances, dues collection, and ACH transactions.",
                 "Managed and maintained GitLab, initially setting it up from source and later transitioning to Omnibus, including a migration from MySQL to PostgreSQL.",
                 "Established and optimized build pipelines for multiple applications, ensuring reliable deployments.",
+                "Managed dev environments using a fork of Laravel Homestead, providing infrastructure and build scripts to get devs up and running with a wide variety applications",
                 "Integrated WordPress with PHP frameworks while implementing version control strategies.",
                 "Designed and enforced Git workflows and a structured release tag schema.",
                 "Developed a system of shell scripts to automate application tasks via cron jobs.",
                 "Mentored developers in coding best practices, software architecture, and maintainability.",
-                "Refactored and untangled legacy codebases, advocating for clean, modular, and maintainable code.",
+                "Worked at Refactoring and untangling legacy codebases, advocating for clean, modular, and maintainable code.",
                 "Worked with AWS services, including EC2 and RDS, for cloud-based application hosting and database management."
             ]
         }
