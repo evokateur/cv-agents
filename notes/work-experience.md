@@ -43,20 +43,20 @@ spit balling..
 
 what I came up with
 
-- Worked with clients and domain experts to gather use cases
-- Designed well structured domain models from use cases
-- Designed relational schema to work with business objects (or the other way around, as necessary)
-- Developed back-end implementation of use cases in coordination with UI designers
-- Wrote shell and SQL scripts to extract, transform, and integrate legacy data from various sources (CSV, fixed width, Access MDB files)
-- Debugged and refactored many lines of legacy code
-- Strived to write clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated
-- Instituted and maintained Gitlab instance on VPS
-- Developed RESTful APIs to support external client applications
-- Developed applications to track union membership and dues
-- Developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed
-- Created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies
-- Wrote shell scripts for deployment, managed passwordless SSH access to deployment servers
-- Developed a system using cron and shell scripts to manage recurring enterprise tasks (generally having to do with data integration)
+"Worked with clients and domain experts to gather use cases",
+"Designed well structured domain models from use cases",
+"Designed relational schema to work with business objects (or the other way around, as necessary)",
+"Developed back-end implementation of use cases in coordination with UI designers",
+"Wrote shell and SQL scripts to extract, transform, and integrate legacy data from various sources (CSV, fixed width, Access MDB files)",
+"Debugged and refactored many lines of legacy code",
+"Strived to write clean and orthogonal code, in which concerns (such as data access, business rules, and UI interaction) are separated",
+"Instituted and maintained Gitlab instance on VPS",
+"Developed RESTful APIs to support external client applications",
+"Developed applications to track union membership and dues",
+"Developed applications to generate employer remittances (and ACH files) for fringes and deductions based on various measurements of work completed",
+"Created a Vagrant development environment to handle numerous heterogeneous project structures and technical dependencies",
+"Wrote shell scripts for deployment, managed passwordless SSH access to deployment servers",
+"Developed a system using cron and shell scripts to manage recurring enterprise tasks (generally having to do with data integration)"
 
 what [Mrs Davis](https://chatgpt.com/c/679a9a6e-d854-8012-88ea-f7f026a4911a) came up with
 
