@@ -1,43 +1,21 @@
 import json
+from jinja2 import Environment, FileSystemLoader
+import subprocess
 
-def json_to_latex_template(json_data, template_file="cv-template.tex", output_file="cv.tex"):
-    with open(template_file, "r") as file:
-        template = file.read()
-    
-    template = template.replace("xXname", json_data["name"])
-    template = template.replace("xXemail", json_data["contact"]["email"])
-    template = template.replace("xXphone", json_data["contact"]["phone"])
-    template = template.replace("xXsummary", json_data["summary"])
-    
-    education_items = "\n".join(
-        [f"\\item {edu['degree']} in {edu['major']} at {edu['institution']} ({edu['start_date']} -- {edu['end_date']})" 
-         for edu in json_data["education"]]
-    )
-    template = template.replace("xXeducation", education_items)
-    
-    experience_items = "\n".join(
-        [
-            f"\\item \\textbf{{{exp['title']}}} at {exp['company']} ({exp['start_date']} -- {exp['end_date']})\n"
-            + "  \\begin{itemize}[leftmargin=*]\n"
-            + "\n".join([f"    \\item {resp}" for resp in exp["responsibilities"]])
-            + "\n  \\end{itemize}"
-            for exp in json_data["experience"]
-        ]
-    )
-    template = template.replace("xXexperience", experience_items)
-    
-    skills = ", ".join(json_data["skills"])
-    template = template.replace("xXskills", skills)
+# Load JSON data
+with open("cv.json") as f:
+    data = json.load(f)
 
-    languages_items = "\n".join(
-        [f"\\item {lang['language']} ({lang['level']})" 
-         for lang in json_data["languages"]]
-    )
-    template = template.replace("xXlanguages", languages_items)
-    
-    with open(output_file, "w") as file:
-        file.write(template)
+# Set up Jinja2 environment
+env = Environment(loader=FileSystemLoader("."))  
+template = env.get_template("cv-template.tex.jinja")
 
-with open("cv.json", "r") as file:
-    cv_data = json.load(file)
-    json_to_latex_template(cv_data)
+# Render the template
+rendered_tex = template.render(data)
+
+# Save the rendered LaTeX file
+with open("cv.tex", "w") as f:
+    f.write(rendered_tex)
+
+# Compile LaTeX to PDF using pdflatex
+# subprocess.run(["pdflatex", "resume_output.tex"])
