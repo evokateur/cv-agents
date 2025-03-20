@@ -20,14 +20,37 @@
 
 \section*{\Huge {{ name }}}
 \noindent
-Email: \href{mailto:{{ contact.email }}{% raw %}}{{% endraw %}{{ contact.email }}} |
+Email: \href{mailto:{{ contact.email ~ '}{' ~ contact.email ~ '}'}} |
 Phone: {{ contact.phone }}|
 
 \section*{Summary}
 {{ summary }}
 
 \section*{Education}
-{% for edu in education %}
+\begin{itemize}[leftmargin=*]
+{% for edu in education %} \item {{ edu.degree }} in {{ edu.major }} at {{ edu.institution }} ({{ edu.start_date }} -- {{ edu.end_date }}) {% endfor %}
+\end{itemize}
+
+\section*{Experience}
+\begin{itemize}[leftmargin=*]
+{% for job in experience %}
+\item \textbf{{'{' ~ job.title ~ '}'}} at {{ job.company }} ({{ job.start_date }} -- {{ job.end_date }})
+  \begin{itemize}[leftmargin=*]
+  {% for responsibility in job.responsibilities %}
+  \item {{ responsibility }}
+  {% endfor %}
+  \end{itemize}
 {% endfor %}
+\end{itemize}
+
+\section*{Skills}
+{{ skills | join(', ') }}
+
+\section*{Languages}
+\begin{itemize}[leftmargin=*]
+    {% for lang in languages %}
+    \item {{ lang.language }} ({{ lang.level }})
+    {% endfor %}
+\end{itemize}
 
 \end{document}
