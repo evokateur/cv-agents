@@ -1,0 +1,15 @@
+[project]
+name = "cv"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "ウエスリー", email = "wesley@evokateur.net"},
+]
+dependencies = ["jinja2>=3.1.6"]
+requires-python = "==3.13.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
