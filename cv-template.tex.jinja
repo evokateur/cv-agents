@@ -49,12 +49,10 @@ Phone: {{ contact.phone }}|
 
 \section*{Skills}
 \begin{itemize}[leftmargin=*]
-{% for area, skills in areas_of_expertise %}
-\ item {{ area ~ ': ' ~ skills|join (', ') }}
+{% for area in areas_of_expertise %}
+    \item {{ area.name ~ ': ' ~ area.skills|join (', ') }}
 {% endfor %}
 \end{itemize}
-
-{{ skills | join(', ') }}
 
 \section*{Languages}
 \begin{itemize}[leftmargin=*]

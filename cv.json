@@ -8,13 +8,13 @@
     },
     "core_expertise": [
         "Back-end Development",
-        "API Design \& implementation",
+        "API Design \\& implementation",
         "Data Modeling"
     ],
     "summary_of_qualifications": [
-        "\textbf{Lead Software Developer} with over 20 years of experience, specializing in the development of web and mobile applications for workers' unions, delivering solutions that handle complex operations such as dues collection employer fringes and reciprocity, benefits tracking, and pension estimations, impacting thousands of union employees across the U.S.", 
-        "\textbf{Backend Developer} with extensive experience in data integration and transformation, skilled at modeling domains and designing relational schema, capable of mapping disparate legacy data into cohesive, modern solutions, and adept at overcoming challenges like inconsistent data and varying system requirements",
-            "\textbf{Principled Engineer} who applies a principled and pragmatic bottom-up approach, emphasizing strong software architecture, while working with teams to implement structured, scalable solutions that prioritize maintainability and code quality"
+        "\\textbf{Lead Software Developer} with over 20 years of experience, specializing in the development of web and mobile applications for workers' unions, delivering solutions that handle complex operations such as dues collection employer fringes and reciprocity, benefits tracking, and pension estimations, impacting thousands of union employees across the U.S.", 
+        "\\textbf{Backend Developer} with extensive experience in data integration and transformation, skilled at modeling domains and designing relational schema, capable of mapping disparate legacy data into cohesive, modern solutions, and adept at overcoming challenges like inconsistent data and varying system requirements",
+            "\\textbf{Principled Engineer} who applies a principled and pragmatic bottom-up approach, emphasizing strong software architecture, while working with teams to implement structured, scalable solutions that prioritize maintainability and code quality"
     ],
     "education": [
         {
@@ -45,7 +45,7 @@
     ],
     "additional_experience": [
         {
-            "title": "Research Assistant \& Programmer",
+            "title": "Research Assistant \\& Programmer",
             "company": "Center for the Built Environment",
             "location": "Berkeley, CA",
             "start_date": "2007",
@@ -67,44 +67,62 @@
         }
     ],
     "areas_of_expertise": [
-        "Programming Languages": [
-            "PHP",
-            "Java",
-            "JavaScript",
-            ".Net",
-            "SQL",
-            "Shell Scripting",
-            "\\LaTeX"
-        ],
-        "Servers": [
-            "MySQL",
-            "PostgresQL",
-            "MSSQL (SQL Server)",
-            "Nginx",
-            "Apache",
-            "Gitlab",
-            "IIS"
-        ],
-        "Frameworks": [
-            "Symfony",
-            "Laravel"
-        ],
-        "Architectural Styles": [
-            "Web MVC",
-            "REST"
-        ],
-        "Operating Systems": [
-            "macOS",
-            "Linux",
-            "Windows (Cygwin)"
-        ],
-        "Paradigms \& Principles": [
-            "OOP",
-            "Structured",
-            "SOLID",
-            "Functional",
-            "Design Patterns"
-        ]
+        {
+            "name": "Programming Languages",
+            "skills": [
+                "PHP",
+                "Java",
+                "JavaScript",
+                ".Net",
+                "SQL",
+                "Shell Scripting",
+                "\\LaTeX"
+            ]
+        },
+        {
+            "name": "Servers",
+            "skills": [
+                "MySQL",
+                "PostgresQL",
+                "MSSQL (SQL Server)",
+                "Nginx",
+                "Apache",
+                "Gitlab",
+                "IIS"
+            ]
+        },
+        {
+            "name": "Frameworks",
+            "skills": [
+                "Symfony",
+                "Laravel"
+            ]
+        },
+        {
+            "name": "Architectural Styles",
+            "skills": [
+                "Web MVC",
+                "REST"
+            ]
+        },
+        {
+            "name": "Operating Systems",
+            "skills": [
+                "macOS",
+                "Linux",
+                "Windows (Cygwin)"
+            ]
+        },
+        {
+            "name": "Paradigms \\& Principles",
+            "skills": [
+                "OOP",
+                "Structured",
+                "SOLID",
+                "Functional",
+                "Design Patterns"
+            ]
+        }
     ],
     "languages": [
         {
