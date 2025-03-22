@@ -2,7 +2,7 @@
 
 cd `dirname "$0"`
 
-python3 fill-cv-template.py
+pdm run python fill-cv-template.py
 
 if [ $? -ne 0 ]
 then
@@ -12,7 +12,7 @@ fi
 
 pdflatex cv.tex
 
-python3 fill-cover-letter-template.py
+pdm run python fill-cover-letter-template.py
 
 if [ $? -ne 0 ]
 then
