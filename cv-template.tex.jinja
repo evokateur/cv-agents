@@ -32,7 +32,9 @@ Phone: {{ contact.phone }}|
 
 \section*{Education}
 \begin{itemize}[leftmargin=*]
-{% for path in education %} \item {{ path.degree }} in {{ path.major }} at {{ path.institution }} ({{ path.start_date }} -- {{ path.end_date }}) {% endfor %}
+{% for path in education %} 
+\item {{ path.degree }} at {{ path.institution }} ({{ path.start_date }} -- {{ path.end_date }})
+{% endfor %}
 \end{itemize}
 
 \section*{Experience}
