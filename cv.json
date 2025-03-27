@@ -5,8 +5,8 @@
         "state": "CA",
         "email": "wesley@evokateur.net",
         "phone": "+1-510-384-8010",
-        "linkedin": "https://www.linkedin.com/in/wesley-c-hinkle",
-        "github": "https://github.com/evokateur"
+        "linkedin": "linkedin.com/in/wesley-c-hinkle",
+        "github": "github.com/evokateur"
     },
     "profession": "Software Engineer",
     "core_expertise": [
@@ -22,8 +22,9 @@
     "education": [
         {
             "degree": "Bachelor of Arts in Cognitive Science (Credit Hours Completed)",
-            "major": "Interdisciplinary program combining Computer Science, Linguistics, Philosophy of Mind, Cognitive Psychology, and Neuroscience",
+            "program": "Interdisciplinary program combining Computer Science, Linguistics, Philosophy of Mind, Cognitive Psychology, and Neuroscience",
             "institution": "University of California, Berkeley",
+            "location": "Berkeley, CA",
             "start_date": "2006",
             "end_date": "2009"
         }
@@ -33,7 +34,7 @@
             "title": "Lead Software Developer",
             "company": "MultiEmployer, Inc.",
             "location": "Berkeley, CA",
-            "start_date": "March 2009",
+            "start_date": "April 2009",
             "end_date": "July 2024",
             "responsibilities": [
                 "Developed enterprise applications, designed and implemented REST APIs for third-party integrations, built and maintained application APIs for client mobile apps, and integrated WordPress with PHP frameworks",
