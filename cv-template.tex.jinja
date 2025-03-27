@@ -40,7 +40,7 @@ Phone: {{ contact.phone }}|
 \section*{Experience}
 \begin{itemize}[leftmargin=*]
 {% for job in experience %}
-\item \textbf{{'{' ~ job.title ~ '}'}} at {{ job.company }} ({{ job.start_date }} -- {{ job.end_date }})
+\item {{ '\\textbf{' ~ job.title ~ '}' }} at {{ job.company }} ({{ job.start_date }} -- {{ job.end_date }})
   \begin{itemize}[leftmargin=*]
   {% for responsibility in job.responsibilities %}
   \item {{ responsibility }}
