@@ -11,3 +11,4 @@ cover-letter.tex
 !notes/*
 !examples/*
 .DS_Store
+__pycache__
