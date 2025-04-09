@@ -11,4 +11,4 @@ template = env.get_template("cover-letter-template.tex.jinja")
 rendered_tex = template.render(data)
 
 with open("cover-letter.tex", "w") as f:
-    f.write(rendered_tex)
+    f.write(rendered_tex.replace("xXcompany", data['company']))

@@ -10,8 +10,6 @@ then
     exit 1
 fi
 
-pdflatex cv.tex
-
 pdm run python fill-cover-letter-template.py
 
 if [ $? -ne 0 ]
@@ -19,5 +17,7 @@ then
     echo "fill-cover-letter-template.py failed, exiting"
     exit 1
 fi
+
+pdflatex cv.tex
 
 pdflatex cover-letter.tex
