@@ -12,3 +12,4 @@ cover-letter.tex
 !examples/*
 .DS_Store
 __pycache__
+.venv

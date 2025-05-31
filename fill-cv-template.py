@@ -1,6 +1,5 @@
 import json
 from jinja2 import Environment, FileSystemLoader
-import subprocess
 
 with open("cv.json") as f:
     data = json.load(f)
