@@ -15,9 +15,9 @@
         "Data Modeling"
     ],
     "summary_of_qualifications": [
-        "\\textbf{Software Developer} with over 20 years of experience, specializing in the development of web and mobile applications for workers' unions, delivering solutions that handle complex operations such as dues collection employer fringes and reciprocity, benefits tracking, and pension estimations, impacting thousands of union employees across the U.S.",
-        "\\textbf{Backend Developer} with extensive experience in data integration and transformation, skilled at modeling domains and designing relational schema, capable of mapping disparate legacy data into clear and cohesive domain models, and adept at overcoming challenges like inconsistent data and varying system requirements",
-            "\\textbf{Principled Engineer} who applies a principled and pragmatic bottom-up approach, emphasizing strong software architecture, while working with teams to implement structured, scalable solutions that prioritize maintainability and code quality"
+        "\\textbf{Lead Software Developer} with over 20 years of experience, specializing in the development of web and mobile applications for workers' unions, delivering solutions that handle complex operations such as dues collection, employer fringes and reciprocity, benefits tracking, and pension estimations, impacting thousands of union employees across the U.S.",
+        "\\textbf{Backend Developer} with extensive experience in data integration and transformation, skilled at modeling domains and designing relational schema, capable of mapping disparate legacy data into cohesive, modern solutions, and adept at overcoming challenges like inconsistent data and varying system requirements",
+        "\\textbf{Principled Engineer} who applies a principled and pragmatic bottom-up approach, emphasizing strong software architecture, while working with teams to implement structured, scalable solutions that prioritize maintainability and code quality"
     ],
     "education": [
         {
@@ -37,14 +37,13 @@
             "start_date": "April 2009",
             "end_date": "July 2024",
             "responsibilities": [
-                "Developed enterprise applications, designed and implemented REST APIs for third-party integrations, built and maintained application APIs for client mobile apps",
-                "Led domain modeling efforts for enterprise processes such as employer union remittances, dues collection, and ACH transactions by documenting domain models, creating structured data representations, and developing use cases to ensure a shared understanding amongst team members",
+                "Led data modeling efforts for enterprise processes such as employer union remittances, dues collection, and ACH transactions by documenting domain models, creating structured data representations, and developing user stories to ensure a shared understanding across teams",
+                "Developed enterprise applications, designed and implemented REST APIs for third-party integrations, built and maintained application APIs for client mobile apps, and integrated WordPress with PHP frameworks",
                 "Engineered data migration processes by writing scripts to map legacy data from mainframe systems, into modern relational databases, enabling modernization while supporting backward compatibility for legacy systems",
-                "Led the implementation of version control infrastructure by setting up and managing GitLab, migrating from source code install to Omnibus, then migrating from MySQL to PostgreSQL",
-                "Refactored and untangled legacy codebases to improve modularity and maintainability and designed Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code",
+                "Led the implementation of version control infrastructure by setting up and managing GitLab, migrated from MySQL to PostgreSQL, and mentored a team of three developers in best coding practices",
+                "Refactored and untangled legacy codebases to improve modularity and maintainability, and designing Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code",
                 "Managed development environments using a fork of Laravel Homestead and Vagrant, creating build scripts to handle dependencies and configure infrastructure for 10+ legacy applications with unique server requirements",
-                "Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management",
-                "Integrated PHP frameworks with Wordpress, while developing Git workflow and deployment strategies using Worpress Migrate DB"
+                "Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management"
             ]
         }
     ],
@@ -55,78 +54,40 @@
             "location": "Berkeley, CA",
             "start_date": "2007",
             "end_date": "2012"
-        },
-        {
-            "title": "Software Engineer",
-            "company": "Synovation",
-            "location": "Modesto, CA",
-            "start_date": "2001",
-            "end_date": "2002"
-        },
-        {
-            "title": "Programmer",
-            "company": "American Medical Response",
-            "location": "Modesto, CA",
-            "start_date": "1998",
-            "end_date": "2001"
         }
     ],
     "areas_of_expertise": [
         {
-            "name": "Programming Languages",
+            "name": "Languages \\& Frameworks",
             "skills": [
                 "PHP",
-                "Java",
                 "JavaScript",
-                ".Net",
                 "Python",
                 "SQL",
                 "Shell Scripting",
-                "\\LaTeX"
+                "Laravel",
+                "Symfony"
             ]
         },
         {
-            "name": "Servers",
+            "name": "Databases \\& Servers",
             "skills": [
                 "MySQL",
-                "PostgresQL",
-                "MSSQL (SQL Server)",
+                "PostgreSQL",
+                "Microsoft SQL Server",
                 "Nginx",
                 "Apache",
-                "Gitlab",
+                "GitLab",
                 "IIS"
             ]
         },
         {
-            "name": "Frameworks",
+            "name": "Software Architecture \\& Design Principles",
             "skills": [
-                "Symfony",
-                "Laravel"
-            ]
-        },
-        {
-            "name": "Architectural Styles",
-            "skills": [
-                "Web MVC",
-                "REST"
-            ]
-        },
-        {
-            "name": "Operating Systems",
-            "skills": [
-                "macOS",
-                "Linux",
-                "Windows (Cygwin)"
-            ]
-        },
-        {
-            "name": "Paradigms \\& Principles",
-            "skills": [
-                "OOP",
-                "Structured",
-                "SOLID",
-                "Functional",
-                "Design Patterns"
+                "MVC",
+                "REST",
+                "DDD",
+                "Clean Architecture"
             ]
         }
     ],
