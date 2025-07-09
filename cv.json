@@ -15,9 +15,7 @@
         "Data Modeling"
     ],
     "summary_of_qualifications": [
-        "\\textbf{Software Developer} with over 20 years of experience, specializing in the development of web and mobile applications for workers' unions, delivering solutions that handle complex operations such as dues collection employer fringes and reciprocity, benefits tracking, and pension estimations, impacting thousands of union employees across the U.S.",
-        "\\textbf{Backend Developer} with extensive experience in data integration and transformation, skilled at modeling domains and designing relational schema, capable of mapping disparate legacy data into clear and cohesive domain models, and adept at overcoming challenges like inconsistent data and varying system requirements",
-            "\\textbf{Principled Engineer} who applies a principled and pragmatic bottom-up approach, emphasizing strong software architecture, while working with teams to implement structured, scalable solutions that prioritize maintainability and code quality"
+        "Backend Engineer with extensive experience in data integration and transformation, skilled in modeling domains and designing relational schemas. Successfully led projects involving complex operations like dues collection and benefits tracking for workers' unions, impacting thousands of employees. Adept at overcoming challenges with inconsistent data and varying system requirements, aiming to leverage expertise in structured, scalable solutions to enhance backend systems."
     ],
     "education": [
         {
@@ -31,7 +29,7 @@
     ],
     "experience": [
         {
-            "title": "Software Developer",
+            "title": "Backend Developer",
             "company": "MultiEmployer, Inc.",
             "location": "Berkeley, CA",
             "start_date": "April 2009",
@@ -44,7 +42,7 @@
                 "Refactored and untangled legacy codebases to improve modularity and maintainability and designed Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code",
                 "Managed development environments using a fork of Laravel Homestead and Vagrant, creating build scripts to handle dependencies and configure infrastructure for 10+ legacy applications with unique server requirements",
                 "Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management",
-                "Integrated PHP frameworks with Wordpress, while developing Git workflow and deployment strategies using Worpress Migrate DB"
+                "Integrated PHP frameworks with WordPress, developed Git strategies and deployment processes using WordPress Migrate DB, improving version control and deployment consistency"
             ]
         }
     ],
@@ -73,24 +71,25 @@
     ],
     "areas_of_expertise": [
         {
-            "name": "Programming Languages",
+            "name": "Language \\& Frameworks",
             "skills": [
                 "PHP",
-                "Java",
                 "JavaScript",
-                ".Net",
                 "Python",
                 "SQL",
                 "Shell Scripting",
+                "Laravel",
+                "Symfony",
+                "FastAPI",
                 "\\LaTeX"
             ]
         },
         {
-            "name": "Servers",
+            "name": "Database \\& Servers",
             "skills": [
                 "MySQL",
                 "PostgresQL",
-                "MSSQL (SQL Server)",
+                "Microsoft SQL Server",
                 "Nginx",
                 "Apache",
                 "Gitlab",
@@ -98,35 +97,12 @@
             ]
         },
         {
-            "name": "Frameworks",
+            "name": "Software Architecture \\& Design Principles",
             "skills": [
-                "Symfony",
-                "Laravel"
-            ]
-        },
-        {
-            "name": "Architectural Styles",
-            "skills": [
-                "Web MVC",
-                "REST"
-            ]
-        },
-        {
-            "name": "Operating Systems",
-            "skills": [
-                "macOS",
-                "Linux",
-                "Windows (Cygwin)"
-            ]
-        },
-        {
-            "name": "Paradigms \\& Principles",
-            "skills": [
-                "OOP",
-                "Structured",
-                "SOLID",
-                "Functional",
-                "Design Patterns"
+                "MVC",
+                "REST",
+                "DDD",
+                "Clean Architecture"
             ]
         }
     ],

@@ -46,7 +46,7 @@
 \begin{minipage}{\textwidth}
 \raggedright
 {% for area in areas_of_expertise %}
-{{ '\\textbf{' ~ area.name ~ ':} ' ~ area.skills|join(' \\textbar\\ ') }}
+{{ '\\textbf{' ~ area.name ~ ':} ' ~ area.skills|join(', ') }}
 {% endfor %}
 \end{minipage}
 
