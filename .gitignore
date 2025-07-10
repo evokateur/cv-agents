@@ -6,6 +6,7 @@
 *.pdf
 *.swp
 *.synctex.gz
+cv.json
 cv.tex
 cover-letter.tex
 !notes/*
