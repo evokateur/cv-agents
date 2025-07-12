@@ -8,9 +8,9 @@
         "linkedin": "linkedin.com/in/wesley-c-hinkle",
         "github": "github.com/evokateur"
     },
-    "profession": "Technical Support & Information Services",
+    "profession": "Technical Support \\& Information Services",
     "core_expertise": [
-        "Customer Service & User Support",
+        "Customer Service \\& User Support",
         "Information Organization",
         "Technical Troubleshooting"
     ],
@@ -29,7 +29,7 @@
     ],
     "experience": [
         {
-            "title": "Backend Developer (Technical Support & Records Management Emphasis)",
+            "title": "Backend Developer (Technical Support \\& Records Management Emphasis)",
             "company": "MultiEmployer, Inc.",
             "location": "Berkeley, CA",
             "start_date": "April 2009",
@@ -46,7 +46,7 @@
     ],
     "additional_experience": [
         {
-            "title": "Research Assistant & Programmer",
+            "title": "Research Assistant \\& Programmer",
             "company": "Center for the Built Environment",
             "location": "Berkeley, CA",
             "start_date": "2007",
@@ -69,18 +69,18 @@
     ],
     "areas_of_expertise": [
         {
-            "name": "Technical & Service Skills",
+            "name": "Technical \\& Service Skills",
             "skills": [
-                "User Support & Troubleshooting",
-                "Data Entry & Record Accuracy",
+                "User Support \\& Troubleshooting",
+                "Data Entry \\& Record Accuracy",
                 "Process Documentation",
                 "Task Prioritization",
-                "Written & Verbal Communication",
+                "Written \\& Verbal Communication",
                 "Computer Literacy (PC, Office, Database Systems)"
             ]
         },
         {
-            "name": "Software & Systems (Familiar)",
+            "name": "Software \\& Systems (Familiar)",
             "skills": [
                 "PHP",
                 "Python",
