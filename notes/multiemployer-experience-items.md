@@ -1,18 +1,50 @@
+# Notes on MultiEmployer Experience Items
 
-# Responsibilities
+As they are, currently, in the back-end dev cv JSON
 
-- Developed enterprise applications, designed and implemented REST APIs for third-party integrations, built and maintained application APIs for client mobile apps
+> Developed enterprise applications, designed and implemented REST APIs for third
+> -party integrations, built and maintained application APIs for client mobile apps
 
-- Led domain modeling efforts for enterprise processes such as employer union remittances, dues collection, and ACH transactions by documenting domain models, creating structured data representations, and developing use cases to ensure a shared understanding amongst team members
+Notes:
 
-- Engineered data migration processes by writing scripts to map legacy data from mainframe systems, into modern relational databases, enabling modernization while supporting backward compatibility for legacy systems
+> Led domain modeling efforts for enterprise processes such as employer union
+> remittances, dues collection, and ACH transactions by documenting domain models,
+> creating structured data representations, and developing use cases to ensure a
+> shared understanding amongst team members
 
-- Led the implementation of version control infrastructure by setting up and managing GitLab, migrating from source code install to Omnibus, then migrating from MySQL to PostgreSQL
+Notes:
 
-- Refactored and untangled legacy codebases to improve modularity and maintainability and designed Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code
+> Led domain modeling efforts for enterprise processes such as employer union
+> Engineered data migration processes by writing scripts to map legacy data from
+> mainframe systems, into modern relational databases, enabling modernization
+> while supporting backward compatibility for legacy systems
 
-- Managed development environments using a fork of Laravel Homestead and Vagrant, creating build scripts to handle dependencies and configure infrastructure for 10+ legacy applications with unique server requirements
+Notes:
 
-- Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management
+> Led the implementation of version control infrastructure by setting up and
+> managing GitLab, migrating from source code install to Omnibus, then migrating
+> from MySQL to PostgreSQL
 
-- Integrated PHP frameworks with WordPress, developed Git strategies and deployment processes using WordPress Migrate DB, improving version control and deployment consistency
+Notes:
+
+> Refactored and untangled legacy codebases to improve modularity and
+> maintainability and designed Git workflows with a structured release tag schema
+> to enable seamless tracking, rollback, and deployment of code
+
+Notes:
+
+> Managed development environments using a fork of Laravel Homestead and Vagrant,
+> creating build scripts to handle dependencies and configure infrastructure for
+> 10+ legacy applications with unique server requirements
+
+Notes:
+
+> Automated deployment tasks using shell scripts and cron jobs, optimized build
+> pipelines for reliable application deployment, and leveraged AWS services (EC2,
+> RDS) for cloud hosting and database management
+
+Notes:
+
+> Integrated PHP frameworks with WordPress, developed Git strategies and
+> deployment processes using WordPress Migrate DB, improving version control and
+> deployment consistency
