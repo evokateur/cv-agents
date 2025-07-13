@@ -1,30 +1,30 @@
 spit balling..
 
 - developed applications for
-    - employer dues/fringes remittances
-    - member dues collection and accounting
-    - dues/fringes reciprocity, from fund to fund
-    
+  - employer dues/fringes remittances
+  - member dues collection and accounting
+  - dues/fringes reciprocity, from fund to fund
+
 - REST APIs - [lineco]
-    - [zenith]
-    - [ctww]
+  - [zenith]
+  - [ctww]
 
 - Application APIs for mobile apps
-    - bac
+  - bac
 
 - designed integration processes, implemented with shell and sql scripts
-    - from flat files
-    - from csv files
-    - from other databases
+  - from flat files
+  - from csv files
+  - from other databases
 
 - data modeling
-    - employer union remittances
-    - dues collection
-    - ach files
+  - employer union remittances
+  - dues collection
+  - ach files
 
 - set up gitlab, maintained gitlab
-    - originally from source, then from omnibus
-    - migrated from mysql to postgresql (then upgraded from last version suppporting mysql to current)
+  - originally from source, then from omnibus
+  - migrated from mysql to postgresql (then upgraded from last version suppporting mysql to current)
 
 - established build processes for all the aps
 
