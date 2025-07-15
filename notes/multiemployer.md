@@ -53,5 +53,16 @@ Projects
   - developed and maintained deployment scripts for each application, for internal draft, external draft, and production environments
 
 - LineCo
-  - oversaw the forking and merging of the application for complete redesign
+  - oversaw the forking and merging of the application for complete front-end redesign and implied, undocumented changes to use cases
   - spent many hours poring over legacy code, finding bugs in processes
+
+What I liked (in spite of myself)
+
+- Figuring out how to make the complex business rules work within the peculiar constraints.
+
+What I didn't like
+
+- Lack of awareness of the amount of work involved in making things work within
+the peculiar constraints, and not making progress with any systematic approach
+due to constant and avoidable introduction of new problems as a result of this
+lack of awareness.
