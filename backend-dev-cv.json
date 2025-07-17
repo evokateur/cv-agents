@@ -42,7 +42,7 @@
                 "Refactored and untangled legacy codebases to improve modularity and maintainability and designed Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code",
                 "Managed development environments using a fork of Laravel Homestead and Vagrant, creating build scripts to handle dependencies and configure infrastructure for 10+ legacy applications with unique server requirements",
                 "Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management",
-                "Integrated PHP frameworks with WordPress, developed Git strategies and deployment processes using WordPress Migrate DB, improving version control and deployment consistency"
+                "Integrated WordPress with PHP frameworks, developing Git workflow strategy, scripts for plugin dependencies, and scripts for dev environment provisioning and deployment using Migrate DB Pro"
             ]
         }
     ],
