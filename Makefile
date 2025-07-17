@@ -1,6 +1,7 @@
 cv:
 	python fill-cv-template.py
 	pdflatex cv.tex
+	open cv.pdf
 
 clean:
 	echo "Cleaning up miscellaneous pdflatex output files..."

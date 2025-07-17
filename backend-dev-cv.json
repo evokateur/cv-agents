@@ -29,7 +29,7 @@
     ],
     "experience": [
         {
-            "title": "Backend Developer",
+            "title": "Back End Developer",
             "company": "MultiEmployer, Inc.",
             "location": "Berkeley, CA",
             "start_date": "April 2009",
@@ -37,7 +37,7 @@
             "responsibilities": [
                 "Developed enterprise applications, designed and implemented REST APIs for third-party integrations, built and maintained application APIs for client mobile apps",
                 "Led domain modeling efforts for enterprise processes such as employer union remittances, dues collection, and ACH transactions by documenting domain models, creating structured data representations, and developing use cases to ensure a shared understanding amongst team members",
-                "Engineered data migration processes by writing scripts to map legacy data from mainframe systems, into modern relational databases, enabling modernization while supporting backward compatibility for legacy systems",
+                "Engineered data migration processes by writing scripts to map legacy data from various systems into relational schema, enabling modernization while supporting backward compatibility for legacy systems",
                 "Led the implementation of version control infrastructure by setting up and managing GitLab, migrating from source code install to Omnibus, then migrating from MySQL to PostgreSQL",
                 "Refactored and untangled legacy codebases to improve modularity and maintainability and designed Git workflows with a structured release tag schema to enable seamless tracking, rollback, and deployment of code",
                 "Managed development environments using a fork of Laravel Homestead and Vagrant, creating build scripts to handle dependencies and configure infrastructure for 10+ legacy applications with unique server requirements",
@@ -71,17 +71,22 @@
     ],
     "areas_of_expertise": [
         {
-            "name": "Language \\& Frameworks",
+            "name": "Programming Languages",
             "skills": [
                 "PHP",
                 "JavaScript",
                 "Python",
                 "SQL",
                 "Shell Scripting",
-                "Laravel",
-                "Symfony",
-                "FastAPI",
                 "\\LaTeX"
+            ]
+        },
+        {
+            "name": "Frameworks",
+            "skills": [
+                "FastAPI",
+                "Laravel",
+                "Symfony"
             ]
         },
         {
@@ -97,7 +102,7 @@
             ]
         },
         {
-            "name": "Software Architecture \\& Design Principles",
+            "name": "Patterns \\& Principles",
             "skills": [
                 "MVC",
                 "REST",
