@@ -1,24 +1,11 @@
 import json
-from jinja2 import Environment, FileSystemLoader
-
-
-def get_tex_env():
-    return Environment(
-        loader=FileSystemLoader("."),
-        block_start_string="(%",
-        block_end_string="%)",
-        variable_start_string="((",
-        variable_end_string="))",
-        comment_start_string="(#",
-        comment_end_string="#)",
-    )
-
+from texenv.jinja import get_tex_env
 
 with open("cv.json") as f:
     data = json.load(f)
 
-env = Environment(loader=FileSystemLoader("."))
-template = env.get_template("cv-template.tex.jinja")
+env = get_tex_env()
+template = env.get_template("cv-template.tex")
 
 rendered_tex = template.render(data)
 

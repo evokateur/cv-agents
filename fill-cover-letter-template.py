@@ -1,11 +1,11 @@
 import json
-from jinja2 import Environment, FileSystemLoader
+from texenv.jinja import get_tex_env
 
 with open("cover-letter.json") as f:
     data = json.load(f)
 
-env = Environment(loader=FileSystemLoader("."))
-template = env.get_template("cover-letter-template.tex.jinja")
+env = get_tex_env()
+template = env.get_template("cover-letter-template.tex")
 
 rendered_tex = template.render(data)
 
