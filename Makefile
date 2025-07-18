@@ -4,7 +4,7 @@ cv:
 	open cv.pdf
 
 clean:
-	echo "Cleaning up miscellaneous pdflatex output files..."
+	echo "Cleaning up pdflatex build artifacts..."
 	rm -f ./*.aux
 	rm -f ./*.fdb_latexmk
 	rm -f ./*.fls

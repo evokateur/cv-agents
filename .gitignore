@@ -2,13 +2,15 @@
 /cv.json
 /cv.tex
 /cover-letter.tex
-/*.aux
-/*.fdb_latexmk
-/*.fls
-/*.log
-/*.out
-/*.pdf
-/*.synctex.gz
+
+# pdflatex build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
 
 # Swap files
 *.swp
