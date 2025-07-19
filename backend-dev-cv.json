@@ -10,7 +10,7 @@
     },
     "profession": "Software Engineer",
     "core_expertise": [
-        "Back-end Development",
+        "Backend Development",
         "API Design \\& implementation",
         "Data Modeling"
     ],
@@ -29,7 +29,7 @@
     ],
     "experience": [
         {
-            "title": "Back End Developer",
+            "title": "Backend Developer",
             "company": "MultiEmployer, Inc.",
             "location": "Berkeley, CA",
             "start_date": "April 2009",
