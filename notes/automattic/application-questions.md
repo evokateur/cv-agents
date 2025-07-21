@@ -5,6 +5,8 @@
 - When have you felt happiest at work? And when have you felt the least fulfilled?
 
 - Which part of the Automattic creed resonates with you the most? Why?
+  - <https://automattic.com/creed/>
+  - <https://gibrown.wordpress.com/2016/01/27/the-walsh-standard-v-automattic-creed/>
 
 - Tell us about a project or piece of work you're especially proud of – from any point in your career.
 
