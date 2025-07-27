@@ -1,7 +1,6 @@
-# Generated output in root directory
-/cv.json
-/cv.tex
-/cover-letter.tex
+cv.json
+cv.tex
+cover-letter.tex
 
 # pdflatex build artifacts
 *.aux

@@ -1,10 +1,11 @@
 cv:
 	python fill-cv-template.py
-	pdflatex cv.tex
-	open cv.pdf
+	pdflatex --output-directory=output output/cv.tex
+	open output/cv.pdf
 
 cover-letter:
 	python fill-cover-letter-template.py
+	cd output
 	pdflatex cover-letter.tex
 	open cover-letter.pdf
 
