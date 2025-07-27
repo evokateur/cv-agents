@@ -23,10 +23,10 @@
 % Shaded header section
 \begin{center}
 \fcolorbox{white}{blue!10}{\parbox{0.95\textwidth}{
-    \centering (( '{\\LARGE\\textbf{' ~ name  ~ '}}' )) \\
-    (( contact.city )), (( contact.state )) \textbar\ (( contact.phone )) \textbar\ (( '\\href{mailto:' ~ contact.email ~ '}{' ~ contact.email ~'}' )) 
+    \centering [-'{\\LARGE\\textbf{' ~ name  ~ '}}'-] \\
+    [-contact.city-], [-contact.state-] \textbar\ [-contact.phone-] \textbar\ [-'\\href{mailto:' ~ contact.email ~ '}{' ~ contact.email ~'}'-] 
 
-    (( '\\href{https://' ~ contact.linkedin ~ '}{' ~ contact.linkedin ~ '}' )) \textbar\ (( '\\href{https://' ~ contact.github ~ '}{' ~ contact.github ~ '}' )) 
+    [-'\\href{https://' ~ contact.linkedin ~ '}{' ~ contact.linkedin ~ '}'-] \textbar\ [-'\\href{https://' ~ contact.github ~ '}{' ~ contact.github ~ '}'-] 
 }}
 \end{center}
 
@@ -37,37 +37,37 @@
 
 \section*{Summary of Qualifications}
 \begin{itemize}[itemsep=0em]
-(# for qualification in summary_of_qualifications #)
-    \item (( qualification )) 
-(# endfor #)
+[# for qualification in summary_of_qualifications #]
+    \item [-qualification-] 
+[# endfor #]
 \end{itemize}
 
 \section*{Areas of Expertise}
 \begin{minipage}{\textwidth}
 \raggedright
-(# for area in areas_of_expertise #)
-    (( '\\textbf{' ~ area.name ~ ':} ' ~ area.skills|join(', ') ))
-(# endfor #)
+[# for area in areas_of_expertise #]
+    [-'\\textbf{' ~ area.name ~ ':} ' ~ area.skills|join(', ')-]
+[# endfor #]
 \end{minipage}
 
 \section*{Professional Experience}
-(# for job in experience #)
-    (( '\\subsection*{' ~ job.title ~ '\\hfill ' ~ job.start_date ~ ' -- ' ~ job.end_date ~ '}' ))
-(( '\\textbf{' ~ job.company ~ ' \\textbar\\ ' ~ job.location ~ '}' ))
+[# for job in experience #]
+    [-'\\subsection*{' ~ job.title ~ '\\hfill ' ~ job.start_date ~ ' -- ' ~ job.end_date ~ '}'-]
+[-'\\textbf{' ~ job.company ~ ' \\textbar\\ ' ~ job.location ~ '}'-]
 \begin{itemize}[itemsep=0em]
-  (# for responsibility in job.responsibilities #)
-  \item (( responsibility ))
-  (# endfor #)
+  [# for responsibility in job.responsibilities #]
+  \item [-responsibility-]
+  [# endfor #]
 \end{itemize}
-(# endfor #)
+[# endfor #]
 
 \section*{Education}
-(# for path in education #) 
-    (( '\\textbf{' ~ path.degree ~ '} \\\\' ))
-    (( path.institution ~ ' \\textbar\\ ' ~ path.location ))
+[# for path in education #] 
+    [-'\\textbf{' ~ path.degree ~ '} \\\\'-]
+    [-path.institution ~ ' \\textbar\\ ' ~ path.location-]
 \begin{itemize}[itemsep=0em]
-    (( '\\item ' ~ path.coursework))
+    [-'\\item ' ~ path.coursework-]
 \end{itemize}
-(# endfor #)
+[# endfor #]
 
 \end{document}
