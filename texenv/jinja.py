@@ -24,12 +24,12 @@ def escape_tex(text):
 def get_tex_env(template_dir="templates"):
     env = Environment(
         loader=FileSystemLoader(template_dir),
-        block_start_string="(%",
-        block_end_string="%)",
+        block_start_string="(#",
+        block_end_string="#)",
         variable_start_string="((",
         variable_end_string="))",
-        comment_start_string="(#",
-        comment_end_string="#)",
+        comment_start_string="(%",
+        comment_end_string="%)",
     )
     env.filters["escape_tex"] = escape_tex
     return env

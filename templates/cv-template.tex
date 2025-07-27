@@ -37,37 +37,37 @@
 
 \section*{Summary of Qualifications}
 \begin{itemize}[itemsep=0em]
-(% for qualification in summary_of_qualifications %)
+(# for qualification in summary_of_qualifications #)
     \item (( qualification )) 
-(% endfor %)
+(# endfor #)
 \end{itemize}
 
 \section*{Areas of Expertise}
 \begin{minipage}{\textwidth}
 \raggedright
-(% for area in areas_of_expertise %)
+(# for area in areas_of_expertise #)
     (( '\\textbf{' ~ area.name ~ ':} ' ~ area.skills|join(', ') ))
-(% endfor %)
+(# endfor #)
 \end{minipage}
 
 \section*{Professional Experience}
-(% for job in experience %)
+(# for job in experience #)
     (( '\\subsection*{' ~ job.title ~ '\\hfill ' ~ job.start_date ~ ' -- ' ~ job.end_date ~ '}' ))
 (( '\\textbf{' ~ job.company ~ ' \\textbar\\ ' ~ job.location ~ '}' ))
 \begin{itemize}[itemsep=0em]
-  (% for responsibility in job.responsibilities %)
+  (# for responsibility in job.responsibilities #)
   \item (( responsibility ))
-  (% endfor %)
+  (# endfor #)
 \end{itemize}
-(% endfor %)
+(# endfor #)
 
 \section*{Education}
-(% for path in education %) 
+(# for path in education #) 
     (( '\\textbf{' ~ path.degree ~ '} \\\\' ))
     (( path.institution ~ ' \\textbar\\ ' ~ path.location ))
 \begin{itemize}[itemsep=0em]
     (( '\\item ' ~ path.coursework))
 \end{itemize}
-(% endfor %)
+(# endfor #)
 
 \end{document}
