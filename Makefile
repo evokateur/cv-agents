@@ -1,19 +1,19 @@
 cv:
-	python fill-cv-template.py
+	python make-cv.py
 	pdflatex --output-directory=output output/cv.tex
 	open output/cv.pdf
 
 cover-letter:
-	python fill-cover-letter-template.py
+	python make-cover-letter.py
 	cd output
-	pdflatex cover-letter.tex
-	open cover-letter.pdf
+	pdflatex --output-directory=output output/cover-letter.tex
+	open output/cover-letter.pdf
 
 clean:
 	echo "Cleaning up pdflatex build artifacts..."
-	rm -f ./*.aux
-	rm -f ./*.fdb_latexmk
-	rm -f ./*.fls
-	rm -f ./*.log
-	rm -f ./*.out
-	rm -f ./*.synctex.gz
+	rm -f output/*.aux
+	rm -f output/*.fdb_latexmk
+	rm -f output/*.fls
+	rm -f output/*.log
+	rm -f output/*.out
+	rm -f output/*.synctex.gz
