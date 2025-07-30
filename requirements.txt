@@ -1,4 +1,1 @@
-anthropic
-dotenv
 jinja2
-jupyter
