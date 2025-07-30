@@ -1,7 +1,3 @@
-cv.json
-cv.tex
-cover-letter.tex
-
 # pdflatex build artifacts
 *.aux
 *.fdb_latexmk

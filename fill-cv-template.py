@@ -5,7 +5,7 @@ with open("data/cv.json") as f:
     data = json.load(f)
 
 env = get_tex_env()
-template = env.get_template("cv-template.tex")
+template = env.get_template("cv.tex")
 
 rendered_tex = template.render(data)
 

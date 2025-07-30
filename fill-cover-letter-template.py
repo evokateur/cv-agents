@@ -5,7 +5,7 @@ with open("data/cover-letter.json") as f:
     data = json.load(f)
 
 env = get_tex_env()
-template = env.get_template("cover-letter-template.tex")
+template = env.get_template("cover-letter.tex")
 
 rendered_tex = template.render(data)
 
