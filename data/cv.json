@@ -5,8 +5,8 @@
         "state": "CA",
         "email": "wesley@evokateur.net",
         "phone": "+1-510-384-8010",
-        "linkedin": "linkedin.com/in/wesley-c-hinkle",
-        "github": "github.com/evokateur"
+        "linkedin": "wesley-c-hinkle",
+        "github": "evokateur"
     },
     "profession": "Software Engineer",
     "core_expertise": [
@@ -71,7 +71,7 @@
     ],
     "areas_of_expertise": [
         {
-            "name": "Programming Languages",
+            "name": "Languages",
             "skills": [
                 "PHP",
                 "JavaScript",
@@ -81,16 +81,11 @@
             ]
         },
         {
-            "name": "Frameworks",
+            "name": "Technologies",
             "skills": [
                 "FastAPI",
                 "Laravel",
-                "Symfony"
-            ]
-        },
-        {
-            "name": "Database \\& Servers",
-            "skills": [
+                "Symfony",
                 "MySQL",
                 "PostgresQL",
                 "Microsoft SQL Server",
