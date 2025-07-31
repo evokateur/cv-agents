@@ -1,13 +1,19 @@
+OPEN =
+ifeq ($(shell uname), Darwin)
+OPEN = open
+else ifeq ($(shell uname), Linux)
+OPEN = xdg-open
+endif
+
 cv:
 	python make-cv.py
 	pdflatex --output-directory=output output/cv.tex
-	open output/cv.pdf
+	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cv.pdf; fi
 
 cover-letter:
 	python make-cover-letter.py
-	cd output
 	pdflatex --output-directory=output output/cover-letter.tex
-	open output/cover-letter.pdf
+	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cover-letter.pdf; fi
 
 clean:
 	echo "Cleaning up pdflatex build artifacts..."
