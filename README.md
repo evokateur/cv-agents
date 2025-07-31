@@ -1,3 +1,3 @@
 # My C.V
 
-Generates LaTeX C.V. from a JSON or YAML file using Jinja2 templates.
+Generates my C.V. from JSON or YAML data using a Jinja2 template having delimiters that play well with TeX syntax.
