@@ -1,4 +1,3 @@
 # My C.V
 
-- Generates LaTeX C.V. from JSON data
-- Uses Jinja2 templating with custom syntax, compatible with [jtex](https://mystmd.org/jtex/template-rules)
+Generates LaTeX C.V. from a JSON or YAML file using Jinja2 templates.
