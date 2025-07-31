@@ -1,8 +1,8 @@
-import json
+import yaml
 from texenv.jinja import get_tex_env
 
-with open("data/cv.json") as f:
-    data = json.load(f)
+with open("data/cv.yaml") as f:
+    data = yaml.safe_load(f)
 
 env = get_tex_env()
 template = env.get_template("cv.tex")
