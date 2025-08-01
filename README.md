@@ -8,9 +8,9 @@ Custom delimiters are used to avoid conflicts with LaTeX:
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
-| Statements   | `[# #]`    | `{% %}`         |
-| Expressions  | `[- -]`    | `{{ }}`         |
-| Comments     | `%# #%`    | `{# #}`         |
+| Statements   | `(# #)`    | `{% %}`         |
+| Expressions  | `(( ))`    | `{{ }}`         |
+| Comments     | `%( )%`    | `{# #}`         |
 | Line Comment | `%%`       | `##`            |
 
 ## Quick Start

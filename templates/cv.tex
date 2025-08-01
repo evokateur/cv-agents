@@ -8,7 +8,7 @@
     left=2 cm, % seperation between body and page edge from the left
     right=2 cm, % seperation between body and page edge from the right
     footskip=1.0 cm, % seperation between body and footer
-    % showframe % for debugging 
+    % showframe % for debugging
 ]{geometry} % for adjusting page geometry
 \usepackage[explicit]{titlesec} % for customizing section titles
 \usepackage{tabularx} % for making tables with fixed width columns
@@ -19,8 +19,8 @@
 \usepackage{fontawesome5} % for using icons
 \usepackage{amsmath} % for math
 \usepackage[
-    pdftitle={[-name-]'s CV},
-    pdfauthor={[-name-]},
+    pdftitle={(( name ))'s CV},
+    pdfauthor={(( name ))},
     pdfcreator={LaTeX with RenderCV},
     colorlinks=true,
     urlcolor=primaryColor
@@ -44,7 +44,7 @@
     \usepackage{lmodern}
 \fi
 
-\usepackage[default, type1]{sourcesanspro} 
+\usepackage[default, type1]{sourcesanspro}
 
 % Some settings:
 \AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
@@ -164,51 +164,51 @@
 
     \begin{header}
         \fontsize{30 pt}{30 pt}
-        \textbf{[-name-]}
+        \textbf{(( name ))}
 
         \vspace{0.3 cm}
 
         \normalsize
-        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}[-contact.city ~ ', ' ~contact.state-]}%
+        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}(( contact.city ~ ', ' ~contact.state ))}%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{mailto:[-contact.email-]}{{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}[-contact.email-]}}%
+        \mbox{\hrefWithoutArrow{mailto:(( contact.email ))}{{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}(( contact.email ))}}%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{tel:[-contact.phone-]}{{\footnotesize\faPhone*}\hspace*{0.13cm}[-contact.phone-]}}%
+        \mbox{\hrefWithoutArrow{tel:(( contact.phone ))}{{\footnotesize\faPhone*}\hspace*{0.13cm}(( contact.phone ))}}%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{https://linkedin.com/in/[-contact.linkedin-]}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}[-contact.linkedin-]}}%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/(( contact.linkedin ))}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}(( contact.linkedin ))}}%
         \kern 0.25 cm%
         \AND%
         \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{https://github.com/[-contact.github-]}{{\footnotesize\faGithub}\hspace*{0.13cm}[-contact.github-]}}%
+        \mbox{\hrefWithoutArrow{https://github.com/(( contact.github ))}{{\footnotesize\faGithub}\hspace*{0.13cm}(( contact.github ))}}%
     \end{header}
 
     \vspace{0.3 cm - 0.3 cm}
 
 
     \section{Software Engineer}
-        
+
         \begin{onecolentry}
             \textbf{Back-End Development \textbar\ API Design \& Implementation \textbar\ Data Modeling}
         \end{onecolentry}
 
         \vspace{0.2 cm}
-    
+
     \section{Summary of Qualifications}
 
     \begin{onecolentry}
         \begin{highlightsforbulletentries}
 
-        [# for qualification in summary_of_qualifications #]
-            \item [-qualification-] 
-        [# endfor #]
+        (# for qualification in summary_of_qualifications #)
+            \item (( qualification ))
+        (# endfor #)
 
         \end{highlightsforbulletentries}
     \end{onecolentry}
@@ -217,54 +217,53 @@
 
 
 
-        
-        [# for path in education #]
-            \begin{twocolentry}{
-                [-path.location-]
 
-                [-path.start_date-] – [-path.end_date-]
+        (# for path in education #)
+            \begin{twocolentry}{
+                (( path.location ))
+
+                (( path.start_date )) – (( path.end_date ))
             }
-                [-path.institution-], [-path.degree-]
+                (( path.institution )), (( path.degree ))
                 \begin{highlights}
-                    \item [-'Coursework: ' ~ path.coursework-]
+                    \item (( 'Coursework: ' ~ path.coursework ))
                 \end{highlights}
             \end{twocolentry}
-        [# endfor #]
+        (# endfor #)
 
 
-    
+
     \section{Experience}
 
-        [# for job in experience #]
+        (# for job in experience #)
             \begin{twocolentry}{
-                [-job.location-]
+                (( job.location ))
 
-                [-job.start_date-] – [-job.end_date-]
+                (( job.start_date )) – (( job.end_date ))
             }
-                \textbf{[-job.company-]}, [-job.title-]
+                \textbf{(( job.company ))}, (( job.title ))
                 \begin{highlights}
-                    [# for responsibility in job.responsibilities #]
-                        \item [-responsibility-]
-                    [# endfor #]
+                    (# for responsibility in job.responsibilities #)
+                        \item (( responsibility ))
+                    (# endfor #)
                 \end{highlights}
             \end{twocolentry}
         \vspace{0.2 cm}
-        [# if not loop.last #]
+        (# if not loop.last #)
             \vspace{0.2 cm}
-        [# endif #]
-        [# endfor #]
-    
+        (# endif #)
+        (# endfor #)
+
     \section{Technologies}
 
 
-        [# for area in areas_of_expertise #]
+        (# for area in areas_of_expertise #)
         \begin{onecolentry}
-                [-area.name-]: [-area.skills|join(', ')-]
+                (( area.name )): (( area.skills|join(', ') ))
         \end{onecolentry}
-            [# if not loop.last #]
+            (# if not loop.last #)
                 \vspace{0.2 cm}
-            [# endif #]
-        [# endfor #]
-    
+            (# endif #)
+        (# endfor #)
 
 \end{document}

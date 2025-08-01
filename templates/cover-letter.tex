@@ -17,21 +17,21 @@
 
 \begin{center}
 \large\bfseries % Font size and styling
-    [-name-] \\
-    [-contact.city-] [-contact.state-] \\
-    [-contact.phone-]  \\
-    [-contact.email-] \\
+    (( name )) \\
+    (( contact.city )) (( contact.state )) \\
+    (( contact.phone ))  \\
+    (( contact.email )) \\
 \end{center}
 
 \date{\raggedright\today} % Left-aligned date of the letter, use \today for the current date
 \vspace{1cm} % Vertical whitespace
 
-\signature{Wesley Hinkle} % Your name for the signature at the bottom
+\signature{ (( name )) } % Your name for the signature at the bottom
 
 \opening{Dear Hiring Manager,}
-    [# for paragraph in paragraphs #]
-    [-paragraph-] 
-    [# endfor #]
+    (# for paragraph in paragraphs #)
+    (( paragraph ))
+    (# endfor #)
 \closing{Sincerely,}
 
 \end{letter}
