@@ -8,4 +8,4 @@ pip install -r requirements.txt
 echo "Installing Jupyter kernel spec for $(pwd)/.venv.."
 python -m ipykernel install --user --env VIRTUAL_ENV "$(pwd)/.venv" --name=cv-agent --display-name "CV Agent"
 
-echo "Select kernel 'cv-agent' when running ':MoltenInit'."
+echo "Use kernel 'cv-agent' in Jupyter notebooks."
