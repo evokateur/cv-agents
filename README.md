@@ -1,6 +1,6 @@
 # CV Generator
 
-Generates my CV from JSON/YAML data using Jinja2 templates and LaTeX.
+Generates my CV using JSON/YAML data and a LaTeX Jinja template.
 
 ## Template Syntax
 
@@ -23,12 +23,6 @@ pip install -r requirements.txt
 
 # Generate CV
 make cv
-
-## Usage
-
-1. Edit data in `data/cv.json` or `data/cv.yaml`
-2. Run `make cv` to generate PDF
-3. Find output in `output/cv.pdf`
 
 ## Structure
 
