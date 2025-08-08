@@ -1,4 +1,6 @@
 anthropic
+dotenv
 ipykernel
 jinja2
 jupyterlab
+langchain
