@@ -12,7 +12,7 @@ I joined company in the Spring of 2009, the first PHP developer. I left in the S
 
 - Other developers, not working continuously. The principal owner tended to work with them directly.
 
-## Principal Projects
+## Featured Projects
 
 - [BAC Portal](projects/bacportal.md)  
 - [BAC Works](projects/bacworks.md)
