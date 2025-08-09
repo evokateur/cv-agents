@@ -33,4 +33,5 @@ venv.bak/
 # symlink to personal cv resources
 resources
 
+knowledge-base
 vector_db
