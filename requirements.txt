@@ -1,5 +1,6 @@
 anthropic
 beautifulsoup4
+crewai
 dotenv
 ipykernel
 jinja2
@@ -8,6 +9,7 @@ langchain
 langchain_chroma
 langchain_community
 langchain-openai
+pydantic
 pytest
 pytest-asyncio
 requests
