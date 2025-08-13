@@ -15,12 +15,14 @@ the position, and finally creating an optimized C.V. data file for the generator
 
 #### 1. Job Analysis Agent
 
-- Given a job posting URL, extract requirements, skills, qualifications from job posting
+- Input: a job posting URL
+- Extract requirements, skills, qualifications from job posting content
 - Parse company/role context
 - Output: Structured job requirements
 
 #### 2. Knowledge Retrieval Agent  
 
+- Input: Structured job requirements
 - Query work history knowledge base
 - Match relevant experiences to job requirements
 - Output: Ranked relevant experiences
