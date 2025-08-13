@@ -1,0 +1,16 @@
+from crewai import Agent
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool
+
+search_tool = SerperDevTool()
+scrape_tool = ScrapeWebsiteTool()
+
+job_analyst = Agent(
+    role="Tech Job Researcher",
+    goal="Make sure to do amazing analysis on job posting to help job applicants",
+    tools=[scrape_tool, search_tool],
+    verbose=True,
+    llm=llm,
+    backstory=(
+        "As a Job Researcher, your prowess in navigating and extracting critical information from job postings is unmatched..."
+    ),
+)

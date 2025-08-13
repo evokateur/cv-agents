@@ -1,7 +1,3 @@
-"""
-Main embedding logic for processing knowledge base documents into vector embeddings.
-"""
-
 import os
 from typing import List, Optional
 from dotenv import load_dotenv
@@ -14,8 +10,6 @@ from .loaders import DocumentLoader
 
 
 class KnowledgeBaseEmbedder:
-    """Handles embedding of knowledge base documents into ChromaDB vector store."""
-
     def __init__(
         self,
         knowledge_base_path: str = "knowledge-base",
@@ -40,13 +34,6 @@ class KnowledgeBaseEmbedder:
         self.embeddings = OpenAIEmbeddings()
 
     def create_embeddings(self) -> dict:
-        """
-        Create vector embeddings from knowledge base documents.
-
-        Returns:
-            Dictionary with processing statistics and results.
-        """
-        # Load documents
         documents = self.document_loader.load_documents()
 
         if not documents:
@@ -102,16 +89,9 @@ class KnowledgeBaseEmbedder:
         }
 
     def get_vectorstore(self) -> Optional[Chroma]:
-        """
-        Get existing vectorstore if it exists.
-
-        Returns:
-            Chroma vectorstore instance or None if doesn't exist.
-        """
         if not os.path.exists(self.vector_db_path):
             return None
 
         return Chroma(
             persist_directory=self.vector_db_path, embedding_function=self.embeddings
         )
-
