@@ -23,3 +23,6 @@ clean:
 	rm -f output/*.log
 	rm -f output/*.out
 	rm -f output/*.synctex.gz
+
+test:
+	pytest --tb=short

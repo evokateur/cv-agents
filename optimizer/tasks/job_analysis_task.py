@@ -1,12 +1,12 @@
 from crewai import Task
-from cv_agents.models import JobPosting
-from cv_agents.agents.job_analyst import job_analyst
+from optimizer.models import JobPosting
+from optimizer.agents.job_analyst import job_analyst
 
 
-def create_job_analysis_task(job_url: str) -> Task:
+def create_job_analysis_task(job_posting_url: str) -> Task:
     return Task(
         description=(
-            "Analyze the job posting URL provided ({job_posting_url}) to extract and structure "
+            f"Analyze the job posting URL provided ({job_posting_url}) to extract and structure "
             "the following information:\n"
             "- Job title and company name\n"
             "- Industry sector\n"
@@ -25,5 +25,4 @@ def create_job_analysis_task(job_url: str) -> Task:
         ),
         output_pydantic=JobPosting,
         agent=job_analyst,
-        async_execution=True,
     )
