@@ -19,6 +19,12 @@ job_analyst = Agent(
     verbose=True,
     llm=llm,
     backstory=(
-        "As a Job Researcher, your prowess in navigating and extracting critical information from job postings is unmatched..."
+        "As a Job Researcher, your prowess in "
+        "navigating and extracting critical "
+        "information from job postings is unmatched."
+        "Your skills help pinpoint the necessary "
+        "qualifications and skills sought "
+        "by employers, forming the foundation for "
+        "effective application tailoring."
     ),
 )
