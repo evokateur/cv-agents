@@ -1,19 +1,16 @@
-import os
+from config import get_config
 from crewai import Agent, LLM
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
+
+config = get_config()
 
 search_tool = SerperDevTool()
 scrape_tool = ScrapeWebsiteTool()
 
-
-def create_llm() -> LLM:
-    return LLM(
-        model=os.getenv("JOB_ANALYST_MODEL", "gpt-4o-mini"),
-        temperature=float(os.getenv("JOB_ANALYST_TEMPERATURE", "0.7")),
-    )
-
-
-llm = create_llm()
+llm = LLM(
+    model=config.job_analyst_model,
+    temperature=float(config.job_analyst_temperature),
+)
 
 job_analyst = Agent(
     role="Tech Job Researcher",

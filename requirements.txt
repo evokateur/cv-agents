@@ -1,6 +1,7 @@
 anthropic
 beautifulsoup4
 crewai
+crewai_tools
 dotenv
 ipykernel
 jinja2
