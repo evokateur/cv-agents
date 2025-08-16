@@ -1,11 +1,9 @@
 import os
-from typing import List, Optional
+from typing import Optional
 from dotenv import load_dotenv
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
-
 from .loaders import DocumentLoader
 
 
