@@ -2,57 +2,88 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Commands
+## Setup
 
-### Build and Generation
-- `make cv` - Generate CV from YAML data and LaTeX template, outputs to `output/cv.pdf`
-- `make cover-letter` - Generate cover letter, outputs to `output/cover-letter.pdf`
-- `make clean` - Remove pdflatex build artifacts from output directory
-
-### Testing
-- `make test` or `pytest --tb=short` - Run all tests
-- `pytest tests/unit/` - Run unit tests only
-- `pytest -k "test_name"` - Run specific test
-
-### Environment Setup
 ```bash
+# Create and activate virtual environment
+./setup.sh
+
+# Or manually:
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+# Copy environment variables and configure
+cp sample.env .env
+# Edit .env with your API keys
 ```
 
-## Architecture
+## Common Commands
+
+```bash
+# Generate CV from YAML data
+make cv
+
+# Generate cover letter
+make cover-letter
+
+# Run tests
+make test
+# Or: pytest --tb=short
+
+# Clean build artifacts
+make clean
+```
+
+## Architecture Overview
+
+This is a dual-purpose CV generation system:
+
+1. **Template-based CV generation**: Converts YAML/JSON data to LaTeX via Jinja templates
+2. **AI-powered CV optimization**: Uses CrewAI agents to analyze job postings and optimize CVs
 
 ### Core Components
 
-**CV Generation Pipeline**
-- `make-cv.py` - Main script that loads YAML data and renders LaTeX template
-- `texenv/jinja.py` - Custom Jinja2 environment with LaTeX-compatible delimiters
-- `data/cv.yaml` - Primary CV data source
-- `templates/cv.tex` - LaTeX template with custom Jinja syntax
-- `data/cv-schema.json` - JSON schema defining CV data structure
+- **Data Layer**: `data/cv.yaml` contains CV information following the schema in `data/cv-schema.json`
+- **Template Engine**: `texenv/jinja.py` provides LaTeX-compatible Jinja environment with custom delimiters: `(# #)` for statements, `(( ))` for expressions, `%( )%` for comments
+- **CV Generation**: `make-cv.py` renders YAML data through `templates/cv.tex` template
+- **AI Optimization System**: `optimizer/` contains CrewAI-based agents for job analysis and CV optimization
 
-**Job Analysis System (CrewAI-based)**
-- `optimizer/agents/job_analyst.py` - CrewAI agent for analyzing job postings
-- `optimizer/tasks/job_analysis_task.py` - Task definitions for job analysis
-- `optimizer/tools/` - Vector database and CV optimization tools
-- Uses LLM models configurable via environment variables
+### AI Optimization Components
 
-### Template System
-
-Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
-- Statements: `(# #)` instead of `{% %}`
-- Expressions: `(( ))` instead of `{{ }}`
-- Comments: `%( )%` instead of `{# #}`
-- Line comments: `%%` instead of `##`
+- **Agents**: Three specialized AI agents in `optimizer/agents/`:
+  - `job_analyst.py`: Extracts job requirements from postings
+  - `candidate_profiler.py`: Analyzes candidate background
+  - `cv_strategist.py`: Creates optimization strategies
+- **Tasks**: Corresponding tasks in `optimizer/tasks/` define agent workflows
+- **Models**: Pydantic models in `optimizer/models.py` for structured data (JobPosting, CandidateProfile, CurriculumVitae)
+- **Configuration**: `config.py` manages environment-based settings for different AI models
 
 ### Data Flow
-1. CV data stored in `data/cv.yaml` following `cv-schema.json`
-2. `make-cv.py` loads data and renders `templates/cv.tex`
-3. pdflatex compiles rendered LaTeX to PDF in `output/`
-4. Job analysis agents can optimize CV content based on job postings
 
-### Testing Structure
-- `tests/unit/` - Unit tests for optimizer components
-- `pytest.ini` - Test configuration with markers for unit/integration/slow tests
-- Tests use standard pytest patterns without "test" in names per project conventions
+1. Job posting URL → Job Analyst → Structured job requirements
+2. Candidate data + Job requirements → Candidate Profiler → Profile analysis  
+3. Profile + Job requirements → CV Strategist → Optimization recommendations
+4. Optimized data → Template engine → LaTeX → PDF
+
+## Testing
+
+Tests use pytest with configuration in `pytest.ini`. Run specific test files:
+```bash
+pytest tests/unit/optimizer/tasks/test_job_analysis_task.py
+```
+
+## Environment Variables
+
+Configure in `.env` (copy from `sample.env`):
+- API keys for various LLM providers (Anthropic, OpenAI, DeepSeek, Google)
+- `SERPER_API_KEY` for web search functionality
+- Model configuration for each agent (model name and temperature)
+
+## Key Dependencies
+
+- **CrewAI**: Multi-agent AI framework
+- **Jinja2**: Template engine with LaTeX escaping
+- **Pydantic**: Data validation and serialization
+- **LangChain**: Vector database and embeddings via Chroma
+- **PyYAML**: Configuration file parsing
