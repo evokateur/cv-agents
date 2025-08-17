@@ -29,10 +29,7 @@ rag_tool = RagTool(
     )
 )
 
-file_read_tool = FileReadTool(
-    name="Read Knowledge Base Document",
-    description="Read complete documents from the knowledge base when you need full context beyond RAG chunks. Use file paths like 'knowledge-base/projects/project-name.md' or 'knowledge-base/companies/company-name.md'.",
-)
+file_read_tool = FileReadTool()
 
 llm = LLM(
     model=config.candidate_profiler_model,
