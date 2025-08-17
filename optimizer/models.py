@@ -14,10 +14,28 @@ class JobPosting(BaseModel):
     responsibilities: List[str]
 
 
-# TODO: Fully define CandidateProfile to include all relevant fields
 class CandidateProfile(BaseModel):
     first_name: str
     last_name: str
+    profession: str
+
+    matching_required_skills: List[str]
+    matching_preferred_skills: List[str]
+    transferable_skills: List[str]
+    skill_gaps: List[str]
+
+    relevant_experiences: List[str]
+    relevant_projects: List[str]
+    leadership_examples: List[str]
+    domain_expertise: List[str]
+
+    quantified_achievements: List[str]
+    technical_achievements: List[str]
+    career_progression: List[str]
+
+    competitive_advantages: List[str]
+    value_propositions: List[str]
+    positioning_strategy: str
 
 
 class Contact(BaseModel):
