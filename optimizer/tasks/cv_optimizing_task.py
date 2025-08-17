@@ -1,14 +1,14 @@
-from crewai import Task
+from crewai import Agent, Task
 from optimizer.models import CurriculumVitae
-from optimizer.agents.cv_strategist import cv_strategist
 
 
-def create_cv_strategizing_task(
-    job_analysis_task: Task, candidate_profiling_task: Task
+def create_cv_optimizing_task(
+    strategist: Agent, job_analysis: Task, candidate_profile: Task
 ) -> Task:
     return Task(
         description=(
-            "Using the job requirements and candidate profile, create an optimized CV by:\n"
+            "Read the candidate's current cv data from {cv_data_path} and optimize it"
+            "using the job requirements data and candidate profile. Create the optimized CV by:\n"
             "- Prioritizing experiences that best match job requirements\n"
             "- Rewriting descriptions to emphasize relevant skills and achievements\n"
             "- Optimizing keyword density for ATS compatibility\n"
@@ -17,14 +17,14 @@ def create_cv_strategizing_task(
             "- Ensuring language matches the job posting's tone and terminology"
         ),
         expected_output=(
-            "An OptimizedCV object with restructured and rewritten content sections "
+            "A CurriculumVitae object with restructured and rewritten content sections "
             "tailored specifically to the job requirements, optimized for both ATS "
             "and human review."
         ),
         output_pydantic=CurriculumVitae,
         context=[
-            job_analysis_task,
-            candidate_profiling_task,
+            job_analysis,
+            candidate_profile,
         ],
-        agent=cv_strategist,
+        agent=strategist,
     )

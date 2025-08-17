@@ -5,12 +5,15 @@ from optimizer.agents.job_analyst import job_analyst
 
 
 def test_job_analysis_task_with_real_url():
-    job_url = "https://automattic.com/work-with-us/job/experienced-software-engineer/"
+    task = create_job_analysis_task(job_analyst)
 
-    task = create_job_analysis_task(job_url)
     crew = Crew(agents=[job_analyst], tasks=[task])
 
-    result = crew.kickoff(inputs={"job_posting_url": job_url})
+    inputs = {
+        "job_posting_url": "https://automattic.com/work-with-us/job/experienced-software-engineer/"
+    }
+
+    result = crew.kickoff(inputs)
 
     job_posting = JobPosting.model_validate(result.pydantic)
 

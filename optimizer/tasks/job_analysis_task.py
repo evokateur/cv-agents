@@ -1,12 +1,11 @@
-from crewai import Task
+from crewai import Agent, Task
 from optimizer.models import JobPosting
-from optimizer.agents.job_analyst import job_analyst
 
 
-def create_job_analysis_task(job_posting_url: str) -> Task:
+def create_job_analysis_task(analyst: Agent) -> Task:
     return Task(
         description=(
-            f"Analyze the job posting URL provided ({job_posting_url}) to extract and structure "
+            "Analyze the job posting URL provided ({job_posting_url}) to extract and structure "
             "the following information:\n"
             "- Job title and company name\n"
             "- Industry sector\n"
@@ -24,5 +23,5 @@ def create_job_analysis_task(job_posting_url: str) -> Task:
             "preferred_skills, and responsibilities extracted from the job posting."
         ),
         output_pydantic=JobPosting,
-        agent=job_analyst,
+        agent=analyst,
     )

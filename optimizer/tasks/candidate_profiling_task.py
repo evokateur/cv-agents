@@ -1,9 +1,8 @@
-from crewai import Task
+from crewai import Agent, Task
 from optimizer.models import CandidateProfile
-from optimizer.agents.candidate_profiler import candidate_profiler as profiler
 
 
-def create_candidate_profiling_task(job_analysis_task: Task) -> Task:
+def create_candidate_profiling_task(profiler: Agent, job_analysis: Task) -> Task:
     return Task(
         description=(
             "Using the job requirements from the job analysis, search the knowledge base "
@@ -20,6 +19,6 @@ def create_candidate_profiling_task(job_analysis_task: Task) -> Task:
             "key projects, achievements, and contextual information tailored to the job requirements."
         ),
         output_pydantic=CandidateProfile,
-        context=[job_analysis_task],
+        context=[job_analysis],
         agent=profiler,
     )

@@ -1,9 +1,10 @@
 from config import get_config
 from crewai import Agent, LLM
+from crewai_tools import FileReadTool
+
+data_reader = FileReadTool()
 
 config = get_config()
-
-# TODO: determine if we need any tools for CV Strategist
 
 llm = LLM(
     model=config.cv_strategist_model,
@@ -12,9 +13,9 @@ llm = LLM(
 
 cv_strategist = Agent(
     role="Resume Strategist and CV Optimizer",
-    goal="Transform candidate profile and job requirements into an optimized CV "
-    "that maximizes relevance and impact for the specific role",
-    tools=[],
+    goal="Transform existing CV content using job requirements and candidate profile "
+    "to create an optimized version tailored to the specific role",
+    tools=[data_reader],
     verbose=True,
     llm=llm,
     backstory=(
