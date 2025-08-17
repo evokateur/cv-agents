@@ -2,88 +2,79 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Setup
+## Development Commands
 
+### Environment Setup
 ```bash
-# Create and activate virtual environment
-./setup.sh
-
-# Or manually:
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-
-# Copy environment variables and configure
-cp sample.env .env
-# Edit .env with your API keys
 ```
 
-## Common Commands
+### CV Generation
+- `make cv` - Generate CV PDF from YAML data using LaTeX template
+- `make cover-letter` - Generate cover letter PDF
+- `make clean` - Remove LaTeX build artifacts
 
-```bash
-# Generate CV from YAML data
-make cv
-
-# Generate cover letter
-make cover-letter
-
-# Run tests
-make test
-# Or: pytest --tb=short
-
-# Clean build artifacts
-make clean
-```
+### Testing
+- `pytest` or `make test` - Run full test suite
+- `pytest tests/unit/embedder/test_embedder.py` - Run specific test file
+- `pytest -m unit` - Run only unit tests
+- `pytest -m slow` - Run slow tests
 
 ## Architecture Overview
 
-This is a dual-purpose CV generation system:
+This is a CV optimization system with two main components:
 
-1. **Template-based CV generation**: Converts YAML/JSON data to LaTeX via Jinja templates
-2. **AI-powered CV optimization**: Uses CrewAI agents to analyze job postings and optimize CVs
+### 1. CV Generation Pipeline
+- **Data Layer**: `data/cv.yaml` contains structured CV content
+- **Template Engine**: LaTeX templates in `templates/` with custom Jinja delimiters:
+  - Statements: `(# #)` instead of `{% %}`
+  - Expressions: `(( ))` instead of `{{ }}`
+  - Comments: `%( )%` instead of `{# #}`
+- **Output**: Generates PDFs in `output/` directory
 
-### Core Components
+### 2. AI-Powered CV Optimizer
+Multi-agent CrewAI system that analyzes job postings and optimizes CVs:
 
-- **Data Layer**: `data/cv.yaml` contains CV information following the schema in `data/cv-schema.json`
-- **Template Engine**: `texenv/jinja.py` provides LaTeX-compatible Jinja environment with custom delimiters: `(# #)` for statements, `(( ))` for expressions, `%( )%` for comments
-- **CV Generation**: `make-cv.py` renders YAML data through `templates/cv.tex` template
-- **AI Optimization System**: `optimizer/` contains CrewAI-based agents for job analysis and CV optimization
+#### Agent Architecture
+- **Job Analyst** (`optimizer/agents/job_analyst.py`): Extracts requirements from job postings using web scraping tools
+- **Candidate Profiler** (`optimizer/agents/candidate_profiler.py`): Searches knowledge base to build candidate profile matching job requirements  
+- **CV Strategist** (`optimizer/agents/cv_strategist.py`): Optimizes CV content based on job analysis and candidate profile
 
-### AI Optimization Components
+#### Task Flow
+1. **Job Analysis Task**: Scrapes job posting URL → structured `JobPosting` model
+2. **Candidate Profiling Task**: Searches knowledge base → comprehensive `CandidateProfile` with skill matching, relevant experiences, achievements
+3. **CV Optimizing Task**: Uses both previous outputs → optimized `CurriculumVitae` tailored for specific role
 
-- **Agents**: Three specialized AI agents in `optimizer/agents/`:
-  - `job_analyst.py`: Extracts job requirements from postings
-  - `candidate_profiler.py`: Analyzes candidate background
-  - `cv_strategist.py`: Creates optimization strategies
-- **Tasks**: Corresponding tasks in `optimizer/tasks/` define agent workflows
-- **Models**: Pydantic models in `optimizer/models.py` for structured data (JobPosting, CandidateProfile, CurriculumVitae)
-- **Configuration**: `config.py` manages environment-based settings for different AI models
+#### Key Models (`optimizer/models.py`)
+- `JobPosting`: Structured job requirements and responsibilities
+- `CandidateProfile`: Comprehensive candidate analysis with skill matching, experience relevance, and positioning strategy
+- `CurriculumVitae`: Final optimized CV structure
 
-### Data Flow
+### Knowledge Base & Embedding System
+- **Embedder** (`embedding_tool/`): Creates vector embeddings of knowledge base content using OpenAI embeddings and Chroma vector store
+- **Knowledge Base**: `knowledge-base/` directory contains source documents for candidate profiling
+- **Vector Store**: `vector_db/` contains Chroma database for semantic search
 
-1. Job posting URL → Job Analyst → Structured job requirements
-2. Candidate data + Job requirements → Candidate Profiler → Profile analysis  
-3. Profile + Job requirements → CV Strategist → Optimization recommendations
-4. Optimized data → Template engine → LaTeX → PDF
+## Configuration
 
-## Testing
+Environment variables are configured via `.env` file (see `sample.env`):
 
-Tests use pytest with configuration in `pytest.ini`. Run specific test files:
-```bash
-pytest tests/unit/optimizer/tasks/test_job_analysis_task.py
-```
+### Required API Keys
+- `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `SERPER_API_KEY` for various agent models and tools
+- `GOOGLE_API_KEY`, `DEEPSEEK_API_KEY` for additional model options
 
-## Environment Variables
+### Agent Configuration
+- `{AGENT}_MODEL`: Model name for each agent (job_analyst, candidate_profiler, cv_strategist)
+- `{AGENT}_TEMPERATURE`: Temperature setting for each agent
 
-Configure in `.env` (copy from `sample.env`):
-- API keys for various LLM providers (Anthropic, OpenAI, DeepSeek, Google)
-- `SERPER_API_KEY` for web search functionality
-- Model configuration for each agent (model name and temperature)
+## Data Structures
 
-## Key Dependencies
+CV data follows strict schema defined in `data/cv-schema.json`. Key sections:
+- Contact information and professional summary
+- Experience with responsibilities as lists
+- Areas of expertise organized by category
+- Education and additional experience
 
-- **CrewAI**: Multi-agent AI framework
-- **Jinja2**: Template engine with LaTeX escaping
-- **Pydantic**: Data validation and serialization
-- **LangChain**: Vector database and embeddings via Chroma
-- **PyYAML**: Configuration file parsing
+The system maintains backwards compatibility between YAML source data and the optimized output models.
