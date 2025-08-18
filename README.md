@@ -21,7 +21,7 @@ Job posting URL → Job Analyst Agent → Structured job requirements
 [Profile, Job requirements, CV] → CV Strategist → Optimized CV
 ```
 
-Pydantic models define the structure of the job requirements, candidate profile, and CV outpus. The CV output will conform to the [schema](https://github.com/evokateur/cv-agents/blob/main/data/cv-schema.json) expected by the LaTex generator.
+Pydantic models define the structure of the job requirements, candidate profile, and CV output. The CV output will conform to the [schema](https://github.com/evokateur/cv-agents/blob/main/data/cv-schema.json) expected by the LaTex generator.
 
 Abridged project directory structure:
 
