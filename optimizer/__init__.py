@@ -1,1 +1,0 @@
-# CrewAI Resume Optimizer
