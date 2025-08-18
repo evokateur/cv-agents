@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `./setup.sh` - Create virtual environment, install dependencies, and set up Jupyter kernel
 - `source .venv/bin/activate` - Activate virtual environment
 - `pip install -r requirements.txt` - Install Python dependencies
+- `jupyter lab` - Start Jupyter Lab to run the cv-agents.ipynb notebook for optimization pipeline
 
 ## Architecture
 
@@ -45,6 +46,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `config.py` - Environment-based configuration for AI model settings
 - `sample.env` - Template for required environment variables
 - Models are configurable per agent (JOB_ANALYST_MODEL, CANDIDATE_PROFILER_MODEL, etc.)
+- Requires API keys for various providers (Anthropic, OpenAI, Google, DeepSeek, Serper)
 
 ### Template System
 
@@ -66,4 +68,12 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - Uses pytest with custom markers (`unit`, `integration`, `slow`)
 - Test structure mirrors source code in `tests/unit/optimizer/`
 - Configuration in `pytest.ini` with verbose output and short tracebacks
+- Filters Pydantic deprecation warnings for cleaner test output
+
+### Key Files
+
+- `texenv/jinja.py` - Custom Jinja2 environment with LaTeX escaping functions
+- `cv-agents.ipynb` - Primary notebook for coordinating the optimization pipeline
+- `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
+- `vector_db/` - ChromaDB vector store for knowledge base queries
 
