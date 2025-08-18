@@ -2,96 +2,68 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Commands
+## Commands
 
-### Environment Setup
-```bash
-# Quick setup with script
-./setup.sh
+### Building and Testing
 
-# Manual setup
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+- `make cv` - Generate CV PDF from YAML data and LaTeX template
+- `make cover-letter` - Generate cover letter PDF from JSON data and LaTeX template
+- `make clean` - Remove LaTeX build artifacts from output directory
+- `make test` or `pytest --tb=short` - Run test suite with short traceback format
+- `pytest tests/unit/` - Run only unit tests
+- `pytest -m unit` - Run tests marked as unit tests
+- `pytest -m slow` - Run slow tests only
 
-### CV Generation
-- `make cv` - Generate CV PDF from YAML data using LaTeX template
-- `make cover-letter` - Generate cover letter PDF
-- `make clean` - Remove LaTeX build artifacts
+### Development Setup
+
+- `./setup.sh` - Create virtual environment, install dependencies, and set up Jupyter kernel
+- `source .venv/bin/activate` - Activate virtual environment
+- `pip install -r requirements.txt` - Install Python dependencies
+
+## Architecture
+
+### Core Components
+
+**CV Generation Pipeline:**
+
+- `make-cv.py` - Main CV generation script that loads YAML data and renders LaTeX template
+- `make-cover-letter.py` - Cover letter generation script using JSON data
+- `data/cv.yaml` - Primary CV data source
+- `templates/cv.tex` - LaTeX template with custom Jinja2 delimiters
+- `texenv/jinja.py` - Custom Jinja2 environment with LaTeX-safe delimiters and escaping
+
+**AI-Powered CV Optimization:**
+
+- `optimizer/` - CrewAI-based system for job-specific CV optimization
+- `optimizer/agents/` - Specialized AI agents (job_analyst, candidate_profiler, cv_strategist)
+- `optimizer/tasks/` - Task definitions for each optimization step
+- `optimizer/models.py` - Pydantic models for job postings, candidate profiles, and CV structure
+- `optimizer/tools/knowledge_base_rag_tool.py` - RAG tool for knowledge base queries
+
+**Configuration:**
+
+- `config.py` - Environment-based configuration for AI model settings
+- `sample.env` - Template for required environment variables
+- Models are configurable per agent (JOB_ANALYST_MODEL, CANDIDATE_PROFILER_MODEL, etc.)
+
+### Template System
+
+Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
+
+- Statements: `(# #)` instead of `{% %}`
+- Expressions: `(( ))` instead of `{{ }}`
+- Comments: `%( )%` instead of `{# #}`
+- Line comments: `%%` instead of `##`
+
+### Data Flow
+
+1. **Simple Generation**: YAML data → Jinja2 template → LaTeX → PDF
+2. **AI Optimization**: Job posting → AI analysis → Optimized CV data → Template → PDF
+3. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB
 
 ### Testing
-- `pytest` or `make test` - Run full test suite with verbose output and short traceback
-- `pytest tests/unit/embedder/test_embedder.py` - Run specific test file
-- `pytest -m unit` - Run only unit tests
-- `pytest -m integration` - Run integration tests  
-- `pytest -m slow` - Run slow tests
 
-#### Test Configuration
-Tests are configured via `pytest.ini` with custom markers for test categorization and filtering of Pydantic deprecation warnings.
+- Uses pytest with custom markers (`unit`, `integration`, `slow`)
+- Test structure mirrors source code in `tests/unit/optimizer/`
+- Configuration in `pytest.ini` with verbose output and short tracebacks
 
-## Architecture Overview
-
-This is a CV optimization system with two main components:
-
-### 1. CV Generation Pipeline
-- **Data Layer**: `data/cv.yaml` contains structured CV content
-- **Template Engine**: LaTeX templates in `templates/` with custom Jinja delimiters:
-  - Statements: `(# #)` instead of `{% %}`
-  - Expressions: `(( ))` instead of `{{ }}`
-  - Comments: `%( )%` instead of `{# #}`
-- **Output**: Generates PDFs in `output/` directory
-
-### 2. AI-Powered CV Optimizer
-Multi-agent CrewAI system that analyzes job postings and optimizes CVs:
-
-#### Agent Architecture
-- **Job Analyst** (`optimizer/agents/job_analyst.py`): Extracts requirements from job postings using web scraping tools
-- **Candidate Profiler** (`optimizer/agents/candidate_profiler.py`): Searches knowledge base to build candidate profile matching job requirements  
-- **CV Strategist** (`optimizer/agents/cv_strategist.py`): Optimizes CV content based on job analysis and candidate profile
-
-#### Task Flow
-1. **Job Analysis Task**: Scrapes job posting URL → structured `JobPosting` model
-2. **Candidate Profiling Task**: Searches knowledge base → comprehensive `CandidateProfile` with skill matching, relevant experiences, achievements
-3. **CV Optimizing Task**: Uses both previous outputs → optimized `CurriculumVitae` tailored for specific role
-
-#### Key Models (`optimizer/models.py`)
-- `JobPosting`: Structured job requirements and responsibilities
-- `CandidateProfile`: Comprehensive candidate analysis with skill matching, experience relevance, and positioning strategy
-- `CurriculumVitae`: Final optimized CV structure
-
-### Knowledge Base & Embedding System
-- **Embedder** (`embedding_tool/`): Creates vector embeddings of knowledge base content using OpenAI embeddings and Chroma vector store
-- **Knowledge Base**: `knowledge-base/` directory contains source documents for candidate profiling
-- **Vector Store**: `vector_db/` contains Chroma database for semantic search
-
-## Configuration
-
-Environment variables are configured via `.env` file (see `sample.env`):
-
-### Required API Keys
-- `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `SERPER_API_KEY` for various agent models and tools
-- `GOOGLE_API_KEY`, `DEEPSEEK_API_KEY` for additional model options
-
-### Agent Configuration
-- `{AGENT}_MODEL`: Model name for each agent (job_analyst, candidate_profiler, cv_strategist, crew_manager)
-- `{AGENT}_TEMPERATURE`: Temperature setting for each agent (default: 0.7)
-
-Note: The `config.py` validates all required environment variables are set with helpful error messages.
-
-## Data Structures
-
-CV data follows strict schema defined in `data/cv-schema.json`. Key sections:
-- Contact information and professional summary
-- Experience with responsibilities as lists
-- Areas of expertise organized by category
-- Education and additional experience
-
-The system maintains backwards compatibility between YAML source data and the optimized output models.
-
-## Jupyter Development
-
-For interactive development and experimentation:
-- `./setup.sh` installs a custom Jupyter kernel named "CV Agents"
-- Use notebooks like `cv-agents.ipynb` for testing agent workflows
-- The kernel includes all project dependencies and proper environment setup
