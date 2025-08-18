@@ -21,7 +21,7 @@ Job posting URL → Job Analyst Agent → Structured job requirements
 
 Pydantic models are used to define the structure of the job posting, candidate profile, and CV (<-- based on `cv-schema.json`).
 
-The Candidate Profiler uses a CrewAI RagTool to query a vector DB containing chunked and embedded knowledge base data.
+The Candidate Profiler uses the CrewAI RagTool to query a vector DB containing chunked and embedded knowledge base data.
 
 (I currently keep the knowledge base in a separate repository and symlink it to `knowledge_base/`)
 
