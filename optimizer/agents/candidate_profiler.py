@@ -1,6 +1,7 @@
 from config import get_config
 from crewai import Agent, LLM
 from crewai_tools import RagTool, FileReadTool
+import os
 
 config = get_config()
 
@@ -16,14 +17,19 @@ rag_tool = RagTool(
         embedder=dict(
             provider="openai",
             config=dict(
-                model="text-embedding-3-small",
+                model="text-embedding-ada-002",
             ),
+        ),
+        chunker=dict(
+            chunk_size=1000,
+            chunk_overlap=200,
         ),
         vectordb=dict(
             provider="chroma",
             config=dict(
+                dir=os.path.abspath("vector_db"),
                 collection_name="knowledge_base",
-                persist_directory="vector_db",
+                allow_reset=True,
             ),
         ),
     )

@@ -55,6 +55,7 @@ class KnowledgeBaseEmbedder:
             existing_store = Chroma(
                 persist_directory=self.vector_db_path,
                 embedding_function=self.embeddings,
+                collection_name="knowledge_base",
             )
             existing_store.delete_collection()
 
@@ -63,6 +64,7 @@ class KnowledgeBaseEmbedder:
             documents=chunks,
             embedding=self.embeddings,
             persist_directory=self.vector_db_path,
+            collection_name="knowledge_base",
         )
 
         # Get vector count and dimensions for reporting
@@ -91,5 +93,7 @@ class KnowledgeBaseEmbedder:
             return None
 
         return Chroma(
-            persist_directory=self.vector_db_path, embedding_function=self.embeddings
+            persist_directory=self.vector_db_path,
+            embedding_function=self.embeddings,
+            collection_name="knowledge_base",
         )
