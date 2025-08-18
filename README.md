@@ -1,6 +1,6 @@
 # CV Generator/Optimizer
 
-Generates a LaTeX CV from JSON/YAML data using a Jinja template using custom delimiters that play well with LaTeX syntax.
+Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom delimiters that play well with LaTeX syntax.
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
