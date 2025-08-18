@@ -1,10 +1,8 @@
-# CV Generator
+# CV Generator/Optimizer (Work in Progress)
 
-Generates my CV using JSON/YAML data and a LaTeX Jinja template.
+## The Generator
 
-## Template Syntax
-
-Custom delimiters are used to avoid conflicts with LaTeX:
+Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom delimiters that play well with LaTeX syntax.
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
@@ -13,20 +11,71 @@ Custom delimiters are used to avoid conflicts with LaTeX:
 | Comments     | `%( )%`    | `{# #}`         |
 | Line Comment | `%%`       | `##`            |
 
-## Quick Start
+## The Optimizer
+
+Uses CrewAI Agents & Tasks to optimize base CV data for a job posting
+
+```
+Job posting URL → Job Analyst Agent → Structured job requirements
+[Candidate data, Job requirements] → Candidate Profiler Agent → Structured profile for job
+[Profile, Job requirements] → CV Strategist → Optimized CV (data)
+```
+
+Pydantic models are used to define the structure of the job posting, candidate profile, and CV (<-- based on `cv-schema.json`).
+
+The Candidate Profiler uses a CrewAI RagTool to query a vector DB containing chunked and embedded knowledge base data.
+
+(I currently keep the knowledge base in a separate repository and symlink it to `knowledge_base/`)
+
+Project directory structure (abridged)
+
+```
+.
+├── config.py
+├── data
+│   ├── cv-schema.json
+│   ├── cv.json
+│   ├── cv.yaml
+├── knowledge_base/ # <-- symlink
+├── make-cv.py
+├── optimizer
+│   ├── agents
+│   │   ├── candidate_profiler.py
+│   │   ├── cv_strategist.py
+│   │   └── job_analyst.py
+│   ├── crew.py
+│   ├── models.py
+│   ├── tasks
+│   │   ├── candidate_profiling_task.py
+│   │   ├── cv_optimization_task.py
+│   │   └── job_analysis_task.py
+│   └── tools
+│       └── knowledge_base_rag_tool.py
+├── templates
+│   ├── cover-letter.tex
+│   └── cv.tex
+└── texenv
+    └── jinja.py
+```
+
+General setup
 
 ```bash
-# Install dependencies in virtual environment
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
 
-# Generate CV
+To generate a LaTeX CV, convert it to PDF, and open it
+
+```
 make cv
+```
 
-## Structure
+The `cv-agents.ipynb` notebook coordinates the optimization pipeline for now
 
-- `data/` - CV data files (JSON/YAML)
-- `templates/` - LaTeX templates
-- `output/` - Generated PDFs
-- `examples/` - Template examples
+```
+jupyter lab
+```
+
+[Claude](/CLAUDE.md) probably explains all this better than do.
