@@ -18,10 +18,10 @@ It also uses CrewAI Agents & Tasks to optimize CV data for a job posting
 ```
 Job posting URL → Job Analyst Agent → Structured job requirements
 [Candidate data, Job requirements] → Candidate Profiler Agent → Structured profile for job
-[Profile, Job requirements] → CV Strategist → Optimized CV (data)
+[Profile, Job requirements, CV] → CV Strategist → Optimized CV
 ```
 
-Pydantic models define the structure of the job posting, candidate profile, and [CV](https://github.com/evokateur/cv-agents/blob/main/data/cv-schema.json) output.
+Pydantic models define the structure of the job requirements, candidate profile, and CV outpus. The CV output will conform to the [schema](https://github.com/evokateur/cv-agents/blob/main/data/cv-schema.json) expected by the LaTex generator.
 
 Abridged project directory structure:
 
@@ -86,7 +86,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, and open or xgd-open it
+To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, and `open` (or `xgd-open`) it
 
 ```
 make cv
