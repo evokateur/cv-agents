@@ -1,6 +1,6 @@
 # CV Generator/Optimizer
 
-Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom delimiters that play well with LaTeX syntax.
+Generates a LaTeX CV from JSON/YAML data using a Jinja template using custom delimiters that play well with LaTeX syntax.
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
@@ -11,7 +11,7 @@ Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom deli
 
 ---
 
-Uses CrewAI Agents & Tasks to optimize base CV data for a job posting
+Uses CrewAI Agents & Tasks to optimize the base CV data for a job posting
 
 ```
 Job posting URL → Job Analyst Agent → Structured job requirements
