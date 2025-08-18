@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""
-Test script for CrewAI RagTool using approach #2 with knowledge-base directory
-"""
 
 from crewai_tools import RagTool
 from config import get_config
 import os
 
+
 def test_rag_tool():
     config = get_config()
-    
+
     # Create RagTool with approach #1 - let it auto-manage
     rag_tool = RagTool(
         config=dict(
@@ -21,7 +19,7 @@ def test_rag_tool():
                 ),
             ),
             embedder=dict(
-                provider="openai", 
+                provider="openai",
                 config=dict(
                     model="text-embedding-ada-002",
                 ),
@@ -40,7 +38,7 @@ def test_rag_tool():
             ),
         )
     )
-    
+
     # Add documents from knowledge-base directory
     print("Adding documents from knowledge-base directory...")
     try:
@@ -50,6 +48,7 @@ def test_rag_tool():
         print(f"Error adding documents: {e}")
         # Alternative approach - add individual files
         import glob
+
         md_files = glob.glob("knowledge-base/**/*.md", recursive=True)
         print(f"Found {len(md_files)} markdown files")
         for file_path in md_files:
@@ -58,23 +57,23 @@ def test_rag_tool():
                 print(f"Added: {file_path}")
             except Exception as e:
                 print(f"Error adding {file_path}: {e}")
-    
+
     print("RagTool created successfully!")
     print(f"Knowledge base directory: {os.path.abspath('knowledge-base')}")
     print(f"Test vector DB directory: {os.path.abspath('test_vector_db')}")
-    
+
     # Test queries
     test_queries = [
         "What projects has Wesley worked on?",
         "Tell me about Wesley's experience with Python",
         "What is the bacworks project?",
-        "What companies has Wesley worked with?"
+        "What companies has Wesley worked with?",
     ]
-    
-    print("\n" + "="*50)
+
+    print("\n" + "=" * 50)
     print("TESTING RAG QUERIES")
-    print("="*50)
-    
+    print("=" * 50)
+
     for i, query in enumerate(test_queries, 1):
         print(f"\n[Query {i}] {query}")
         print("-" * 40)
@@ -83,8 +82,10 @@ def test_rag_tool():
             print(f"Result: {result}")
         except Exception as e:
             print(f"Error: {e}")
-    
+
     return rag_tool
+
 
 if __name__ == "__main__":
     test_rag_tool()
+
