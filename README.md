@@ -1,6 +1,4 @@
-# CV Generator/Optimizer (Work in Progress)
-
-## The Generator
+# CV Generator/Optimizer
 
 Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom delimiters that play well with LaTeX syntax.
 
@@ -10,8 +8,6 @@ Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom deli
 | Expressions  | `(( ))`    | `{{ }}`         |
 | Comments     | `%( )%`    | `{# #}`         |
 | Line Comment | `%%`       | `##`            |
-
-## The Optimizer
 
 Uses CrewAI Agents & Tasks to optimize base CV data for a job posting
 
@@ -78,4 +74,4 @@ The `cv-agents.ipynb` notebook coordinates the optimization pipeline for now
 jupyter lab
 ```
 
-[Claude](/CLAUDE.md) probably explains all this better than do.
+[Claude](/CLAUDE.md) probably explains all this better than I do.
