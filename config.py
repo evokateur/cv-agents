@@ -38,6 +38,16 @@ class Config:
     def cv_strategist_temperature(self) -> str:
         return os.getenv("CV_STRATEGIST_TEMPERATURE", "0.7")
 
+    @property
+    def crew_manager_model(self) -> str:
+        model = os.getenv("CREW_MANAGER_MODEL")
+        assert model is not None, "CREW_MANAGER_MODEL environment variable must be set"
+        return model
+
+    @property
+    def crew_manager_temperature(self) -> str:
+        return os.getenv("CREW_MANAGER_TEMPERATURE", "0.7")
+
 
 def get_config() -> Config:
     return Config()

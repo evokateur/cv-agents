@@ -2,7 +2,7 @@ from crewai import Agent, Task
 from optimizer.models import CurriculumVitae
 
 
-def create_cv_optimizing_task(
+def create_cv_optimization_task(
     strategist: Agent, job_analysis: Task, candidate_profile: Task
 ) -> Task:
     return Task(

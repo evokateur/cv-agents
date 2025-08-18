@@ -16,7 +16,7 @@ rag_tool = RagTool(
         embedder=dict(
             provider="openai",
             config=dict(
-                model="text-embedding-ada-002",
+                model="text-embedding-3-small",
             ),
         ),
         vectordb=dict(

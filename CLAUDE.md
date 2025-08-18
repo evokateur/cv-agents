@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Environment Setup
 ```bash
+# Quick setup with script
+./setup.sh
+
+# Manual setup
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -17,10 +21,14 @@ pip install -r requirements.txt
 - `make clean` - Remove LaTeX build artifacts
 
 ### Testing
-- `pytest` or `make test` - Run full test suite
+- `pytest` or `make test` - Run full test suite with verbose output and short traceback
 - `pytest tests/unit/embedder/test_embedder.py` - Run specific test file
 - `pytest -m unit` - Run only unit tests
+- `pytest -m integration` - Run integration tests  
 - `pytest -m slow` - Run slow tests
+
+#### Test Configuration
+Tests are configured via `pytest.ini` with custom markers for test categorization and filtering of Pydantic deprecation warnings.
 
 ## Architecture Overview
 
@@ -66,8 +74,10 @@ Environment variables are configured via `.env` file (see `sample.env`):
 - `GOOGLE_API_KEY`, `DEEPSEEK_API_KEY` for additional model options
 
 ### Agent Configuration
-- `{AGENT}_MODEL`: Model name for each agent (job_analyst, candidate_profiler, cv_strategist)
-- `{AGENT}_TEMPERATURE`: Temperature setting for each agent
+- `{AGENT}_MODEL`: Model name for each agent (job_analyst, candidate_profiler, cv_strategist, crew_manager)
+- `{AGENT}_TEMPERATURE`: Temperature setting for each agent (default: 0.7)
+
+Note: The `config.py` validates all required environment variables are set with helpful error messages.
 
 ## Data Structures
 
@@ -78,3 +88,10 @@ CV data follows strict schema defined in `data/cv-schema.json`. Key sections:
 - Education and additional experience
 
 The system maintains backwards compatibility between YAML source data and the optimized output models.
+
+## Jupyter Development
+
+For interactive development and experimentation:
+- `./setup.sh` installs a custom Jupyter kernel named "CV Agents"
+- Use notebooks like `cv-agents.ipynb` for testing agent workflows
+- The kernel includes all project dependencies and proper environment setup
