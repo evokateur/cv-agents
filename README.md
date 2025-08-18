@@ -23,7 +23,7 @@ Pydantic models are used to define the structure of the job posting, candidate p
 
 The Candidate Profiler uses the CrewAI RagTool to query a vector DB containing chunked and embedded knowledge base data.
 
-(I currently keep the knowledge base in a separate repository and symlink it to `knowledge_base/`)
+(I currently keep the knowledge base in a private repository and symlink it to `knowledge_base/`)
 
 Project directory structure (abridged)
 
