@@ -56,7 +56,8 @@ Abridged project directory structure:
     └── jinja.py
 ```
 
-I keep the knowledge base in a private repository and symlink it to `knowledge_base/`. 
+I keep the knowledge base in a private repository and symlink it to `knowledge_base/`.
+
 This is what it looks like (more or less):
 
 ```
