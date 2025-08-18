@@ -34,5 +34,8 @@ venv.bak/
 _docs
 
 knowledge-base
-vector_db
+
+# Vector databases
+*vector_db*
+
 crewai-rag-tool.lock
