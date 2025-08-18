@@ -1,8 +1,8 @@
 # CV Generator/Optimizer
 
-Generates a LaTeX CV from JSON/YAML data using a Jinja environment that plays well with LaTeX.
+Generates a LaTeX CV from JSON/YAML data using a Jinja2 environment that plays well with LaTeX.
 
-Custom delimiters:
+Custom delimiters, you see..
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
@@ -13,7 +13,7 @@ Custom delimiters:
 
 ---
 
-Uses CrewAI Agents & Tasks to optimize CV data for a job posting
+It also uses CrewAI Agents & Tasks to optimize CV data for a job posting
 
 ```
 Job posting URL → Job Analyst Agent → Structured job requirements
@@ -21,9 +21,7 @@ Job posting URL → Job Analyst Agent → Structured job requirements
 [Profile, Job requirements] → CV Strategist → Optimized CV (data)
 ```
 
-Pydantic models define the structure of the job posting, candidate profile, and CV (<-- generated from `cv-schema.json`).
-
-The Candidate Profiler uses a CrewAI RagTool to query a vector store of chunked and embedded knowledge base data.
+Pydantic models define the structure of the job posting, candidate profile, and [CV](https://github.com/evokateur/cv-agents/blob/main/data/cv-schema.json) output.
 
 Abridged project directory structure:
 
@@ -56,9 +54,12 @@ Abridged project directory structure:
     └── jinja.py
 ```
 
-I keep the knowledge base in a private repository and symlink it to `knowledge_base/`.
 
-This is what it looks like (more or less):
+The Candidate Profiler uses a CrewAI RagTool to query a vector store of chunked and embedded knowledge base data. 
+
+I keep the knowledge base in a private repository and symlink it to `knowledge_base/`
+
+This is what it looks like (more or less)
 
 ```
 knowledge-base
@@ -77,7 +78,7 @@ knowledge-base
 └── skills-mapping.md
 ```
 
-General setup
+General setup:
 
 ```bash
 python -m venv .venv
@@ -85,7 +86,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-To generate a LaTeX CV, convert it to PDF, and open or xgd-open it
+To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, and open or xgd-open it
 
 ```
 make cv
