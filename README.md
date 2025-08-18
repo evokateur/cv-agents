@@ -9,6 +9,8 @@ Generates a LaTeX CV from JSON/YAML data using a Jinja template with custom deli
 | Comments     | `%( )%`    | `{# #}`         |
 | Line Comment | `%%`       | `##`            |
 
+---
+
 Uses CrewAI Agents & Tasks to optimize base CV data for a job posting
 
 ```
