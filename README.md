@@ -76,4 +76,4 @@ The `cv-agents.ipynb` notebook coordinates the optimization pipeline for now
 jupyter lab
 ```
 
-[Claude](/CLAUDE.md) probably explains all this better than I do.
+Claude's [`/init`](/CLAUDE.md) probably explains all this better than I do.
