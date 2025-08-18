@@ -1,6 +1,8 @@
 # CV Generator/Optimizer
 
-Generates a LaTeX CV from JSON/YAML data using Jinja with custom delimiters that play well with LaTeX syntax.
+Generates a LaTeX CV from JSON/YAML data using a Jinja environment that plays well with LaTeX.
+
+Custom delimiters:
 
 |              | customized | standard jinja2 |
 | ------------ | ---------- | --------------- |
@@ -11,7 +13,7 @@ Generates a LaTeX CV from JSON/YAML data using Jinja with custom delimiters that
 
 ---
 
-Uses CrewAI Agents & Tasks to optimize the base CV data for a job posting
+Uses CrewAI Agents & Tasks to optimize CV data for a job posting
 
 ```
 Job posting URL → Job Analyst Agent → Structured job requirements
@@ -19,13 +21,11 @@ Job posting URL → Job Analyst Agent → Structured job requirements
 [Profile, Job requirements] → CV Strategist → Optimized CV (data)
 ```
 
-Pydantic models are used to define the structure of the job posting, candidate profile, and CV (<-- based on `cv-schema.json`).
+Pydantic models define the structure of the job posting, candidate profile, and CV (<-- generated from `cv-schema.json`).
 
-The Candidate Profiler uses the CrewAI RagTool to query a vector DB containing chunked and embedded knowledge base data.
+The Candidate Profiler uses a CrewAI RagTool to query a vector store of chunked and embedded knowledge base data.
 
-(I currently keep the knowledge base in a private repository and symlink it to `knowledge_base/`)
-
-Project directory structure (abridged)
+Abridged project directory structure:
 
 ```
 .
@@ -56,6 +56,26 @@ Project directory structure (abridged)
     └── jinja.py
 ```
 
+I keep the knowledge base in a private repository and symlink it to `knowledge_base/`. 
+This is what it looks like (more or less):
+
+```
+knowledge-base
+├── companies
+│   └── frobozz-co.md
+│   └── acme.md
+├── developers
+│   └── wesley-hinkle.md
+└── projects
+|   ├── magic-api-gateway.md
+|   ├── zork-legacy-cms.md
+|   ├── torch-saas.md
+|   ├── grue-detector.md
+|   ├── zorkmid-sdk.md
+|   ├── anvil.md
+└── skills-mapping.md
+```
+
 General setup
 
 ```bash
@@ -64,13 +84,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-To generate a LaTeX CV, convert it to PDF, and open it
+To generate a LaTeX CV, convert it to PDF, and open or xgd-open it
 
 ```
 make cv
 ```
 
-The `cv-agents.ipynb` notebook coordinates the optimization pipeline for now
+The `cv-agents.ipynb` notebook coordinates the optimization pipeline, for now
 
 ```
 jupyter lab
