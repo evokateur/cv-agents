@@ -86,7 +86,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, and `open` (or `xgd-open`) it
+To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, then `open` (or `xgd-open`) it:
 
 ```
 make cv
