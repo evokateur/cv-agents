@@ -23,5 +23,6 @@ def create_job_analysis_task(analyst: Agent) -> Task:
             "preferred_skills, and responsibilities extracted from the job posting."
         ),
         output_pydantic=JobPosting,
+        output_file="{output_directory}/job_analysis.json",
         agent=analyst,
     )

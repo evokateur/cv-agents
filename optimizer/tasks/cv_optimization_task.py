@@ -22,6 +22,7 @@ def create_cv_optimization_task(
             "and human review."
         ),
         output_pydantic=CurriculumVitae,
+        output_file="{output_directory}/cv_optimization.json",
         context=[
             job_analysis,
             candidate_profile,

@@ -19,6 +19,7 @@ def create_candidate_profiling_task(profiler: Agent, job_analysis: Task) -> Task
             "key projects, achievements, and contextual information tailored to the job requirements."
         ),
         output_pydantic=CandidateProfile,
+        output_file="{output_directory}/candidate_profile.json",
         context=[job_analysis],
         agent=profiler,
     )
