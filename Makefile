@@ -6,12 +6,12 @@ OPEN = xdg-open
 endif
 
 cv:
-	python make-cv.py
+	python make-cv.py data/cv.yaml output/cv.tex
 	pdflatex --output-directory=output output/cv.tex
 	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cv.pdf; fi
 
 cover-letter:
-	python make-cover-letter.py
+	python make-cover-letter.py data/cover-letter.json output/cover-letter.tex
 	pdflatex --output-directory=output output/cover-letter.tex
 	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cover-letter.pdf; fi
 
