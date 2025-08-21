@@ -55,7 +55,7 @@ Abridged project directory structure:
 ```
 
 
-The Candidate Profiler queries a vector store of chunked and embedded knowledge base data. 
+The Candidate Profiler queries a vector store of chunked and embedded knowledge base docs. 
 
 I keep the knowledge base in a private repository and symlink it to `knowledge_base/`
 
