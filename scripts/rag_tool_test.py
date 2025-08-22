@@ -41,22 +41,8 @@ def test_rag_tool():
 
     # Add documents from knowledge-base directory
     print("Adding documents from knowledge-base directory...")
-    try:
-        rag_tool.add(os.path.abspath("knowledge-base"), data_type="directory")
-        print("Documents added successfully!")
-    except Exception as e:
-        print(f"Error adding documents: {e}")
-        # Alternative approach - add individual files
-        import glob
-
-        md_files = glob.glob("knowledge-base/**/*.md", recursive=True)
-        print(f"Found {len(md_files)} markdown files")
-        for file_path in md_files:
-            try:
-                rag_tool.add(file_path, data_type="text_file")
-                print(f"Added: {file_path}")
-            except Exception as e:
-                print(f"Error adding {file_path}: {e}")
+    rag_tool.add(os.path.abspath("knowledge-base"), data_type="directory")
+    print("Documents added successfully!")
 
     print("RagTool created successfully!")
     print(f"Knowledge base directory: {os.path.abspath('knowledge-base')}")
