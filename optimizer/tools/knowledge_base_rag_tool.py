@@ -5,6 +5,7 @@ from config import get_config
 
 def create_knowledge_base_rag_tool() -> RagTool:
     config = get_config()
+    vector_db_path = os.path.abspath("vector_db")
 
     rag_tool = RagTool(
         config=dict(
@@ -28,7 +29,7 @@ def create_knowledge_base_rag_tool() -> RagTool:
             vectordb=dict(
                 provider="chroma",
                 config=dict(
-                    dir=os.path.abspath("vector_db"),
+                    dir=vector_db_path,
                     collection_name="knowledge_base",
                     allow_reset=True,
                 ),
@@ -36,14 +37,15 @@ def create_knowledge_base_rag_tool() -> RagTool:
         )
     )
 
-    knowledge_base_path = os.path.abspath("knowledge-base")
+    if not os.path.exists(vector_db_path):
+        knowledge_base_path = os.path.abspath("knowledge-base")
 
-    if not os.path.exists(knowledge_base_path):
-        raise FileNotFoundError(
-            f"Knowledge base directory not found: {knowledge_base_path}"
-        )
+        if not os.path.exists(knowledge_base_path):
+            raise FileNotFoundError(
+                f"Knowledge base directory not found: {knowledge_base_path}"
+            )
 
-    rag_tool.add(knowledge_base_path, data_type="directory")
+        rag_tool.add(knowledge_base_path, data_type="directory")
 
     return rag_tool
 
