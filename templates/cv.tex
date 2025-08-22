@@ -44,7 +44,8 @@
     \usepackage{lmodern}
 \fi
 
-\usepackage[default, type1]{sourcesanspro}
+% uncomment to change font to Source Sans Pro:
+% \usepackage[default, type1]{sourcesanspro}
 
 % Some settings:
 \AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
@@ -213,57 +214,58 @@
         \end{highlightsforbulletentries}
     \end{onecolentry}
 
-    \section{Education}
+    \section{Areas of Expertise}
 
 
-
-
-        (# for path in education #)
-            \begin{twocolentry}{
-                (( path.location ))
-
-                (( path.start_date )) – (( path.end_date ))
-            }
-                (( path.institution )), (( path.degree ))
-                \begin{highlights}
-                    \item (( 'Coursework: ' ~ path.coursework ))
-                \end{highlights}
-            \end{twocolentry}
+        \begin{onecolentry}
+        (# for area in areas_of_expertise #)
+                (( area.name )): (( area.skills|join(' \\textbar\\ ') ))
         (# endfor #)
-
-
+        \end{onecolentry}
+        \vspace{0.2 cm}
 
     \section{Experience}
 
         (# for job in experience #)
-            \begin{twocolentry}{
-                (( job.location ))
 
-                (( job.start_date )) – (( job.end_date ))
-            }
-                \textbf{(( job.company ))}, (( job.title ))
+            \begin{onecolentry}
+                \textbf{(( job.title ))} \hfill (( job.start_date )) -- (( job.end_date ))
+
+                \textbf{(( job.company ))}, \textbar\ (( job.location ))
+
                 \begin{highlights}
                     (# for responsibility in job.responsibilities #)
                         \item (( responsibility ))
                     (# endfor #)
                 \end{highlights}
-            \end{twocolentry}
-        \vspace{0.2 cm}
+
+            \end{onecolentry}
+
         (# if not loop.last #)
             \vspace{0.2 cm}
         (# endif #)
+
         (# endfor #)
 
-    \section{Technologies}
+        \vspace{0.2 cm}
 
+    \section{Education}
 
-        (# for area in areas_of_expertise #)
-        \begin{onecolentry}
-                (( area.name )): (( area.skills|join(', ') ))
-        \end{onecolentry}
-            (# if not loop.last #)
-                \vspace{0.2 cm}
-            (# endif #)
+        (# for path in education #)
+
+            \begin{onecolentry}
+                \textbf{(( path.degree ))} \\
+                (( path.institution )) \textbar\ (( path.location )) 
+                \begin{highlights}
+                    \item (( path.coursework ))
+                \end{highlights}
+            \end{onecolentry}
+        
+        (# if not loop.last #)
+            \vspace{0.2 cm}
+        (# endif #)
+
         (# endfor #)
+
 
 \end{document}
