@@ -6,6 +6,13 @@
 *.out
 *.synctex.gz
 
+# all output
+/output/*
+
+# except the cv output
+!/output/cv.tex
+!/output/cv.pdf
+
 # Swap files
 *.swp
 
