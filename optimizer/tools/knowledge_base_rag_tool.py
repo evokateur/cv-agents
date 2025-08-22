@@ -36,18 +36,16 @@ def create_knowledge_base_rag_tool() -> RagTool:
         )
     )
 
-    # Ensure knowledge base documents are loaded
     knowledge_base_path = os.path.abspath("knowledge-base")
-    if os.path.exists(knowledge_base_path):
-        try:
-            rag_tool.add(knowledge_base_path, data_type="directory")
-        except Exception as e:
-            # Handle case where documents are already loaded
-            if "existing embedding ID" not in str(e):
-                raise e
+
+    if not os.path.exists(knowledge_base_path):
+        raise FileNotFoundError(
+            f"Knowledge base directory not found: {knowledge_base_path}"
+        )
+
+    rag_tool.add(knowledge_base_path, data_type="directory")
 
     return rag_tool
 
 
-# Export singleton instance
 knowledge_base_rag_tool = create_knowledge_base_rag_tool()
