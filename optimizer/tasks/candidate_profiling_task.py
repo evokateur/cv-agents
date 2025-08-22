@@ -12,7 +12,10 @@ def create_candidate_profiling_task(profiler: Agent, job_analysis: Task) -> Task
             "- Leadership and collaboration examples that fit the role level\n"
             "- Domain expertise that aligns with the industry and responsibilities\n"
             "- Quantifiable results and outcomes from past work\n"
-            "Use semantic search to find related experiences even if not exact keyword matches."
+            "Use semantic search to find related experiences even if not exact keyword matches.\n\n"
+            "IMPORTANT: When using the Knowledge base tool, use this exact format:\n"
+            '{"query": "PHP JavaScript experience"}\n'
+            'NOT {"description": "..."} or other formats. The parameter name must be "query".'
         ),
         expected_output=(
             "A structured CandidateProfile containing relevant experiences, matching skills, "

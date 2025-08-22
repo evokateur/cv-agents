@@ -30,7 +30,7 @@ def create_knowledge_base_rag_tool() -> RagTool:
                 config=dict(
                     dir=os.path.abspath("vector_db"),
                     collection_name="knowledge_base",
-                    allow_reset=False,  # Don't reset production DB
+                    allow_reset=True,  # Recreate vector DB each time for fresh data
                 ),
             ),
         )
