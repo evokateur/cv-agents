@@ -2,25 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## CrewAI Recommended Architecture
-
-Here are some links to CrewAI documentation to help us understand the target architecture.
-
-- **YAML Configuration for Agents and Tasks:**
-  - Agents: <https://docs.crewai.com/concepts/agents#yaml-configuration-recommended>
-  - Tasks: <https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended>
-
-- **Agent Tools:**
-  - <https://docs.crewai.com/concepts/agents#agent-tools>
-
-- **Structured task output, task dependencies, and task callbacks:**
-  - <https://docs.crewai.com/concepts/tasks#overview-of-a-task>
-
-- **Adding Knowledge Sources:**
-  - <https://docs.crewai.com/concepts/knowledge#what-is-knowledge>
-
-- `@before_kickoff` and `@after_kickoff` decorators:
-  - <https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators>
 
 ## Commands
 
@@ -42,6 +23,28 @@ Here are some links to CrewAI documentation to help us understand the target arc
 - `jupyter lab` - Start Jupyter Lab to run the cv-agents.ipynb notebook for optimization pipeline
 
 ## Architecture
+
+### CrewAI 
+
+We are using the CrewAI recommended project structure with hybrid .yaml/.py Agents and Tasks
+
+Here are some links to CrewAI documentation to help us understand the target architecture.
+
+- **YAML Configuration for Agents and Tasks:**
+  - Agents: <https://docs.crewai.com/concepts/agents#yaml-configuration-recommended>
+  - Tasks: <https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended>
+
+- **Agent Tools:**
+  - <https://docs.crewai.com/concepts/agents#agent-tools>
+
+- **Structured task output, task dependencies, and task callbacks:**
+  - <https://docs.crewai.com/concepts/tasks#overview-of-a-task>
+
+- **Adding Knowledge Sources:**
+  - <https://docs.crewai.com/concepts/knowledge#what-is-knowledge>
+
+- `@before_kickoff` and `@after_kickoff` decorators:
+  - <https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators>
 
 ### Core Components
 
