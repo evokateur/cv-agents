@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## CrewAI Recommended Architecture
+
+Here are some links to CrewAI documentation to help us understand the target architecture.
+
+- **YAML Configuration for Agents and Tasks:**
+  - Agents: <https://docs.crewai.com/concepts/agents#yaml-configuration-recommended>
+  - Tasks: <https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended>
+
+- **Agent Tools:**
+  - <https://docs.crewai.com/concepts/agents#agent-tools>
+
+- **Structured task output, task dependencies, and task callbacks:**
+  - <https://docs.crewai.com/concepts/tasks#overview-of-a-task>
+
+- **Adding Knowledge Sources:**
+  - <https://docs.crewai.com/concepts/knowledge#what-is-knowledge>
+
+- `@before_kickoff` and `@after_kickoff` decorators:
+  - <https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators>
+
 ## Commands
 
 ### Building and Testing
@@ -76,4 +96,3 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - `cv-agents.ipynb` - Primary notebook for coordinating the optimization pipeline
 - `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
 - `vector_db/` - ChromaDB vector store for knowledge base queries
-
