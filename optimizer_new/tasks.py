@@ -3,7 +3,7 @@ from optimizer_new.models import JobPosting, CandidateProfile, CurriculumVitae
 import yaml
 
 
-class TaskFactory:
+class CustomTasks:
     def __init__(self):
         with open("optimizer_new/config/tasks.yaml", "r") as f:
             self.tasks_config = yaml.safe_load(f)

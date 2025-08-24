@@ -15,7 +15,6 @@ job_analysis_task:
     A structured JobPosting object containing title, company, industry,
     description, experience_level, requirements, required_skills,
     preferred_skills, and responsibilities extracted from the job posting.
-  output_pydantic: JobPosting
   output_file: "{output_directory}/job_analysis.json"
   agent: job_analyst
 
@@ -30,13 +29,9 @@ candidate_profiling_task:
     - Quantifiable results and outcomes from past work
     Use semantic search to find related experiences even if not exact keyword matches.
 
-    IMPORTANT: When using the Knowledge base tool, use this exact format:
-    {"query": "PHP JavaScript experience"}
-    NOT {"description": "..."} or other formats. The parameter name must be "query".
   expected_output: >
     A structured CandidateProfile containing relevant experiences, matching skills,
     key projects, achievements, and contextual information tailored to the job requirements.
-  output_pydantic: CandidateProfile
   output_file: "{output_directory}/candidate_profile.json"
   context: [job_analysis_task]
   agent: candidate_profiler
@@ -55,7 +50,6 @@ cv_optimization_task:
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS
     and human review.
-  output_pydantic: CurriculumVitae
   output_file: "{output_directory}/cv_optimization.json"
   context: [job_analysis_task, candidate_profiling_task]
   agent: cv_strategist
