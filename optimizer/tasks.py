@@ -1,11 +1,11 @@
 from crewai import Task
-from optimizer_new.models import JobPosting, CandidateProfile, CurriculumVitae
+from optimizer.models import JobPosting, CandidateProfile, CurriculumVitae
 import yaml
 
 
 class CustomTasks:
     def __init__(self):
-        with open("optimizer_new/config/tasks.yaml", "r") as f:
+        with open("optimizer/config/tasks.yaml", "r") as f:
             self.tasks_config = yaml.safe_load(f)
 
     def job_analysis_task(self, agent) -> Task:

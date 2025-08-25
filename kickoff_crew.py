@@ -2,7 +2,7 @@ import argparse
 import json
 import jsonschema
 import yaml
-from optimizer_new.crew import CvOptimizer
+from optimizer.crew import CvOptimizer
 
 
 def main(argv=None):

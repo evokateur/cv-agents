@@ -8,7 +8,7 @@ import os
 class CustomAgents:
     def __init__(self):
         # Load configs
-        with open("optimizer_new/config/agents.yaml", "r") as f:
+        with open("optimizer/config/agents.yaml", "r") as f:
             self.agents_config = yaml.safe_load(f)
 
         # Initialize LLMs
