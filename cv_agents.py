@@ -14,7 +14,7 @@ def test_main_with_config():
             "output_directory": output_directory,
         }
     }
-    argv = ["--crew_name", "TestCrew", "--config", json.dumps(config)]
+    argv = ["--config", json.dumps(config)]
     kickoff_crew.main(argv)
 
 

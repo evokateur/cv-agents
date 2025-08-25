@@ -43,11 +43,9 @@ def main(argv=None):
         "required": ["inputs"],
     }
 
-    inputs = config.get("inputs")
-
     jsonschema.validate(instance=config, schema=schema)
 
-    CvOptimizer().crew().kickoff(inputs=inputs)
+    CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":
