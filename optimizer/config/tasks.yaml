@@ -1,0 +1,55 @@
+job_analysis_task:
+  description: >
+    Analyze the job posting URL provided ({job_posting_url}) to extract and structure
+    the following information:
+    - Job title and company name
+    - Industry sector
+    - Complete job description
+    - Experience level required (entry, mid, senior, etc.)
+    - General requirements (education, certifications, years of experience)
+    - Required skills (must-have technical and soft skills)
+    - Preferred skills (nice-to-have skills that give candidates an advantage)
+    - Key responsibilities and day-to-day activities
+    Use the scraping and search tools to gather comprehensive information.
+  expected_output: >
+    A structured JobPosting object containing title, company, industry,
+    description, experience_level, requirements, required_skills,
+    preferred_skills, and responsibilities extracted from the job posting.
+  output_file: "{output_directory}/job_analysis.json"
+  agent: job_analyst
+
+candidate_profiling_task:
+  description: >
+    Using the job requirements from the job analysis, search the knowledge base
+    to build a comprehensive candidate profile. Focus on:
+    - Projects and experiences that match required and preferred skills
+    - Relevant technical achievements and business impact
+    - Leadership and collaboration examples that fit the role level
+    - Domain expertise that aligns with the industry and responsibilities
+    - Quantifiable results and outcomes from past work
+    Use semantic search to find related experiences even if not exact keyword matches.
+
+  expected_output: >
+    A structured CandidateProfile containing relevant experiences, matching skills,
+    key projects, achievements, and contextual information tailored to the job requirements.
+  output_file: "{output_directory}/candidate_profile.json"
+  context: [job_analysis_task]
+  agent: candidate_profiler
+
+cv_optimization_task:
+  description: >
+    Read the candidate's current cv data from {cv_data_path} and optimize it
+    using the job requirements data and candidate profile. Create the optimized CV by:
+    - Prioritizing experiences that best match job requirements
+    - Rewriting descriptions to emphasize relevant skills and achievements
+    - Optimizing keyword density for ATS compatibility
+    - Structuring sections to highlight strengths for this specific role
+    - Quantifying achievements and impact where possible
+    - Ensuring language matches the job posting's tone and terminology
+  expected_output: >
+    A CurriculumVitae object with restructured and rewritten content sections
+    tailored specifically to the job requirements, optimized for both ATS
+    and human review.
+  output_file: "{output_directory}/cv_optimization.json"
+  context: [job_analysis_task, candidate_profiling_task]
+  agent: cv_strategist

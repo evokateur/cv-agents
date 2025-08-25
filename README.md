@@ -28,25 +28,23 @@ Abridged project directory structure:
 ```
 .
 ├── config.py
+├── cv-agents.ipynb
 ├── data
 │   ├── cv-schema.json
 │   ├── cv.json
-│   ├── cv.yaml
+│   └── cv.yaml
 ├── knowledge_base/ # <-- symlink
+├── kickoff_crew.py
 ├── make-cv.py
 ├── optimizer
-│   ├── agents
-│   │   ├── candidate_profiler.py
-│   │   ├── cv_strategist.py
-│   │   └── job_analyst.py
+│   ├── agents.py
+│   ├── config
+│   │   ├── agents.yaml
+│   │   └── tasks.yaml
 │   ├── crew.py
+│   ├── main.py
 │   ├── models.py
-│   ├── tasks
-│   │   ├── candidate_profiling_task.py
-│   │   ├── cv_optimization_task.py
-│   │   └── job_analysis_task.py
-│   └── tools
-│       └── knowledge_base_rag_tool.py
+│   └── tasks.py
 ├── templates
 │   ├── cover-letter.tex
 │   └── cv.tex
@@ -54,8 +52,7 @@ Abridged project directory structure:
     └── jinja.py
 ```
 
-
-The Candidate Profiler queries a vector store of chunked and embedded knowledge base docs. 
+The Candidate Profiler queries a vector store of chunked and embedded knowledge base docs.
 
 I keep the knowledge base in a private repository and symlink it to `knowledge_base/`
 
@@ -92,7 +89,7 @@ To generate a LaTeX CV from `data/cv.yaml`, convert it to PDF, then `open` (or `
 make cv
 ```
 
-The `cv-agents.ipynb` notebook coordinates the optimization pipeline, for now
+The `cv-agents.ipynb` notebook documents the CrewAI source files, and can be used to kickoff the crew.
 
 ```
 jupyter lab
