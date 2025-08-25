@@ -1,8 +1,9 @@
 from crewai import Agent, LLM
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool, RagTool
 from config import get_config
+from optimizer.vector_builder import VectorDbBuilder
+from optimizer.utils.vector_utils import is_valid_chroma_vector_db
 import yaml
-import os
 
 
 class CustomAgents:
@@ -12,67 +13,53 @@ class CustomAgents:
             self.agents_config = yaml.safe_load(f)
 
         # Initialize LLMs
-        config = get_config()
+        self.config = get_config()
         self.llms = {
             "job_analyst": LLM(
-                model=config.job_analyst_model,
-                temperature=float(config.job_analyst_temperature),
+                model=self.config.job_analyst_model,
+                temperature=float(self.config.job_analyst_temperature),
             ),
             "candidate_profiler": LLM(
-                model=config.candidate_profiler_model,
-                temperature=float(config.candidate_profiler_temperature),
+                model=self.config.candidate_profiler_model,
+                temperature=float(self.config.candidate_profiler_temperature),
             ),
             "cv_strategist": LLM(
-                model=config.cv_strategist_model,
-                temperature=float(config.cv_strategist_temperature),
+                model=self.config.cv_strategist_model,
+                temperature=float(self.config.cv_strategist_temperature),
             ),
         }
 
-    def knowledge_base_rag_tool(self) -> RagTool:
-        config = get_config()
-        vector_db_path = os.path.abspath("vector_db")
-
-        rag_tool = RagTool(
-            config=dict(
-                llm=dict(
-                    provider="openai",
-                    config=dict(
-                        model=config.candidate_profiler_model,
-                        temperature=float(config.candidate_profiler_temperature),
-                    ),
-                ),
-                embedder=dict(
-                    provider="openai",
-                    config=dict(
-                        model="text-embedding-ada-002",
-                    ),
-                ),
-                chunker=dict(
-                    chunk_size=1000,
-                    chunk_overlap=200,
-                ),
-                vectordb=dict(
-                    provider="chroma",
-                    config=dict(
-                        dir=vector_db_path,
-                        collection_name="knowledge_base",
-                        allow_reset=True,
-                    ),
-                ),
-            )
+    def get_rag_tool(self) -> RagTool:
+        builder = VectorDbBuilder(
+            knowledge_base_abspath=self.config.knowledge_base_abspath,
+            vector_db_abspath=self.config.vector_db_abspath,
+            force_rebuild=False,
         )
 
-        if not os.path.exists(vector_db_path):
-            knowledge_base_path = os.path.abspath("knowledge-base")
+        builder.build_if_needed()
 
-            if not os.path.exists(knowledge_base_path):
-                raise FileNotFoundError(
-                    f"Knowledge base directory not found: {knowledge_base_path}"
+        if not is_valid_chroma_vector_db(self.config.vector_db_abspath):
+            raise ValueError(
+                "Invalid Chroma vector DB path: {}".format(
+                    self.config.vector_db_abspath
                 )
+            )
 
-            rag_tool.add(knowledge_base_path, data_type="directory")
-
-        return rag_tool
+        return RagTool(
+            name="CandidateKnowledgeBase",
+            config={
+                "llm": {
+                    "provider": "openai",
+                    "config": {
+                        "model": self.config.candidate_profiler_model,
+                    },
+                },
+                "vectordb": {
+                    "provider": "chroma",
+                    "config": {"dir": self.config.vector_db_abspath},
+                },
+            },
+        )
 
     def job_analyst(self) -> Agent:
         return Agent(
@@ -84,7 +71,7 @@ class CustomAgents:
     def candidate_profiler(self) -> Agent:
         return Agent(
             config=self.agents_config["candidate_profiler"],
-            tools=[self.knowledge_base_rag_tool(), FileReadTool()],
+            tools=[self.get_rag_tool(), FileReadTool()],
             llm=self.llms["candidate_profiler"],
         )
 
