@@ -32,7 +32,19 @@ class CustomTasks:
         - Quantifiable results and measurable outcomes from past work
 
         Use semantic search to find related experiences, even if the match is not exact. 
-        Summarize and integrate these findings into a structured CandidateProfile object 
+
+        To use the CandidateKnowledgeBase tool:
+        - Always call it with exactly one argument: {"query": "<natural language text>"}
+        - Do not pass structured data, JSON objects, or dictionaries as the query.
+        - Convert the relevant job requirements into a single natural language query string first.
+
+        Example of correct usage:
+        {"query": "Find projects and experiences related to backend engineering with Python and AWS in the fintech industry."}
+
+        Example of incorrect usage (do NOT do this):
+        {"query": {"description": "Python, AWS, backend"}}  
+
+        Summarize and integrate retrieved findings into a structured CandidateProfile object
         tailored to the provided job requirements.
         """
 
