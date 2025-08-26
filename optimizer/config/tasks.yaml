@@ -20,15 +20,7 @@ job_analysis_task:
 
 candidate_profiling_task:
   description: >
-    Using the job requirements from the job analysis, search the knowledge base
-    to build a comprehensive candidate profile. Focus on:
-    - Projects and experiences that match required and preferred skills
-    - Relevant technical achievements and business impact
-    - Leadership and collaboration examples that fit the role level
-    - Domain expertise that aligns with the industry and responsibilities
-    - Quantifiable results and outcomes from past work
-    Use semantic search to find related experiences even if not exact keyword matches.
-
+    [[ dynamically generated in tasks.py to include structured input schema ]]
   expected_output: >
     A structured CandidateProfile containing relevant experiences, matching skills,
     key projects, achievements, and contextual information tailored to the job requirements.
@@ -38,14 +30,7 @@ candidate_profiling_task:
 
 cv_optimization_task:
   description: >
-    Read the candidate's current cv data from {cv_data_path} and optimize it
-    using the job requirements data and candidate profile. Create the optimized CV by:
-    - Prioritizing experiences that best match job requirements
-    - Rewriting descriptions to emphasize relevant skills and achievements
-    - Optimizing keyword density for ATS compatibility
-    - Structuring sections to highlight strengths for this specific role
-    - Quantifying achievements and impact where possible
-    - Ensuring language matches the job posting's tone and terminology
+    [[ dynamically generated in tasks.py to include structured input schema ]]
   expected_output: >
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS
