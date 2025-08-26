@@ -66,12 +66,13 @@ Here are some links to CrewAI documentation to help us understand the target arc
 
 - `optimizer/` - CrewAI-based system for job-specific CV optimization following recommended project structure
 - `optimizer/crew.py` - Main crew class with @CrewBase decorator using hybrid YAML/Python configuration
-- `optimizer/agents.py` - Agent implementations that load YAML configurations from `config/agents.yaml`
-- `optimizer/tasks.py` - Task implementations that load YAML configurations from `config/tasks.yaml`
+- `optimizer/agents.py` - Agent implementations with RAG tool integration, loads YAML configurations from `config/agents.yaml`
+- `optimizer/tasks.py` - Task implementations with schema injection and RAG prompting, loads YAML configurations from `config/tasks.yaml`
 - `optimizer/config/agents.yaml` - YAML agent configurations (job_analyst, candidate_profiler, cv_strategist)
-- `optimizer/config/tasks.yaml` - YAML task configurations with dependencies
+- `optimizer/config/tasks.yaml` - YAML task configurations with dependencies and RAG tool instructions
 - `optimizer/models.py` - Pydantic models for job postings, candidate profiles, and CV structure
 - `optimizer/tools/` - Directory for custom CrewAI tool implementations
+- `optimizer/utils/` - Vector database utilities, prompt utilities, and RAG tool management
 - `kickoff_crew.py` - Command-line interface for running the crew with JSON/YAML config
 - `cv_agents.py` - Simple test script for running the crew with hardcoded inputs
 
@@ -95,7 +96,8 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 
 1. **Simple Generation**: YAML data → Jinja2 template → LaTeX → PDF
 2. **AI Optimization**: Job posting → AI analysis → Optimized CV data → Template → PDF
-3. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB
+3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV optimization → Template → PDF
+4. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB with automatic embedding and retrieval
 
 ### Testing
 
@@ -109,7 +111,9 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - `texenv/jinja.py` - Custom Jinja2 environment with LaTeX escaping functions
 - `optimizer/crew.py` - Main CrewAI crew implementation with @agent, @task, and @crew decorators
 - `optimizer/config/` - YAML configuration files for agents and tasks following CrewAI best practices
+- `optimizer/utils/vector_utils.py` - ChromaDB validation and vector database management utilities
+- `optimizer/utils/prompt_utils.py` - Pydantic model schema injection for dynamic task descriptions
 - `kickoff_crew.py` - CLI entry point for running the optimization crew
 - `cv-agents.ipynb` - Jupyter notebook for experimentation and development
 - `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
-- `vector_db/` - ChromaDB vector store for knowledge base queries
+- `vector_db/` - ChromaDB vector store with automatic embedding and retrieval capabilities

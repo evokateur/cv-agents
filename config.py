@@ -48,6 +48,16 @@ class Config:
     def crew_manager_temperature(self) -> str:
         return os.getenv("CREW_MANAGER_TEMPERATURE", "0.7")
 
+    @property
+    def knowledge_base_abspath(self) -> str:
+        path = os.getenv("KNOWLEDGE_BASE_PATH", "knowledge-base")
+        return os.path.abspath(path)
+
+    @property
+    def vector_db_abspath(self) -> str:
+        path = os.getenv("VECTOR_DB_PATH", "vector_db")
+        return os.path.abspath(path)
+
 
 def get_config() -> Config:
     return Config()
