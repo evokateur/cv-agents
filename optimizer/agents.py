@@ -1,5 +1,11 @@
 from crewai import Agent, LLM
-from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool, RagTool
+from crewai_tools import (
+    SerperDevTool,
+    ScrapeWebsiteTool,
+    FileReadTool,
+    RagTool,
+    DirectorySearchTool,
+)
 from config import get_config
 from optimizer.vector_builder import VectorDbBuilder
 from optimizer.utils.vector_utils import is_valid_chroma_vector_db
@@ -64,6 +70,12 @@ class CustomAgents:
             },
         )
 
+    def get_directory_search_tool(self) -> DirectorySearchTool:
+        return DirectorySearchTool(
+            directory_path=self.config.knowledge_base_abspath,
+            recursive=True,
+        )
+
     def job_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["job_analyst"],
@@ -74,7 +86,11 @@ class CustomAgents:
     def candidate_profiler(self) -> Agent:
         return Agent(
             config=self.agents_config["candidate_profiler"],
-            tools=[self.get_rag_tool(), FileReadTool()],
+            tools=[
+                self.get_rag_tool(),
+                self.get_directory_search_tool(),
+                FileReadTool(),
+            ],
             llm=self.llms["candidate_profiler"],
         )
 
