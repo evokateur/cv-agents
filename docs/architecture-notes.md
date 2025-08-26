@@ -1,15 +1,38 @@
 # Architecture Notes
 
-## TODO: Multi-KB Support
+## Candidate Profiler Tool Architecture Summary
 
-Investigate later:
-- Assigning collection IDs per knowledge base
-- Switching vector stores per context (e.g. dev history vs companies vs soft skills)
-- Runtime switching using tool wrapper or dynamic RagTool instantiation
+### RagTool
 
-## TODO: Unwind call stack from chat with CrewAI Assistant
+Give the agent a `RagTool` that
 
-[private link](https://chatgpt.com/g/g-qqTuUWsBY-crewai-assistant/c/68ac0413-54b8-8332-b35a-b29b8e15cb0f)
+- uses existing ChromaDB vector store if available
+- builds the vector store from kb docs if missing or invalid
+- separates concerns of embedding and querying
+- uses configurable LLM for semantic retrieval
 
-[public link](https://chatgpt.com/share/68ac1a20-5348-8012-9a0a-6b638c9a353e)
+#### Components
 
+##### `utils/vector_utils.py`
+
+- validates ChromDB vector store
+- can clobber a vector store
+- can print vector DB info
+
+##### `VectorDbBuilder`
+
+- handles vector DB creation
+- skips creation if valid DB exists
+- supports forced rebuilds
+
+##### `get_rag_tool` function in `agents.py`
+
+- uses the components above to manage and validate the vector store
+
+### DirectoryReadTool
+
+Give the agent access to the knowledge base directory to
+
+- retrieve full documents when a semantic chunk is interesting but incomplete
+- understand project or skill context beyond summarized chroma-embeddings
+- bridge RAG output with original source materials
