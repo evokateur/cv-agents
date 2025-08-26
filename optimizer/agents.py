@@ -56,7 +56,10 @@ class CustomAgents:
                 },
                 "vectordb": {
                     "provider": "chroma",
-                    "config": {"dir": self.config.vector_db_abspath},
+                    "config": {
+                        "dir": self.config.vector_db_abspath,
+                        "collection_name": "knowledge_base",
+                    },
                 },
             },
         )
