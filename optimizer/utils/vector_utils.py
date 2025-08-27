@@ -1,3 +1,5 @@
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
 import os
 import shutil
 
@@ -29,6 +31,14 @@ def delete_vector_db(path: str) -> None:
         shutil.rmtree(path)
     else:
         print(f"⚠️ Vector DB path does not exist: {path}")
+
+
+def get_chroma_vector_db(vector_db_abspath: str, collection_name: str) -> Chroma:
+    return Chroma(
+        persist_directory=vector_db_abspath,
+        embedding_function=OpenAIEmbeddings(),
+        collection_name=collection_name,
+    )
 
 
 def print_vector_db_info(path: str) -> None:
