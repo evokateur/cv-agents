@@ -1,6 +1,7 @@
 import os
 from crewai_tools import RagTool
-from optimizer.utils.vector_utils import is_valid_chroma_vector_db
+from optimizer.utils.vector_utils import is_valid_chroma_vector_db, get_chroma_vector_db
+from langchain.vectorstores import Chroma
 
 
 class VectorDbBuilder:
@@ -55,6 +56,12 @@ class VectorDbBuilder:
             )
 
         rag_tool.add(self.knowledge_base_path, data_type="directory")
+
+    def get_vector_db(self) -> Chroma:
+        return get_chroma_vector_db(
+            vector_db_abspath=self.vector_db_path,
+            collection_name="knowledge_base",
+        )
 
     def get_vector_db_abspath(self) -> str:
         return self.vector_db_path

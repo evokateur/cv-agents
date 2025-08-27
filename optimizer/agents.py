@@ -9,7 +9,6 @@ from crewai_tools import (
 from config import get_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
 from optimizer.vector_builder import VectorDbBuilder
-from optimizer.utils.vector_utils import is_valid_chroma_vector_db, get_chroma_vector_db
 import yaml
 
 
@@ -36,29 +35,22 @@ class CustomAgents:
             ),
         }
 
-    def build_vector_db_if_needed(self) -> None:
-        builder = VectorDbBuilder(
+        self.builder = VectorDbBuilder(
             knowledge_base_abspath=self.config.knowledge_base_abspath,
             vector_db_abspath=self.config.vector_db_abspath,
             force_rebuild=False,
         )
 
-        builder.build_if_needed()
-
-        if not is_valid_chroma_vector_db(self.config.vector_db_abspath):
-            raise ValueError(
-                "Invalid Chroma vector DB path: {}".format(
-                    self.config.vector_db_abspath
-                )
-            )
-
     def get_semantic_search_tool(self) -> SemanticSearchTool:
-        vectordb = get_chroma_vector_db(self.config.vector_db_abspath, "knowledge_base")
+        self.builder.build_if_needed()
+        vectordb = self.builder.get_vector_db()
 
-        return SemanticSearchTool(retriever=vectordb.as_retriever())
+        return SemanticSearchTool(
+            retriever=vectordb.as_retriever(), name="CandidateKnowledgeBase"
+        )
 
     def get_rag_tool(self) -> RagTool:
-        self.build_vector_db_if_needed()
+        self.builder.build_if_needed()
 
         return RagTool(
             name="CandidateKnowledgeBase",

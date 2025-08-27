@@ -10,7 +10,7 @@ class SemanticSearchInput(BaseModel):
 
 
 class SemanticSearchTool(BaseTool):
-    name: str = "CandidateKnowledgeBase"
+    name: str = "SemanticSearchTool"
     description: str = (
         "Performs semantic search and returns top-k relevant documents with sources."
     )
