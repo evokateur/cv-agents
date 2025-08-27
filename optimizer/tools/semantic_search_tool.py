@@ -1,12 +1,12 @@
-from langchain_core.tools import BaseTool
+from crewai.tools import BaseTool
 from langchain_core.retrievers import BaseRetriever
-from pydantic import BaseModel
-from typing import Optional, Any, Type
+from pydantic import BaseModel, Field
+from typing import Optional, Type
 
 
 class SemanticSearchInput(BaseModel):
-    query: str
-    top_k: Optional[int] = 5
+    query: str = Field(..., description="The search query to find relevant documents")
+    top_k: Optional[int] = Field(5, description="Number of top results to return")
 
 
 class SemanticSearchTool(BaseTool):
@@ -18,16 +18,18 @@ class SemanticSearchTool(BaseTool):
     retriever: BaseRetriever
     top_k: int = 5
 
-    def __init__(self, retriever: BaseRetriever, top_k: int = 5):
-        super().__init__(retriever=retriever, top_k=top_k)
+    def __init__(self, retriever: BaseRetriever, top_k: int = 5, **kwargs):
+        super().__init__(retriever=retriever, top_k=top_k, **kwargs)
 
-    def _run(self, query: str, run_manager: Optional[Any] = None) -> str:
+    def _run(self, query: str, top_k: Optional[int] = None, **kwargs) -> str:
+        k = top_k if top_k is not None else self.top_k
+
         try:
             docs = self.retriever.get_relevant_documents(query)
         except AttributeError:
             return "Error: Retriever does not implement `get_relevant_documents()`."
 
-        top_docs = docs[: self.top_k]
+        top_docs = docs[:k]
 
         if not top_docs:
             return "No relevant documents found."
@@ -39,6 +41,3 @@ class SemanticSearchTool(BaseTool):
             results.append(f"[{i}] Source: {source}\n{content}")
 
         return "\n\n".join(results)
-
-    async def _arun(self, query: str, run_manager: Optional[Any] = None) -> str:
-        raise NotImplementedError("Async not supported for this tool.")
