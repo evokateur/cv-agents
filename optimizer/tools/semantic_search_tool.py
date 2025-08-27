@@ -1,18 +1,20 @@
-from crewai_tools import tool
+from langchain_core.tools import BaseTool
 from langchain_core.retrievers import BaseRetriever
+from typing import Optional, List, Any
 
 
-class SemanticSearchTool:
+class SemanticSearchTool(BaseTool):
+    name = "semantic_search_tool"
+    description = (
+        "Performs semantic search and returns top-k relevant documents with sources."
+    )
+
     def __init__(self, retriever: BaseRetriever, top_k: int = 3):
+        super().__init__()
         self.retriever = retriever
         self.top_k = top_k
 
-    @tool("semantic_search_tool")
-    def search(self, query: str) -> str:
-        """
-        Perform semantic search against a vector database.
-        Returns relevant content chunks with their source file paths.
-        """
+    def _run(self, query: str, run_manager: Optional[Any] = None) -> str:
         try:
             docs = self.retriever.get_relevant_documents(query)
         except AttributeError:
@@ -30,3 +32,6 @@ class SemanticSearchTool:
             results.append(f"[{i}] Source: {source}\n{content}")
 
         return "\n\n".join(results)
+
+    async def _arun(self, query: str, run_manager: Optional[Any] = None) -> str:
+        raise NotImplementedError("Async not supported for this tool.")
