@@ -167,3 +167,40 @@
 - Tests verify actual semantic search functionality and source path presence in results
 
 **Result:** Semantic search tool now correctly returns document chunks with full source file paths, enabling agents to read complete documents when needed. All tests pass and functionality is ready for production use.
+
+## VectorDbBuilder to KnowledgeBaseEmbedder Refactoring (August 2025)
+
+**Summary:** Successfully renamed VectorDbBuilder class to KnowledgeBaseEmbedder to better reflect its purpose of embedding the knowledge base directory in ChromaDB, along with comprehensive updates to variable names and file organization.
+
+**Key Changes:**
+
+- Renamed `VectorDbBuilder` class to `KnowledgeBaseEmbedder` for clearer semantic meaning
+- Updated all variable references from `builder` to `embedder` throughout the codebase
+- Renamed `optimizer/vector_builder.py` to `optimizer/knowledge_embedder.py`
+- Resolved ChromaDB singleton conflict issues in testing environment
+- Enhanced force rebuild functionality with proper vector database cleanup
+
+**Architecture Implementation:**
+
+- **Class Renaming**: `KnowledgeBaseEmbedder` better describes the class purpose of embedding knowledge base content
+- **Variable Consistency**: Updated all variable names (`self.builder` → `self.embedder`) for clarity
+- **File Organization**: Renamed primary class file to match the new class name
+- **Test Stability**: Fixed ChromaDB singleton conflicts by adjusting force rebuild behavior
+- **Enhanced Cleanup**: Added vector database deletion logic for proper force rebuilds
+
+**Files Updated:**
+
+- `optimizer/knowledge_embedder.py` - Renamed from `vector_builder.py` with enhanced force rebuild handling
+- `optimizer/agents.py` - Updated import and variable names, changed `force_rebuild=True` to `force_rebuild=False`
+- `scripts/build_vectordb.py` - Updated import and variable naming for consistency
+- `tests/test_semantic_search_tool.py` - Test file that revealed ChromaDB singleton issues
+
+**Technical Details:**
+
+- Enhanced `build_if_needed()` method with proper vector DB deletion before force rebuilds
+- Fixed ChromaDB singleton conflict: "An instance of Chroma already exists with different settings"
+- Root cause: `force_rebuild=True` caused test conflicts by attempting to rebuild existing databases
+- Solution: Set `force_rebuild=False` for normal operations, preserving existing vector database
+- Force rebuild enhancement includes proper cleanup but ChromaDB client lifecycle limitations remain
+
+**Result:** Successfully completed class and file renaming with improved semantic clarity. All tests pass and ChromaDB singleton conflicts resolved. Force rebuild functionality enhanced with proper cleanup, though ChromaDB client lifecycle constraints limit same-process rebuilds.
