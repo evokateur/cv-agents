@@ -1,14 +1,15 @@
 anthropic
 beautifulsoup4
 crewai
-crewai_tools
+crewai-tools
 dotenv
 ipykernel
 jinja2
 jupyterlab
 langchain
-langchain_chroma
+langchain-chroma
 langchain_community
+langchain-core
 langchain-openai
 pydantic
 pytest
