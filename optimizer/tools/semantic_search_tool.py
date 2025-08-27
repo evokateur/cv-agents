@@ -1,18 +1,25 @@
 from langchain_core.tools import BaseTool
 from langchain_core.retrievers import BaseRetriever
-from typing import Optional, List, Any
+from pydantic import BaseModel
+from typing import Optional, Any, Type
+
+
+class SemanticSearchInput(BaseModel):
+    query: str
+    top_k: Optional[int] = 5
 
 
 class SemanticSearchTool(BaseTool):
-    name = "semantic_search_tool"
-    description = (
+    name: str = "CandidateKnowledgeBase"
+    description: str = (
         "Performs semantic search and returns top-k relevant documents with sources."
     )
+    args_schema: Type[BaseModel] = SemanticSearchInput
+    retriever: BaseRetriever
+    top_k: int = 5
 
-    def __init__(self, retriever: BaseRetriever, top_k: int = 3):
-        super().__init__()
-        self.retriever = retriever
-        self.top_k = top_k
+    def __init__(self, retriever: BaseRetriever, top_k: int = 5):
+        super().__init__(retriever=retriever, top_k=top_k)
 
     def _run(self, query: str, run_manager: Optional[Any] = None) -> str:
         try:
@@ -27,7 +34,7 @@ class SemanticSearchTool(BaseTool):
 
         results = []
         for i, doc in enumerate(top_docs, 1):
-            source = doc.metadata.get("source", "Unknown")
+            source = doc.metadata.get("url", doc.metadata.get("source", "Unknown"))
             content = doc.page_content.strip()
             results.append(f"[{i}] Source: {source}\n{content}")
 
