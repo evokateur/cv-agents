@@ -8,7 +8,7 @@ from crewai_tools import (
 )
 from config import get_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
-from optimizer.vector_builder import VectorDbBuilder
+from optimizer.knowledge_embedder import KnowledgeBaseEmbedder
 import yaml
 
 
@@ -35,22 +35,22 @@ class CustomAgents:
             ),
         }
 
-        self.builder = VectorDbBuilder(
+        self.embedder = KnowledgeBaseEmbedder(
             knowledge_base_abspath=self.config.knowledge_base_abspath,
             vector_db_abspath=self.config.vector_db_abspath,
             force_rebuild=False,
         )
 
     def get_semantic_search_tool(self) -> SemanticSearchTool:
-        self.builder.build_if_needed()
-        vectordb = self.builder.get_vector_db()
+        self.embedder.build_if_needed()
+        vectordb = self.embedder.get_vector_db()
 
         return SemanticSearchTool(
             retriever=vectordb.as_retriever(), name="CandidateKnowledgeBase"
         )
 
     def get_rag_tool(self) -> RagTool:
-        self.builder.build_if_needed()
+        self.embedder.build_if_needed()
 
         return RagTool(
             name="CandidateKnowledgeBase",

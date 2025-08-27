@@ -4,7 +4,7 @@ from optimizer.utils.vector_utils import is_valid_chroma_vector_db, get_chroma_v
 from langchain.vectorstores import Chroma
 
 
-class VectorDbBuilder:
+class KnowledgeBaseEmbedder:
     def __init__(
         self,
         knowledge_base_abspath: str,
@@ -23,6 +23,10 @@ class VectorDbBuilder:
 
     def build_if_needed(self) -> None:
         if self.force_rebuild or not is_valid_chroma_vector_db(self.vector_db_path):
+            if self.force_rebuild and is_valid_chroma_vector_db(self.vector_db_path):
+                # Delete existing DB to avoid ChromaDB conflicts
+                from optimizer.utils.vector_utils import delete_vector_db
+                delete_vector_db(self.vector_db_path)
             print("🛠️ Building or rebuilding vector DB from knowledge base...")
             self._build_vector_db()
         else:
