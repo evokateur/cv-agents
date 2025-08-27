@@ -68,9 +68,24 @@ in task descriptions.
 YAML is still used for the tasks, with a temporary description indicating
 what's to come.
 
-New thing:
+### New thing
 
 #### `utils/prompt_utils.py`
 
 - a function to inject a Pydantic schema into text
 - a function to fill all placeholders in a block of text
+
+### Addendum
+
+You can keep the description as a template in the YAML, get it from the
+object created from the YAML, inject the schema, then override the description
+with the result as before.
+
+Looks a lot nicer.
+
+## Giving the Profiler Access to KB Docs
+
+After finally asking the right questions, I found out that the CrewAI RAG tool
+will not give the agent the source of the chunks it returns. And so, a tool
+was created that does. The agent now has the full path of the source document
+and can just use the FileReadTool, if it can be coaxed to do so, somehow.

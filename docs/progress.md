@@ -133,3 +133,37 @@
 - Eliminated agent confusion about structured data vs. natural language query formats
 
 **Result:** RAG tool fully operational with agents successfully retrieving and utilizing knowledge base information for context-aware CV optimization decisions.
+
+## Semantic Search Tool Implementation (August 2025)
+
+**Summary:** Replaced RagTool with custom SemanticSearchTool to provide better integration with existing ChromaDB vector database and improved source file path extraction.
+
+**Key Issues Resolved:**
+
+- **Pydantic Validation Error**: Fixed "arg_schema Field required" error by properly configuring BaseTool inheritance and schema definition
+- **Source Path Extraction**: Resolved metadata key mismatch where ChromaDB stored file paths under 'url' key but tool searched for 'source' key
+- **Task Prompt Updates**: Enhanced candidate profiling task instructions to leverage semantic search results and FileReadTool integration
+- **Testing Infrastructure**: Created focused functionality tests for vector database and semantic search operations
+
+**Architecture Implementation:**
+
+- **Custom Tool Development**: Created SemanticSearchTool with proper Pydantic schema configuration and LangChain BaseTool inheritance
+- **Metadata Handling**: Implemented robust source path extraction supporting both 'url' and 'source' metadata keys
+- **Agent Integration**: Maintained "CandidateKnowledgeBase" tool name for seamless agent prompt compatibility
+- **Test Coverage**: Added simple functionality tests that verify actual behavior rather than object construction
+
+**Files Updated:**
+
+- `optimizer/tools/semantic_search_tool.py` - Custom semantic search tool implementation with fixed Pydantic validation
+- `optimizer/config/tasks.yaml` - Updated candidate profiling task prompt with improved semantic search workflow guidance
+- `tests/test_semantic_search_tool.py` - New functionality test verifying source path extraction
+- `tests/test_vector_db.py` - New vector database functionality test
+
+**Technical Details:**
+
+- SemanticSearchTool properly configured with `args_schema: Type[BaseModel] = SemanticSearchInput`
+- Source metadata extraction: `doc.metadata.get("url", doc.metadata.get("source", "Unknown"))`
+- Task prompts updated to explain FileReadTool usage with returned source paths
+- Tests verify actual semantic search functionality and source path presence in results
+
+**Result:** Semantic search tool now correctly returns document chunks with full source file paths, enabling agents to read complete documents when needed. All tests pass and functionality is ready for production use.

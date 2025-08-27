@@ -43,6 +43,7 @@ candidate_profiling_task:
     - Always call it with exactly one argument: {"query": "<natural language text>"}
     - Do not pass structured data, JSON objects, or dictionaries as the query.
     - Convert the relevant job requirements into a single natural language query string first.
+    - The tool returns relevant text chunks along with their source file paths.
 
     Example of correct usage:
     {"query": "Find projects and experiences related to backend engineering with Python and AWS in the fintech industry."}
@@ -50,8 +51,9 @@ candidate_profiling_task:
     Example of incorrect usage (do NOT do this):
     {"query": {"description": "Python, AWS, backend"}}  
 
-    You can access the full document of any chunk returned via semantic search using the DirectorySearchTool 
-    and FileReadTool.
+    When the CandidateKnowledgeBase tool returns results, each result includes a "Source:" line 
+    with the full file path. You can read the complete document using the FileReadTool with 
+    that exact path to get additional context and details.
 
     Summarize and integrate retrieved findings into a structured CandidateProfile object
     tailored to the provided job requirements.
