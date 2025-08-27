@@ -74,10 +74,14 @@ cv_optimization_task:
     2. A structured candidate profile object with the following fields:
     [[CandidateProfile]]
 
-    3. A file path to the structured data of the candidate's existing CV:
-    {cv_data_path}
+    3. A file path to the candidate's current CV:
+    {candidate_cv_path}
 
-    Your task is to optimize the candidate’s CV for the target job by:
+    Use your file reading tool to read and analyze the candidate's current CV from this path. 
+    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and 
+    restructured into the output format.
+
+    Your task is to optimize the candidate's CV for the target job by:
     - Prioritizing experiences that best match the required and preferred skills
     - Rewriting descriptions to emphasize relevant achievements and responsibilities
     - Optimizing keyword usage for applicant tracking system (ATS) compatibility

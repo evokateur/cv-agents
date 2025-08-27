@@ -77,6 +77,9 @@ class CustomAgents:
             recursive=True,
         )
 
+    def get_cv_reader_tool(self) -> FileReadTool:
+        return FileReadTool()
+
     def job_analyst(self) -> Agent:
         return Agent(
             config=self.agents_config["job_analyst"],
@@ -98,6 +101,6 @@ class CustomAgents:
     def cv_strategist(self) -> Agent:
         return Agent(
             config=self.agents_config["cv_strategist"],
-            tools=[FileReadTool()],
+            tools=[self.get_cv_reader_tool()],
             llm=self.llms["cv_strategist"],
         )

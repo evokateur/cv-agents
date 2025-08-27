@@ -34,10 +34,10 @@ def main(argv=None):
                 "type": "object",
                 "properties": {
                     "job_posting_url": {"type": "string"},
-                    "cv_data_path": {"type": "string"},
+                    "candidate_cv_path": {"type": "string"},
                     "output_directory": {"type": "string"},
                 },
-                "required": ["job_posting_url", "cv_data_path", "output_directory"],
+                "required": ["job_posting_url", "candidate_cv_path", "output_directory"],
             }
         },
         "required": ["inputs"],
