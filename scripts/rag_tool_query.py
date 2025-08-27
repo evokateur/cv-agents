@@ -6,7 +6,6 @@ Usage: python -m scripts.rag_tool_query 'query string'
 
 import argparse
 import sys
-import json
 from optimizer.agents import CustomAgents
 
 
@@ -15,17 +14,10 @@ def main():
         description="Query the vector database using the CrewAI RAG tool"
     )
     parser.add_argument("query", help="The query string to search for")
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        action="store_true",
-        help="Show verbose output including metadata",
-    )
 
     args = parser.parse_args()
 
     try:
-        # Initialize the agents to get the RAG tool
         agents = CustomAgents()
         rag_tool = agents.get_rag_tool()
 
@@ -35,28 +27,8 @@ def main():
         # Run the query
         result = rag_tool._run(args.query)
 
-        if args.verbose:
-            print("\n--- Retrieved Chunks and Metadata ---\n")
-            for i, doc in enumerate(result):
-                source = doc.metadata.get("source", "UNKNOWN SOURCE")
-                preview = doc.page_content[:120].replace("\n", " ")
-                print(f"[{i + 1}] Source: {source}")
-                print(f"     Preview: {preview}")
-                print()
-            print("Result:")
-            print(result)
-        else:
-            print("Result:")
-            print(result)
-
-        # Try to access any metadata if available
-        if hasattr(rag_tool, "metadata") or hasattr(result, "metadata"):
-            print("\n" + "=" * 60)
-            print("METADATA:")
-            if hasattr(rag_tool, "metadata"):
-                print("Tool metadata:", rag_tool.metadata)
-            if hasattr(result, "metadata"):
-                print("Result metadata:", result.metadata)
+        print("Result:")
+        print(result)
 
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
@@ -65,4 +37,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
