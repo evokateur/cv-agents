@@ -45,4 +45,7 @@ knowledge-base
 # Vector databases
 *vector_db*
 
+# mystery database
+db
+
 crewai-rag-tool.lock
