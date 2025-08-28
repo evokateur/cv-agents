@@ -5,6 +5,9 @@ else ifeq ($(shell uname), Linux)
 OPEN = xdg-open
 endif
 
+agents:
+	python cv_agents.
+
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
 	pdflatex --output-directory=output output/cv.tex
