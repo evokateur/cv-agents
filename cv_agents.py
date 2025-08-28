@@ -1,5 +1,5 @@
 import json
-import kickoff_crew
+import optimizer.kickoff as kickoff
 
 job_posting_url = "https://app.welcometothejungle.com/dashboard/jobs/oA1SArxV"
 candidate_cv_path = "data/cv.yaml"
@@ -15,7 +15,7 @@ def test_main_with_config():
         }
     }
     argv = ["--config", json.dumps(config)]
-    kickoff_crew.main(argv)
+    kickoff.main(argv)
 
 
 if __name__ == "__main__":

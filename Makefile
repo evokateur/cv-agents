@@ -6,7 +6,7 @@ OPEN = xdg-open
 endif
 
 agents:
-	python cv_agents.
+	python cv_agents.py
 
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
