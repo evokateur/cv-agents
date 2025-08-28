@@ -49,28 +49,6 @@ class CustomAgents:
             retriever=vectordb.as_retriever(), name="CandidateKnowledgeBase"
         )
 
-    def get_rag_tool(self) -> RagTool:
-        self.embedder.build_if_needed()
-
-        return RagTool(
-            name="CandidateKnowledgeBase",
-            config={
-                "llm": {
-                    "provider": "openai",
-                    "config": {
-                        "model": self.config.candidate_profiler_model,
-                    },
-                },
-                "vectordb": {
-                    "provider": "chroma",
-                    "config": {
-                        "dir": self.config.vector_db_abspath,
-                        "collection_name": "knowledge_base",
-                    },
-                },
-            },
-        )
-
     def get_directory_search_tool(self) -> DirectorySearchTool:
         return DirectorySearchTool(
             directory_path=self.config.knowledge_base_abspath,
