@@ -45,9 +45,7 @@ class CustomAgents:
         self.embedder.build_if_needed()
         vectordb = self.embedder.get_vector_db()
 
-        return SemanticSearchTool(
-            retriever=vectordb.as_retriever(), name="CandidateKnowledgeBase"
-        )
+        return SemanticSearchTool(retriever=vectordb.as_retriever())
 
     def get_directory_search_tool(self) -> DirectorySearchTool:
         return DirectorySearchTool(
@@ -55,7 +53,7 @@ class CustomAgents:
             recursive=True,
         )
 
-    def get_cv_reader_tool(self) -> FileReadTool:
+    def get_file_read_tool(self) -> FileReadTool:
         return FileReadTool()
 
     def job_analyst(self) -> Agent:
@@ -79,6 +77,6 @@ class CustomAgents:
     def cv_strategist(self) -> Agent:
         return Agent(
             config=self.agents_config["cv_strategist"],
-            tools=[self.get_cv_reader_tool()],
+            tools=[self.get_file_read_tool()],
             llm=self.llms["cv_strategist"],
         )

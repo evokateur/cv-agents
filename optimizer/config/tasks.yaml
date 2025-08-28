@@ -24,10 +24,15 @@ candidate_profiling_task:
 
     [[JobPosting]]
 
-    Your task is to build a comprehensive profile of the job candidate by searching 
-    a knowledge base of candidate's work experience and personal qualifications using 
-    the CandidateKnowledgeBase tool and synthesizing relevant information. 
+    Your task is to build a comprehensive profile of the job candidate using the following approach:
 
+    1. **Primary Data Source - CV Analysis:**
+       Read the candidate's current CV at { candidate_cv_path } to extract basic information 
+       like name, contact details, work history, and skills overview.
+
+    2. **Knowledge Base Enhancement:**
+       Use the CandidateKnowledgeBase tool to search for additional context and details 
+       about the candidate's work experience and qualifications.
 
     When constructing the profile of the candidate, focus on:
 
@@ -39,7 +44,7 @@ candidate_profiling_task:
 
     Use semantic search to find related experiences, even if the match is not exact. 
 
-    To use the CandidateKnowledgeBase tool:
+    To use the SemanticSearchTool:
     - Always call it with exactly one argument: {"query": "<natural language text>"}
     - Do not pass structured data, JSON objects, or dictionaries as the query.
     - Convert the relevant job requirements into a single natural language query string first.
@@ -51,7 +56,7 @@ candidate_profiling_task:
     Example of incorrect usage (do NOT do this):
     {"query": {"description": "Python, AWS, backend"}}  
 
-    When the CandidateKnowledgeBase tool returns results, each result includes a "Source:" line 
+    When the SemanticSearchTool returns results, each result includes a "Source:" line 
     with the full file path. You can read the complete document using the FileReadTool with 
     that exact path to get additional context and details.
 
