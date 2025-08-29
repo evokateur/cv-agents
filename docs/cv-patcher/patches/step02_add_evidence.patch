@@ -1,0 +1,16 @@
+--- a/optimizer/models.py+++ b/optimizer/models.py@@ -1,5 +1,5 @@ from pydantic import BaseModel
+-from typing import List, Optional
++from typing import Dict, List, Literal, Optional
+ 
+ 
+ class JobPosting(BaseModel):
+@@ -94,3 +94,10 @@     additional_experience: List[AdditionalExperience]
+     areas_of_expertise: List[AreaOfExpertise]
+     languages: List[Language]
++
++
++class Evidence(BaseModel):
++    id: str
++    snippet: str
++    source_url: Optional[str] = None
++    confidence: float = 0.8

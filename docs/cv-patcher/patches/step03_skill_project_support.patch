@@ -1,0 +1,16 @@
+--- a/optimizer/models.py+++ b/optimizer/models.py@@ -101,3 +101,16 @@     snippet: str
+     source_url: Optional[str] = None
+     confidence: float = 0.8
++
++
++class SkillSupport(BaseModel):
++    level: Literal["expert","advanced","intermediate","familiar"]
++    evidence: List[Evidence] = []
++
++
++class ProjectSupport(BaseModel):
++    name: str
++    role: Optional[str] = None
++    stack: List[str] = []
++    bullets: List[str] = []
++    evidence: List[Evidence] = []

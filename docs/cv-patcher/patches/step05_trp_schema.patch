@@ -1,0 +1,24 @@
+--- a/optimizer/models.py+++ b/optimizer/models.py@@ -121,3 +121,24 @@     stack: List[str] = []
+     bullets: List[str] = []
+     evidence: List[Evidence] = []
++
++
++class BulletPatch(BaseModel):
++    old_idx: Optional[int] = None
++    anchor_idx: Optional[int] = None
++    new_bullet: str
++    evidence: List[Evidence] = []
++
++
++class ExperiencePatch(BaseModel):
++    target_role: str
++    replace_bullets: List[BulletPatch] = []
++    insert_bullets_after: List[BulletPatch] = []
++
++
++class TargetedResumePatch(BaseModel):
++    summary_rewrite: Optional[str] = None
++    experience_patches: List[ExperiencePatch] = []
++    skills_reorder: Optional[List[str]] = None
++    remove_sections: List[str] = []
++    ats_checks: Dict[str, bool] = {}

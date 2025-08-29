@@ -1,0 +1,13 @@
+--- a/optimizer/models.py+++ b/optimizer/models.py@@ -37,6 +37,13 @@     value_propositions: List[str]
+     positioning_strategy: str
+ 
++
++    # --- structured maps (added) ---
++    matching_required_skills_map: Dict[str, SkillSupport] = {}
++    matching_preferred_skills_map: Dict[str, SkillSupport] = {}
++    transferable_skills_map: Dict[str, SkillSupport] = {}
++    projects: List[ProjectSupport] = []
++    risk_flags: List[str] = []
+ 
+ class Contact(BaseModel):
+     city: str
