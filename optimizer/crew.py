@@ -54,3 +54,22 @@ class CvOptimizer:
             process=Process.sequential,
             verbose=True,
         )
+
+
+class JobAnalysisTest:
+    """Job Analysis Test crew - runs only job analysis task"""
+
+    def __init__(self):
+        self.custom_agents = CustomAgents()
+        self.custom_tasks = CustomTasks()
+
+    def crew(self) -> Crew:
+        job_analyst = self.custom_agents.job_analyst()
+        job_analysis_task = self.custom_tasks.job_analysis_task(job_analyst)
+        
+        return Crew(
+            agents=[job_analyst],
+            tasks=[job_analysis_task],
+            process=Process.sequential,
+            verbose=True,
+        )

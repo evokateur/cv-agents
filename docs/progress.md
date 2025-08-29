@@ -204,3 +204,40 @@
 - Force rebuild enhancement includes proper cleanup but ChromaDB client lifecycle limitations remain
 
 **Result:** Successfully completed class and file renaming with improved semantic clarity. All tests pass and ChromaDB singleton conflicts resolved. Force rebuild functionality enhanced with proper cleanup, though ChromaDB client lifecycle constraints limit same-process rebuilds.
+
+## Kickoff Script Refactoring and JobAnalysisTest Crew Implementation (August 2025)
+
+**Summary:** Successfully refactored `optimizer/kickoff.py` to use dictionary-based crew dispatching and implemented JobAnalysisTest crew with manual CrewAI construction to avoid framework auto-loading conflicts.
+
+**Key Changes:**
+
+- Refactored kickoff script from hardcoded crew to flexible dictionary-based dispatcher
+- Added JobAnalysisTest crew with manual construction to bypass @CrewBase decorator limitations
+- Moved cv_agents.py to scripts/ directory and updated Makefile targets
+- Resolved CrewAI framework conflicts by avoiding auto-loading decorators for partial crews
+
+**Architecture Implementation:**
+
+- **Dictionary Dispatching**: Implemented `CREW_FUNCTIONS` dictionary mapping crew names to kickoff functions
+- **Manual Crew Construction**: Created JobAnalysisTest class without @CrewBase decorator to avoid YAML auto-loading
+- **Schema Validation**: Added JSON schema validation for crew input parameters using jsonschema library
+- **Module Execution**: Used `python -m scripts.module_name` pattern to resolve import path issues
+- **Makefile Integration**: Updated targets to use module execution pattern for consistent script running
+
+**Files Updated:**
+
+- `optimizer/kickoff.py` - Implemented dictionary-based crew dispatcher with `dispatch_crew()` function and individual kickoff functions
+- `optimizer/crew.py` - Added JobAnalysisTest class with manual Crew construction (no decorators)
+- `scripts/job_analysis_test.py` - Refactored to call kickoff script with JobAnalysisTest crew name
+- `scripts/cv_agents_test.py` - Moved from root directory cv_agents.py for better organization
+- `Makefile` - Updated agents and job-analysis-test targets to use `python -m` execution
+
+**Technical Details:**
+
+- Dictionary dispatcher: `CREW_FUNCTIONS = {"CvOptimizer": kickoff_cv_optimizer, "JobAnalysisTest": kickoff_job_analysis_test}`
+- Manual crew construction avoids @CrewBase auto-loading that requires all YAML agents/tasks to be defined
+- JSON schemas validate required inputs (job_posting_url, candidate_cv_path for CvOptimizer; job_posting_url, output_directory for JobAnalysisTest)
+- Module execution pattern (`python -m scripts.job_analysis_test`) resolves optimizer package imports
+- JobAnalysisTest crew runs single job_analyst agent with job_analysis_task for faster testing
+
+**Result:** Successfully created flexible crew dispatching system that supports both full CvOptimizer crew and streamlined JobAnalysisTest crew. All Makefile targets work correctly and CrewAI framework limitations resolved through manual crew construction approach.
