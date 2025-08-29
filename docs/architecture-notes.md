@@ -114,14 +114,14 @@ Stated incoherently:
 >
 > 1. Based on \[...\] stuff that I will put into a knowledge base (a work in
 > progress, more knowledge, more ways to get \[to\] it to come) how should a change
-> \[be made\] the base resume to align it with the requirements of a particular job
+> \[be made to\] the base resume to align it with the requirements of a particular job
 > 2. \[Later\] how should the base resume evolve when more information becomes
 > available in usable ways from my knowledge base
 >
 > The job posting is like a vector that shapes the direction of the resume.
 > It's just one job posting for now. It's a start. I could also use more than
 > one, an arbitrary set, of job requirements to push the direction of the resume
-> into a more coalesced direction...
+> into a more coalesced \[something\]...
 >
 > So anyway, the two things I'm working on right now are 1 job posting + a
 > growing knowledge base. I will get back to pushing the original resume in
@@ -131,7 +131,7 @@ The new, proposed workflow:
 
 ### Job Analysis
 
-Same general thing, but better output schema and prompts. We've already done this and seen the effect it has on the work of the (soon to be disappeared) Candidate Profier.
+Same general thing, but better output schema and prompts. We've already done this and seen the effect it has on the work of the (soon to be disappeared) Candidate Profiler.
 
 Then we really start chasing the dragon
 
@@ -182,6 +182,6 @@ Then we really start chasing the dragon
 > ### Why split them?
 >
 > - **Traceability:** You can inspect/approve the plan before any edits happen.
-> - **Reusability:** One plan can drive multiple artifacts (resume, cover letter, LinkedIn).
+> - **Re-usability:** One plan can drive multiple artifacts (resume, cover letter, LinkedIn).
 > - **Safety:** Executor is constrained by the plan + evidence; fewer hallucinations.
 > - **Iteration:** If you dislike a suggestion, fix the plan and re-apply — deterministic changes.
