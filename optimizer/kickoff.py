@@ -2,7 +2,13 @@ import argparse
 import json
 import jsonschema
 import yaml
-from optimizer.crew import CvOptimizer
+from optimizer.crew import CvOptimizer, JobAnalysisTest
+
+
+def dispatch_crew(crew_name, config, crew_functions):
+    if crew_name not in crew_functions:
+        raise ValueError(f"Unknown crew: {crew_name}")
+    crew_functions[crew_name](config)
 
 
 def main(argv=None):
@@ -27,6 +33,15 @@ def main(argv=None):
             except json.JSONDecodeError:
                 config = yaml.safe_load(f)
 
+    CREW_FUNCTIONS = {
+        "CvOptimizer": kickoff_cv_optimizer,
+        "JobAnalysisTest": kickoff_job_analysis_test,
+    }
+
+    dispatch_crew(args.crew_name, config, CREW_FUNCTIONS)
+
+
+def kickoff_cv_optimizer(config):
     schema = {
         "type": "object",
         "properties": {
@@ -37,7 +52,11 @@ def main(argv=None):
                     "candidate_cv_path": {"type": "string"},
                     "output_directory": {"type": "string"},
                 },
-                "required": ["job_posting_url", "candidate_cv_path", "output_directory"],
+                "required": [
+                    "job_posting_url",
+                    "candidate_cv_path",
+                    "output_directory",
+                ],
             }
         },
         "required": ["inputs"],
@@ -46,6 +65,27 @@ def main(argv=None):
     jsonschema.validate(instance=config, schema=schema)
 
     CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
+
+
+def kickoff_job_analysis_test(config):
+    schema = {
+        "type": "object",
+        "properties": {
+            "inputs": {
+                "type": "object",
+                "properties": {
+                    "job_posting_url": {"type": "string"},
+                    "output_directory": {"type": "string"},
+                },
+                "required": ["job_posting_url"],
+            }
+        },
+        "required": ["inputs"],
+    }
+
+    jsonschema.validate(instance=config, schema=schema)
+
+    JobAnalysisTest().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":
