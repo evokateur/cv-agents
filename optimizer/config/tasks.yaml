@@ -1,20 +1,36 @@
 job_analysis_task:
   description: >
-    Analyze the job posting URL provided ({job_posting_url}) to extract and structure
-    the following information:
-    - Job title and company name
-    - Industry sector
-    - Complete job description
-    - Experience level required (entry, mid, senior, etc.)
-    - General requirements (education, certifications, years of experience)
-    - Required skills (must-have technical and soft skills)
-    - Preferred skills (nice-to-have skills that give candidates an advantage)
-    - Key responsibilities and day-to-day activities
-    Use the scraping and search tools to gather comprehensive information.
+    Analyze the job posting URL provided ({job_posting_url}) and extract structured
+    information into the JobPosting schema. Follow these rules:
+
+    **1. Metadata**
+    - Extract job title, company name, industry, full description, and experience level.
+
+    **2. Requirements**
+    - Extract degrees, certifications, and explicit "years of experience" requirements.
+    - Identify hard requirements (licenses, mandatory credentials).
+
+    **3. Skills**
+    - Technical skills: programming languages, frameworks, cloud platforms, tools.
+    - Soft skills: communication, teamwork, leadership, problem-solving.
+    - Preferred skills: "nice-to-have" extras.
+
+    **4. Responsibilities**
+    - Bullet out day-to-day tasks, focusing on specific duties (not vague culture blurbs).
+
+    **5. ATS Alignment**
+    - Keywords: important phrases used in the posting for filtering.
+    - Tools/tech stack: specific named technologies (AWS, Docker, React, etc).
+
+    **6. Normalization**
+    - Deduplicate terms (merge "Python 3" and "Python").
+    - Expand acronyms if possible (e.g., "CI/CD" -> "Continuous Integration / Continuous Deployment").
+    - Filter out vague corporate jargon ("fast-paced environment", "great culture").
+
+    Output must be a valid JobPosting object.
   expected_output: >
-    A structured JobPosting object containing title, company, industry,
-    description, experience_level, requirements, required_skills,
-    preferred_skills, and responsibilities extracted from the job posting.
+    A validated JobPosting object with all fields populated where possible,
+    ensuring consistency and ATS-awareness.
   output_file: "{output_directory}/job_analysis.json"
   agent: job_analyst
 

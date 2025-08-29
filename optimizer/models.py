@@ -3,15 +3,29 @@ from typing import List, Optional
 
 
 class JobPosting(BaseModel):
+    # Basic metadata
     title: str
     company: str
     industry: str
     description: str
-    experience_level: str
-    requirements: List[str]
-    required_skills: List[str]
-    preferred_skills: List[str]
-    responsibilities: List[str]
+    experience_level: str  # entry, mid, senior, etc.
+
+    # Requirements
+    education: List[str] = []  # degrees, certifications
+    years_experience: Optional[str] = None  # "5+ years"
+    hard_requirements: List[str] = []  # absolute musts (e.g., "CPA license")
+
+    # Skills (structured)
+    technical_skills: List[str] = []  # e.g., "Python", "AWS", "GraphQL"
+    soft_skills: List[str] = []  # e.g., "leadership", "teamwork"
+    preferred_skills: List[str] = []  # nice-to-have
+
+    # Responsibilities
+    responsibilities: List[str] = []  # parsed job duties
+
+    # Extracted for ATS alignment
+    keywords: List[str] = []  # important phrases/terms from posting
+    tools_and_tech: List[str] = []  # specific stack/tools
 
 
 class CandidateProfile(BaseModel):
