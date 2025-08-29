@@ -27,7 +27,7 @@ candidate_profiling_task:
     Your task is to build a comprehensive profile of the job candidate using the following approach:
 
     1. **Primary Data Source - CV Analysis:**
-       Read the candidate's current CV at { candidate_cv_path } to extract basic information 
+       Read the candidate's current CV at {candidate_cv_path} to extract basic information 
        like name, contact details, work history, and skills overview.
 
     2. **Knowledge Base Enhancement:**

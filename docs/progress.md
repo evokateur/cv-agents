@@ -241,3 +241,40 @@
 - JobAnalysisTest crew runs single job_analyst agent with job_analysis_task for faster testing
 
 **Result:** Successfully created flexible crew dispatching system that supports both full CvOptimizer crew and streamlined JobAnalysisTest crew. All Makefile targets work correctly and CrewAI framework limitations resolved through manual crew construction approach.
+
+## CandidateProfilingTest Crew Implementation (August 2025)
+
+**Summary:** Successfully implemented CandidateProfilingTest crew to test candidate profiling task in isolation, featuring fake job analysis agent and simplified configuration with automatic file path resolution.
+
+**Key Changes:**
+
+- Created CandidateProfilingTest crew with internal fake agent/task definitions to avoid polluting main crew configuration
+- Implemented automatic job analysis output loading from standardized output directory location  
+- Added template variable interpolation fix for CV file path reading
+- Renamed all components from "CandidateProfilerTest" to "CandidateProfilingTest" to align with task naming
+
+**Architecture Implementation:**
+
+- **Internal Fake Components**: Defined `_fake_job_analyst()` and `_fake_job_analysis_task()` methods inside CandidateProfilingTest class
+- **Simplified Inputs**: Reduced to `candidate_cv_path` and `output_directory` parameters, assuming job analysis output exists at standard location
+- **File Loading Pattern**: Fake job analysis task loads from `{output_directory}/job_analysis.json` automatically
+- **Template Fix**: Corrected CrewAI template interpolation from `{ candidate_cv_path }` to `{candidate_cv_path}` (removed spaces)
+- **Manual Crew Construction**: Used direct Crew instantiation without @CrewBase decorator to avoid YAML auto-loading conflicts
+
+**Files Updated:**
+
+- `optimizer/crew.py` - Added CandidateProfilingTest class with internal fake agent and task definitions
+- `optimizer/kickoff.py` - Added `kickoff_candidate_profiling_test()` function with schema validation
+- `scripts/candidate_profiler_test.py` - Created test script with simplified two-input configuration
+- `optimizer/config/tasks.yaml` - Fixed template variable interpolation by removing spaces around `candidate_cv_path`
+- `Makefile` - Added `candidate-profiling-test` target using module execution pattern
+
+**Technical Details:**
+
+- Fake job analysis task returns JobPosting object loaded from pre-existing job analysis output file
+- Candidate profiling task receives fake job analysis context and processes actual CV file
+- Template interpolation uses standard `{}` syntax (not Jinja2 `{{ }}` delimiters)
+- Schema validation ensures `candidate_cv_path` is required input parameter
+- Test successfully reads candidate CV (Wesley Hinkle) and performs semantic search for relevant projects
+
+**Result:** Functional candidate profiling test crew that isolates the candidate profiling task for focused testing. Successfully reads CV files, loads job analysis context from standardized output location, and generates candidate profiles with semantic search integration. All naming aligned with task-based conventions.
