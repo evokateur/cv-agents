@@ -11,6 +11,9 @@ agents:
 job-analysis-test:
 	python -m scripts.job_analysis_test
 
+candidate-profiling-test:
+	python -m scripts.candidate_profiler_test
+
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
 	pdflatex --output-directory=output output/cv.tex

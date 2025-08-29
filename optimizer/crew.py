@@ -1,9 +1,11 @@
-from crewai import Crew, Process, Task
+from crewai import Crew, Process, Task, Agent
 from crewai.project import CrewBase, agent, task, crew
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from optimizer.agents import CustomAgents
 from optimizer.tasks import CustomTasks
+from optimizer.models import JobPosting
 from typing import List
+import json
 
 
 @CrewBase
@@ -70,6 +72,46 @@ class JobAnalysisTest:
         return Crew(
             agents=[job_analyst],
             tasks=[job_analysis_task],
+            process=Process.sequential,
+            verbose=True,
+        )
+
+
+class CandidateProfilingTest:
+    """Candidate Profiling Test crew - runs only candidate profiling task"""
+
+    def __init__(self):
+        self.custom_agents = CustomAgents()
+        self.custom_tasks = CustomTasks()
+
+    def _fake_job_analyst(self) -> Agent:
+        """Fake agent that loads job analysis output from file"""
+        return Agent(
+            role="Job Analysis File Reader",
+            goal="Load job analysis output from file and pass it to candidate profiler",
+            backstory="A utility agent that reads pre-generated job analysis files",
+            verbose=True,
+        )
+
+    def _fake_job_analysis_task(self, agent) -> Task:
+        """Fake task that loads job analysis output from file"""
+        return Task(
+            description="Load job analysis output from {output_directory}/job_analysis.json and return it as structured data",
+            expected_output="JobPosting object loaded from the job analysis output file",
+            agent=agent,
+            output_pydantic=JobPosting,
+        )
+
+    def crew(self) -> Crew:
+        fake_job_analyst = self._fake_job_analyst()
+        candidate_profiler = self.custom_agents.candidate_profiler()
+        
+        fake_job_analysis_task = self._fake_job_analysis_task(fake_job_analyst)
+        candidate_profiling_task = self.custom_tasks.candidate_profiling_task(candidate_profiler, [fake_job_analysis_task])
+        
+        return Crew(
+            agents=[fake_job_analyst, candidate_profiler],
+            tasks=[fake_job_analysis_task, candidate_profiling_task],
             process=Process.sequential,
             verbose=True,
         )
