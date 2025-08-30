@@ -278,3 +278,62 @@
 - Test successfully reads candidate CV (Wesley Hinkle) and performs semantic search for relevant projects
 
 **Result:** Functional candidate profiling test crew that isolates the candidate profiling task for focused testing. Successfully reads CV files, loads job analysis context from standardized output location, and generates candidate profiles with semantic search integration. All naming aligned with task-based conventions.
+
+## Comprehensive Terminology Refactoring: Candidate Profiling to CV Alignment (August 2025)
+
+**Summary:** Completed comprehensive renaming and restructuring of CV optimization system components from "candidate profiling" terminology to "cv alignment" terminology, reflecting the system's actual purpose of creating transformation plans rather than profiling candidates.
+
+**Key Changes:**
+
+- Renamed `CandidateProfile` model to `CvTransformationPlan` with restructured fields for actionable CV transformation guidance
+- Renamed `candidate_profiling_task` to `cv_alignment_task` across all configuration and code references
+- Renamed `candidate_profiler` agent to `cv_advisor` with updated role description to "CV Alignment Adviser"
+- Updated all related file names, environment variables, test classes, and documentation to use "cv alignment" terminology
+- Restructured `CvTransformationPlan` model to include transformation-specific fields: additions, rewrites, removals, reordering, quantifications, terminology_alignment, evidence
+
+**Architecture Implementation:**
+
+- **Model Restructuring**: `CvTransformationPlan` now represents an actionable transformation plan rather than a candidate summary, with fields for specific CV modifications
+- **Systematic Renaming**: Updated all references across Python code, YAML configurations, environment variables, test files, and Makefile targets
+- **Agent Role Evolution**: CV Advisor now focuses on creating transformation plans with specific guidance for CV optimization
+- **Task Output Alignment**: Output files renamed to `cv_transformation_plan.json` to match new model structure
+- **Testing Sequence**: Established proper test execution order (job analysis → cv alignment → full pipeline)
+
+**Files Updated:**
+
+- `optimizer/models.py` - Renamed CandidateProfile to CvTransformationPlan with new field structure and added missing Field import
+- `optimizer/tasks.py` - Renamed method to `cv_alignment_task`, updated imports, fixed indentation syntax error
+- `optimizer/crew.py` - Renamed agent method to `cv_advisor`, updated class names from CandidateProfilingTest to CvAlignmentTest
+- `optimizer/config/tasks.yaml` - Updated task key, output file name, and task descriptions
+- `optimizer/config/agents.yaml` - Renamed agent key and updated role to "CV Alignment Adviser"  
+- `config.py` - Renamed environment variable properties from `candidate_profiler_*` to `cv_advisor_*`
+- `sample.env` and `.env` - Updated environment variable names from CANDIDATE_PROFILER_* to CV_ADVISOR_*
+- `Makefile` - Renamed target from `candidate-profiling-test` to `cv-alignment-test`
+- `scripts/candidate_profiling_test.py` → `scripts/cv_alignment_test.py` - Renamed file and updated function references
+
+**Technical Fixes:**
+
+- **Indentation Error Resolution**: Fixed duplicate "description" lines in cv_alignment_task method causing syntax error
+- **Missing Import Fix**: Added `Field` to Pydantic imports to support new model field definitions
+- **Environment Variable Sync**: Updated .env file with new CV_ADVISOR_* variable names
+- **Vector Database Refresh**: Rebuilt vector database to ensure fresh embeddings for testing
+
+**Model Structure Enhancement:**
+
+The `CvTransformationPlan` model now includes actionable transformation fields:
+- `additions`: New bullets/sections from knowledge base to insert
+- `rewrites`: Instructions for rewriting existing bullets for better impact/fit  
+- `removals`: Items to cut or downplay as irrelevant
+- `reordering`: Section/experience prioritization guidance
+- `quantifications`: Locations where real metrics should be added
+- `terminology_alignment`: Exact phrase swaps to match job posting language
+- `evidence`: Knowledge base pointers backing transformation suggestions
+
+**Testing Validation:**
+
+- Successfully tested complete pipeline: job analysis → cv alignment → output generation
+- Verified CV Alignment Advisor now generates proper transformation plans with actionable instructions
+- Confirmed model field validation works correctly with new CvTransformationPlan schema
+- Validated environment variable configuration and agent instantiation
+
+**Result:** Successfully transformed the system from candidate profiling focus to CV alignment and transformation planning. The CV Advisor now generates actionable transformation plans rather than candidate summaries, providing specific guidance for CV optimization based on job requirements. All components properly renamed and tested with new terminology and enhanced functionality.
