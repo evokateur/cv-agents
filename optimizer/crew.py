@@ -5,7 +5,6 @@ from optimizer.agents import CustomAgents
 from optimizer.tasks import CustomTasks
 from optimizer.models import JobPosting
 from typing import List
-import json
 
 
 @CrewBase
@@ -24,8 +23,8 @@ class CvOptimizer:
         return self.custom_agents.job_analyst()
 
     @agent
-    def candidate_profiler(self):
-        return self.custom_agents.candidate_profiler()
+    def cv_advisor(self):
+        return self.custom_agents.cv_advisor()
 
     @agent
     def cv_strategist(self):
@@ -36,16 +35,16 @@ class CvOptimizer:
         return self.custom_tasks.job_analysis_task(self.job_analyst())
 
     @task
-    def candidate_profiling_task(self):
-        return self.custom_tasks.candidate_profiling_task(
-            self.candidate_profiler(), [self.job_analysis_task()]
+    def cv_alignment_task(self):
+        return self.custom_tasks.cv_alignment_task(
+            self.cv_advisor(), [self.job_analysis_task()]
         )
 
     @task
     def cv_optimization_task(self):
         return self.custom_tasks.cv_optimization_task(
             self.cv_strategist(),
-            [self.job_analysis_task(), self.candidate_profiling_task()],
+            [self.job_analysis_task(), self.cv_alignment_task()],
         )
 
     @crew
@@ -68,7 +67,7 @@ class JobAnalysisTest:
     def crew(self) -> Crew:
         job_analyst = self.custom_agents.job_analyst()
         job_analysis_task = self.custom_tasks.job_analysis_task(job_analyst)
-        
+
         return Crew(
             agents=[job_analyst],
             tasks=[job_analysis_task],
@@ -77,8 +76,8 @@ class JobAnalysisTest:
         )
 
 
-class CandidateProfilingTest:
-    """Candidate Profiling Test crew - runs only candidate profiling task"""
+class CvAlignmentTest:
+    """CV Alignment Test crew - runs only cv alignment task"""
 
     def __init__(self):
         self.custom_agents = CustomAgents()
@@ -88,7 +87,7 @@ class CandidateProfilingTest:
         """Fake agent that loads job analysis output from file"""
         return Agent(
             role="Job Analysis File Reader",
-            goal="Load job analysis output from file and pass it to candidate profiler",
+            goal="Load job analysis output from file and pass it to cv advisor",
             backstory="A utility agent that reads pre-generated job analysis files",
             verbose=True,
         )
@@ -104,14 +103,16 @@ class CandidateProfilingTest:
 
     def crew(self) -> Crew:
         fake_job_analyst = self._fake_job_analyst()
-        candidate_profiler = self.custom_agents.candidate_profiler()
-        
+        cv_advisor = self.custom_agents.cv_advisor()
+
         fake_job_analysis_task = self._fake_job_analysis_task(fake_job_analyst)
-        candidate_profiling_task = self.custom_tasks.candidate_profiling_task(candidate_profiler, [fake_job_analysis_task])
-        
+        cv_alignment_task = self.custom_tasks.cv_alignment_task(
+            cv_advisor, [fake_job_analysis_task]
+        )
+
         return Crew(
-            agents=[fake_job_analyst, candidate_profiler],
-            tasks=[fake_job_analysis_task, candidate_profiling_task],
+            agents=[fake_job_analyst, cv_advisor],
+            tasks=[fake_job_analysis_task, cv_alignment_task],
             process=Process.sequential,
             verbose=True,
         )
