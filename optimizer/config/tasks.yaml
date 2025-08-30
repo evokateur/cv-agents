@@ -34,7 +34,7 @@ job_analysis_task:
   output_file: "{output_directory}/job_analysis.json"
   agent: job_analyst
 
-candidate_profiling_task:
+cv_alignment_task:
   description: >
     You will receive structured job requirements from the job analysis task:
 
@@ -76,14 +76,14 @@ candidate_profiling_task:
     with the full file path. You can read the complete document using the FileReadTool with 
     that exact path to get additional context and details.
 
-    Summarize and integrate retrieved findings into a structured CandidateProfile object
+    Summarize and integrate retrieved findings into a structured CvTransformationPlan object
     tailored to the provided job requirements.
   expected_output: >
-    A structured CandidateProfile containing relevant experiences, matching skills,
+    A structured CvTransformationPlan containing relevant experiences, matching skills,
     key projects, achievements, and contextual information tailored to the job requirements.
-  output_file: "{output_directory}/candidate_profile.json"
+  output_file: "{output_directory}/cv_transformation_plan.json"
   context: [job_analysis_task]
-  agent: candidate_profiler
+  agent: cv_advisor
 
 cv_optimization_task:
   description: >
@@ -92,8 +92,8 @@ cv_optimization_task:
     1. A structured job posting object with the following fields:
     [[JobPosting]]
 
-    2. A structured candidate profile object with the following fields:
-    [[CandidateProfile]]
+    2. A structured CV transformation plan object with the following fields:
+    [[CvTransformationPlan]]
 
     3. A file path to the candidate's current CV:
     {candidate_cv_path}
@@ -102,13 +102,14 @@ cv_optimization_task:
     The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and 
     restructured into the output format.
 
-    Your task is to optimize the candidate's CV for the target job by:
-    - Prioritizing experiences that best match the required and preferred skills
-    - Rewriting descriptions to emphasize relevant achievements and responsibilities
-    - Optimizing keyword usage for applicant tracking system (ATS) compatibility
-    - Structuring sections to highlight strengths for this specific role
-    - Quantifying impact (e.g., metrics, results) wherever possible
-    - Aligning language, tone, and terminology with the job posting
+    Your task is to implement the CV transformation plan by:
+    - Following the specific guidance provided in the CvTransformationPlan
+    - Prioritizing experiences that the plan identifies as most relevant
+    - Rewriting descriptions according to the plan's recommendations
+    - Implementing ATS keyword optimizations specified in the plan
+    - Restructuring sections as outlined in the transformation strategy
+    - Adding quantifications and metrics as directed by the plan
+    - Aligning language and terminology with both job posting and plan guidance
 
     Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate’s strongest qualifications.
   expected_output: >
@@ -116,5 +117,5 @@ cv_optimization_task:
     tailored specifically to the job requirements, optimized for both ATS
     and human review.
   output_file: "{output_directory}/cv_optimization.json"
-  context: [job_analysis_task, candidate_profiling_task]
+  context: [job_analysis_task, cv_alignment_task]
   agent: cv_strategist

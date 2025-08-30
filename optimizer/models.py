@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
@@ -28,28 +28,41 @@ class JobPosting(BaseModel):
     tools_and_tech: List[str] = []  # specific stack/tools
 
 
-class CandidateProfile(BaseModel):
-    first_name: str
-    last_name: str
-    profession: str
+class CvTransformationPlan(BaseModel):
+    job_title: str
+    company: str
 
-    matching_required_skills: List[str]
-    matching_preferred_skills: List[str]
-    transferable_skills: List[str]
-    skill_gaps: List[str]
+    # transparency on alignment
+    matching_skills: List[str] = []
+    missing_skills: List[str] = []
+    transferable_skills: List[str] = []
 
-    relevant_experiences: List[str]
-    relevant_projects: List[str]
-    leadership_examples: List[str]
-    domain_expertise: List[str]
+    # edit plan
+    additions: List[str] = Field(
+        default_factory=list, description="New bullets/sections from KB to insert"
+    )
+    rewrites: List[str] = Field(
+        default_factory=list, description="Rewrite existing bullets for impact/fit"
+    )
+    removals: List[str] = Field(
+        default_factory=list, description="Cut/downplay irrelevant items"
+    )
+    reordering: List[str] = Field(
+        default_factory=list, description="Prioritize sections/experiences"
+    )
 
-    quantified_achievements: List[str]
-    technical_achievements: List[str]
-    career_progression: List[str]
+    # ATS & language
+    quantifications: List[str] = Field(
+        default_factory=list, description="Where to add real metrics"
+    )
+    terminology_alignment: List[str] = Field(
+        default_factory=list, description="Exact phrase swaps to match posting"
+    )
 
-    competitive_advantages: List[str]
-    value_propositions: List[str]
-    positioning_strategy: str
+    # optional traceability
+    evidence: List[str] = Field(
+        default_factory=list, description="KB pointers backing suggestions"
+    )
 
 
 class Contact(BaseModel):

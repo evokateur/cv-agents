@@ -11,8 +11,8 @@ agents:
 job-analysis-test:
 	python -m scripts.job_analysis_test
 
-candidate-profiling-test:
-	python -m scripts.candidate_profiling_test
+cv-alignment-test:
+	python -m scripts.cv_alignment_test
 
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
