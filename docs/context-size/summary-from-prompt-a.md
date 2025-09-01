@@ -1,7 +1,3 @@
-Here’s a structured **continuity brief** you can paste into a new conversation to continue seamlessly:
-
----
-
 # 📌 Project Brief: CV Optimization Pipeline (CrewAI + Pydantic)
 
 ## 🎯 Main Goal
@@ -51,6 +47,7 @@ The output is not a rewritten CV but a **CvTransformationPlan**: a structured di
          keywords: List[str] = []
          tools_and_tech: List[str] = []
      ```
+
    * Outputs structured vectors (skills split, keywords, ATS terms).
    * Results are cleaner, action-oriented responsibilities, deduplicated keywords, graceful handling of missing fields.
 
@@ -149,7 +146,3 @@ The output is not a rewritten CV but a **CvTransformationPlan**: a structured di
 * Tasks use YAML config for descriptions; variables (`[[JobPosting]]`, `{candidate_cv_path}`) are injected at runtime.
 * Knowledge base is evolving, created via LLM prompts, needs refinement for clarity.
 * CV is **human-written base document**; AI should not replace it, only suggest structured edits.
-
----
-
-✅ This summary captures all essential design decisions, schema changes, test results, and next steps.

@@ -1,7 +1,3 @@
-Here’s a structured, concise summary of our conversation so far, capturing the essentials you’ll need to pick this back up in a new session:
-
----
-
 # 📌 Conversation Summary
 
 ## Core Problem / Topic
@@ -87,7 +83,3 @@ Here’s a structured, concise summary of our conversation so far, capturing the
   * **Practical recruiter/coach voice** for CV content.
   * **Summarizer/clarifier** when requested.
 * Style: precise, structured, avoids filler, emphasizes **actionable guidance**.
-
----
-
-✅ This summary should give you everything needed to resume work seamlessly in a new chat session.
