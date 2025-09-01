@@ -24,9 +24,9 @@ class CustomAgents:
                 model=self.config.job_analyst_model,
                 temperature=float(self.config.job_analyst_temperature),
             ),
-            "candidate_profiler": LLM(
-                model=self.config.candidate_profiler_model,
-                temperature=float(self.config.candidate_profiler_temperature),
+            "cv_advisor": LLM(
+                model=self.config.cv_advisor_model,
+                temperature=float(self.config.cv_advisor_temperature),
             ),
             "cv_strategist": LLM(
                 model=self.config.cv_strategist_model,
@@ -62,15 +62,15 @@ class CustomAgents:
             llm=self.llms["job_analyst"],
         )
 
-    def candidate_profiler(self) -> Agent:
+    def cv_advisor(self) -> Agent:
         return Agent(
-            config=self.agents_config["candidate_profiler"],
+            config=self.agents_config["cv_advisor"],
             tools=[
                 self.get_semantic_search_tool(),
                 self.get_directory_search_tool(),
                 FileReadTool(),
             ],
-            llm=self.llms["candidate_profiler"],
+            llm=self.llms["cv_advisor"],
         )
 
     def cv_strategist(self) -> Agent:

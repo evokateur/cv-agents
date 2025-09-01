@@ -185,3 +185,59 @@ Then we really start chasing the dragon
 > - **Re-usability:** One plan can drive multiple artifacts (resume, cover letter, LinkedIn).
 > - **Safety:** Executor is constrained by the plan + evidence; fewer hallucinations.
 > - **Iteration:** If you dislike a suggestion, fix the plan and re-apply — deterministic changes.
+
+## Clarification: the KB (may be comprised of a vector db, but it) is not a vector
+
+### Human context window note
+
+Even though the KB changes, and it may have information that wasn't available to inform the original C.V., it cannot be used on its own to plan transformations to the C.V. You need job requirements, implicit or explicit, to drive inquiries.
+
+### GPT-5 context window note
+
+> Totally agree. Here’s a tiny architecture note you can drop into your repo and call it a day:
+>
+> # Architecture Note — CV Alignment System (Short)
+>
+> ## Core Idea
+>
+> - **KB is not a driver.** It’s a *reservoir* of facts.
+> - You need a **requirement vector** to focus change (from a job posting or an amalgam).
+> - The system plans edits against the base CV using that vector, then (optionally) applies them.
+>
+> ## Roles (simple model)
+>
+> - **Requirement Vector (R):** What the market (or you) asks for.
+> - **Base CV (C):** Current state.
+> - **Knowledge Base (K):** Evidence store (projects, metrics, roles).
+> - **Planner (P):** `Plan = f(R, C, query(K | R))` → produces `CvTransformationPlan`.
+> - **Executor (E) \[optional]:** Applies `Plan` to `C` → Draft CV or Patch.
+>
+> ## Two Workflows (kept separate)
+>
+> 1. **Job-driven alignment (now):**
+>    `JobPosting → R → P(R, C, K) → CvTransformationPlan`
+> 2. **Direction/amalgam (later):**
+>    `N postings / self-defined goals → amalgam R → P(R, C, K) → CvTransformationPlan`
+>    *(periodic KB-driven CV evolution can use a default R = “target career profile”)*
+>
+> ## Invariants / Guardrails
+>
+> - No fabrication: only facts from **C** or **K**.
+> - Planner **does not** rewrite; it emits **edits** (add/rewrites/remove/reorder/terms/metrics).
+> - Executor is optional and must be **plan-constrained**.
+> - Prefer **impact metrics** over activity metrics (commit counts are evidence, not headlines).
+>
+> ## Anti-Patterns
+>
+> - Letting **K** “speak on its own” (unfocused project dumps).
+> - Collapsing planner and executor (hard to trace, easy to hallucinate).
+> - Treating projects as employers (disambiguate: employer/client/project).
+>
+> ## Minimal IO Shapes
+>
+> - **JobPosting → (adapted to) JobRequirements**
+>   `hard_requirements, technical_skills, soft_skills, preferred_skills, responsibilities, keywords`
+> - **CvTransformationPlan**
+>   `matching_skills, missing_skills, transferable_skills, additions, rewrites, removals, reordering, quantifications, terminology_alignment, evidence`
+>
+> That’s the whole dynamic system in one page.
