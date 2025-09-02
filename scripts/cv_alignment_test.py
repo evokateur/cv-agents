@@ -2,7 +2,7 @@ import json
 import optimizer.kickoff as kickoff
 
 candidate_cv_path = "data/cv.yaml"
-output_directory = "job_postings/tests/cv-transformer"
+output_directory = "job_postings/tests"
 
 
 def test_cv_alignment_with_config():

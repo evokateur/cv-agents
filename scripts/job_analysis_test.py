@@ -2,7 +2,7 @@ import json
 import optimizer.kickoff as kickoff
 
 job_posting_url = "https://app.welcometothejungle.com/dashboard/jobs/oA1SArxV"
-output_directory = "job_postings/tests/cv-transformer"
+output_directory = "job_postings/tests"
 
 
 def test_job_analysis_with_config():
