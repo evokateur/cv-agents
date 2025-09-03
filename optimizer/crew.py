@@ -85,18 +85,30 @@ class CvAlignmentTest:
 
     def _fake_job_analyst(self) -> Agent:
         """Fake agent that loads job analysis output from file"""
+        from crewai_tools import FileReadTool
         return Agent(
             role="Job Analysis File Reader",
             goal="Load job analysis output from file and pass it to cv advisor",
             backstory="A utility agent that reads pre-generated job analysis files",
+            tools=[FileReadTool()],
             verbose=True,
         )
 
     def _fake_job_analysis_task(self, agent) -> Task:
         """Fake task that loads job analysis output from file"""
         return Task(
-            description="Load job analysis output from {output_directory}/job_analysis.json and return it as structured data",
-            expected_output="JobPosting object loaded from the job analysis output file",
+            description="""
+            Use the FileReadTool to read the job analysis JSON file at {output_directory}/job_analysis.json.
+            Parse the JSON content and extract the exact job details including:
+            - title (company name)
+            - company (exact company name) 
+            - technical_skills, hard_requirements, preferred_skills
+            - responsibilities and keywords
+            
+            Return this data as a structured JobPosting object with the EXACT values from the file.
+            Do not modify, interpret, or make up any job details.
+            """,
+            expected_output="JobPosting object with exact data from the job_analysis.json file",
             agent=agent,
             output_pydantic=JobPosting,
         )
