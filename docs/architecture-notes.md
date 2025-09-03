@@ -241,3 +241,86 @@ Even though the KB changes, and it may have information that wasn't available to
 >   `matching_skills, missing_skills, transferable_skills, additions, rewrites, removals, reordering, quantifications, terminology_alignment, evidence`
 >
 > That’s the whole dynamic system in one page.
+
+## Synthesized Responses from Semantic Search with Sources
+
+"I'm tired, like, totally tired." - Johnny "Slash" Ulasewicz
+
+Yeah, I dug up the RagTool and the embedchain adapter implementations and asked the right questions until I had TWO tools that pretty much do the same thing: give nice synthesized responses (like the RagTool) and lots of chunky metadata.
+
+The JSON needs to be cleaned up as it comes with everything (totally chunky) and the agent will not know what to do with it, at this point.
+
+> Ahh — that’s an important nuance 👌. Let’s reframe the summary with that **true starting point**:
+>
+> ---
+>
+> ## 📓 Architectural Note — Building a RagTool Variant With Metadata
+>
+> ### The Original Problem
+>
+> Our first attempt at a **semantic search tool** returned raw chunks and metadata from the vector DB. While this provided traceability, it **did not synthesize an answer** — the agent only saw raw fragments, with no coherent response from an LLM.
+>
+> So we went back to the drawing board: **how do we get the best of both worlds?**
+>
+> - RagTool’s **synthesized answer** capability.
+> - Semantic search’s **metadata + sources** for traceability.
+>
+> ---
+>
+> ### Investigation
+>
+> We studied two CrewAI source files to see why RagTool dropped metadata:
+>
+> 1. [`rag_tool.py`](https://github.com/crewAIInc/crewAI-tools/blob/main/crewai_tools/tools/rag/rag_tool.py)
+>
+>    - Shows that RagTool delegates entirely to an `Adapter` and only returns `adapter.query(...)`.
+>    - `_run` hardcodes the return as a plain string.
+>
+> 2. [`embedchain_adapter.py`](https://github.com/crewAIInc/crewAI-tools/blob/main/crewai_tools/adapters/embedchain_adapter.py)
+>
+>    - Revealed that under the hood, `embedchain.App.query(citations=True)` already produces **(answer, sources)**.
+>    - But the adapter discards half: if `summarize=True`, you get only the answer; if `False`, only the sources.
+>
+> This explained why RagTool could never provide both synthesis and metadata in one call.
+>
+> ---
+>
+> ### Solution
+>
+> We built two new tools that expose **both answer + sources** as JSON:
+>
+> ```json
+> {
+>   "answer": "Synthesized response here",
+>   "sources": [
+>     {"text": "...chunk...", "metadata": {...}},
+>     ...
+>   ]
+> }
+> ```
+>
+> - **Option A – `ChunkyRagTool`**
+>
+>   - Subclassed `RagTool`.
+>   - Force-cast its adapter to `EmbedchainAdapter` and called `adapter.embedchain_app.query(citations=True)`.
+>   - ✅ Drop-in replacement, reuses RagTool’s config + lockfile.
+>   - ⚠️ Fragile: depends on adapter internals (`embedchain_app`).
+>
+> - **Option B – `ChunkyKnowledgeBaseTool`**
+>
+>   - Reimplemented directly as a `BaseTool` around `embedchain.App`.
+>   - Preserved RagTool’s `portalocker` lock logic for safety.
+>   - ✅ Clean, IDE-safe, future-proof.
+>   - ❌ Requires manually managing config to ensure it points to the same Chroma collection.
+>
+> ---
+>
+> ### Outcome
+>
+> - We now have tools that provide **coherent synthesized answers** (like RagTool) *with* **sources and metadata** (like semantic search).
+> - Both options connect to the same Chroma DB (`knowledge_base` collection) with the same config.
+> - Option A is convenient if RagTool compatibility is needed; Option B is preferred for long-term maintainability.
+>
+> ---
+>
+> 👉 Want me to make a **recommendation footer** along the lines of *“Use Option B (`ChunkyKnowledgeBaseTool`) for all new development, keep Option A as a fallback where RagTool is required”*?
