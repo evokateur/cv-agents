@@ -61,3 +61,30 @@ class Config:
 
 def get_config() -> Config:
     return Config()
+
+
+def get_embedchain_config() -> dict:
+    """
+    Returns the embedchain configuration for connecting to the existing vector database.
+    
+    This configuration connects to the existing populated vector database used by
+    the SemanticSearchTool, allowing ChunkyRagTool and ChunkyKnowledgeBaseTool
+    to provide LLM synthesis of the same knowledge base content.
+    """
+    return {
+        "llm": {
+            "provider": "openai",
+            "config": {"model": "gpt-4o-mini"},
+        },
+        "embedder": {
+            "provider": "openai",
+            "config": {"model": "text-embedding-ada-002"},
+        },
+        "vectordb": {
+            "provider": "chroma",
+            "config": {
+                "dir": "vector_db",
+                "collection_name": "knowledge_base",
+            },
+        },
+    }

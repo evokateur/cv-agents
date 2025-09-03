@@ -337,3 +337,49 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - Validated environment variable configuration and agent instantiation
 
 **Result:** Successfully transformed the system from candidate profiling focus to CV alignment and transformation planning. The CV Advisor now generates actionable transformation plans rather than candidate summaries, providing specific guidance for CV optimization based on job requirements. All components properly renamed and tested with new terminology and enhanced functionality.
+
+## LLM Synthesis RAG Tool Implementation and Prompt Engineering Optimization (September 2025)
+
+**Summary:** Implemented LLM-enhanced RAG tools to resolve CV alignment task output quality issues and optimized prompt engineering for low-cost model performance while maintaining compatibility with sophisticated models.
+
+**Key Problems Resolved:**
+
+- **Skill Recognition Gap**: CV alignment agent couldn't connect technical work (ETL pipelines, SQL optimization) to conceptual skills (data analysis experience) using raw text chunks
+- **Context Passing Conflicts**: YAML context declarations overrode Python context passing, causing agents to lose job posting data
+- **Tool Parameter Validation**: Agent passed JSON structures instead of simple strings to SemanticSearchTool
+- **File vs Context Confusion**: Enhanced prompts made agent look for job posting files instead of using context objects
+
+**Architecture Implementation:**
+
+- **LLM Synthesis Tools**: Created ChunkyRagTool and ChunkyKnowledgeBaseTool with embedchain.App integration for intelligent semantic analysis
+- **SemanticSearchWrapper**: Developed wrapper class providing clean agent-friendly output while preserving LLM synthesis capabilities
+- **Centralized Configuration**: Added `get_embedchain_config()` function in config.py for consistent ChromaDB and OpenAI embeddings setup
+- **Enhanced Prompt Engineering**: Optimized cv_alignment_task with step-by-step processes, concrete examples, and clear tool usage instructions
+
+**Files Created/Modified:**
+
+- `optimizer/tools/chunky_rag_tool.py` - LLM-enhanced RAG tool extending existing RagTool with embedchain integration
+- `optimizer/tools/chunky_knowledge_base_tool.py` - Standalone embedchain.App tool for semantic knowledge queries
+- `optimizer/tools/semantic_search_wrapper.py` - Wrapper providing clean output format for chunky tools
+- `config.py` - Added `get_embedchain_config()` for centralized embedchain configuration
+- `optimizer/models.py` - Enhanced CvTransformationPlan with detailed field descriptions including exact job title/company requirements
+- `optimizer/config/tasks.yaml` - Comprehensive prompt engineering with examples, removed conflicting context declarations, fixed "Read" → "Extract from context"
+- `optimizer/crew.py` - Fixed fake job analysis task with FileReadTool and proper file reading instructions
+- `optimizer/agents.py` - Updated to use SemanticSearchWrapper instead of original SemanticSearchTool
+
+**Technical Solutions:**
+
+- **Context Passing Fix**: Removed `context: [job_analysis_task]` from YAML to allow Python context passing
+- **Tool Enhancement**: SemanticSearchWrapper returns format: `"LLM synthesized answer\n\nSources:\n- file1.md\n- file2.md"`  
+- **Prompt Optimization**: Changed "Read JobPosting.technical_skills" to "Extract JobPosting.technical_skills from context"
+- **Schema Validation**: Added detailed Pydantic field descriptions with exact requirements for job titles and company names
+- **LLM Synthesis**: ChunkyRagTool uses embedchain for intelligent connections between technical work and broader skills
+
+**Testing Results:**
+
+- Successfully resolved skill recognition: agent now identifies database experience from MSSQL/MySQL/PostgreSQL references
+- SemanticSearchWrapper provides coherent, actionable answers with proper source attribution
+- Context passing works correctly without file-seeking behavior
+- Enhanced prompts work optimally with low-cost models (gpt-4o-mini) while maintaining sophistication compatibility
+
+**Result:** CV alignment task now generates high-quality transformation plans with intelligent skill recognition, proper context usage, and clean tool integration. The SemanticSearchWrapper provides LLM synthesis capabilities that connect technical experience to conceptual skills, resolving the core output quality issues while optimizing for both low-cost and sophisticated model performance.

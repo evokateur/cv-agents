@@ -36,44 +36,72 @@ job_analysis_task:
 
 cv_alignment_task:
   description: >
-    You will receive three structured inputs:
+    MISSION: Create a CvTransformationPlan that describes how to update the candidate's CV 
+    to align with the JobPosting requirements, using Knowledge Base evidence.
 
-    1. A JobPosting object (from the job_analysis_task)
-    2. The candidate's base CV at {candidate_cv_path}
-    3. Access to the candidate's knowledge base through tools
+    INPUT CONTEXT:
+    1. JobPosting object (from job_analysis_task) - contains exact requirements
+    2. Candidate's CV at {candidate_cv_path} - current qualifications  
+    3. Knowledge Base - additional projects and achievements via tools
 
-    Your job is NOT to rewrite the CV. Your job is to create a
-    CvTransformationPlan that describes how the base CV should be updated
-    to align more closely with the JobPosting, using the Knowledge Base
-    to strengthen and extend the candidate’s evidence.
+    CRITICAL PROCESS:
 
-    Process:
+    STEP 1: Analyze JobPosting Requirements
+    - Extract JobPosting.technical_skills, hard_requirements, preferred_skills from context
+    - Note exact terminology used (e.g., "data analysis experience", "PHP")
+    - Identify specific technologies, frameworks, and skill areas
 
-    1) Compare the JobPosting with the base CV
-       - Identify which skills, responsibilities, and requirements are already present
-       - Identify what is missing or underemphasized
+    STEP 2: Inventory Current CV  
+    - Read candidate's CV completely
+    - List current skills, technologies, and experiences
+    - Note gaps compared to JobPosting requirements
 
-    2) Search the Knowledge Base
-       - Retrieve projects, achievements, or details not in the base CV
-       - Add them to the plan as "additions" with supporting evidence
+    STEP 3: Strategic Knowledge Base Search
+    IMPORTANT: The SemanticSearchTool returns LLM-synthesized responses, not raw chunks.
+    When you query "data analysis experience", you get intelligent analysis like:
+    "Experience in data analysis includes ETL pipeline development, SQL optimization..."
+    
+    Search Strategy:
+    - Search for each missing skill individually (e.g., "data analysis experience")
+    - Search for specific technologies (e.g., "PHP WordPress development")  
+    - Search for relevant experience types (e.g., "large-scale systems architecture")
+    - The tool response will intelligently connect technical work to conceptual skills
 
-    3) Construct the transformation plan
-       - additions: new items to insert (from KB or inferred gaps)
-       - rewrites: suggestions to improve existing bullets (language, metrics, keywords)
-       - removals: items irrelevant to this role
-       - reordering: sections/experiences to surface more prominently
-       - quantifications: where to inject concrete metrics
-       - terminology_alignment: phrases to swap to match JobPosting keywords
+    SKILL INTERPRETATION RULES:
+    - If SemanticSearchTool says "experience in X includes Y activities", then the candidate HAS experience in X
+    - Technical work often demonstrates broader skills:
+      * ETL pipelines + SQL optimization = "data analysis experience"
+      * System architecture + performance tuning = "large-scale systems experience"
+      * Code reviews + technical discussions = "collaboration skills"
+    - Only mark skills as "missing" if Knowledge Base search finds NO related experience
 
-    Guardrails:
-    - Use only facts from the base CV or knowledge base. Do not invent employers, projects, or dates.
-    - If important data is missing, include a TODO in the plan but do not fabricate.
-    - Always cite KB evidence (file paths or doc titles) where possible.
+    STEP 4: Build Transformation Plan
+    - additions: Specific evidence from Knowledge Base with exact quotes and file paths
+    - missing_skills: ONLY skills with zero related experience in CV or Knowledge Base
+    - matching_skills: Skills clearly present in CV or found via Knowledge Base search
+    - rewrites: Specific language improvements with before/after examples
 
-    Tool usage:
-    - Use the SemanticSearchTool with a single natural-language query string.
-    - Do not pass structured JSON as the query.
-    - After retrieving results, use FileReadTool to expand context as needed.
+    EXAMPLES:
+    
+    GOOD Analysis:
+    JobPosting requires: "data analysis experience"
+    Knowledge Base search returns: "Experience in data analysis includes ETL pipelines, SQL transformations, query optimization"  
+    Conclusion: Candidate HAS data analysis experience → add to matching_skills, create additions with specific examples
+    
+    BAD Analysis:  
+    JobPosting requires: "data analysis experience"
+    Knowledge Base search returns: detailed technical evidence
+    Conclusion: Mark as missing_skills ← WRONG! The search found relevant experience.
+
+    TOOL USAGE:
+    SemanticSearchTool takes only a simple string - do not use JSON format.
+    Example: SemanticSearchTool("data analysis experience")
+    
+    GUARDRAILS:
+    - Use EXACT JobPosting terminology and company name
+    - Never fabricate employers, projects, or dates
+    - Cite specific Knowledge Base file paths for all evidence
+    - If truly no evidence exists, mark as TODO in plan
 
   expected_output: >
     A CvTransformationPlan JSON object containing a concrete edit plan

@@ -5,8 +5,9 @@ from crewai_tools import (
     FileReadTool,
     DirectorySearchTool,
 )
-from config import get_config
+from config import get_config, get_embedchain_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
+from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
 from optimizer.knowledge_embedder import KnowledgeBaseEmbedder
 import yaml
 
@@ -40,11 +41,8 @@ class CustomAgents:
             force_rebuild=False,
         )
 
-    def get_semantic_search_tool(self) -> SemanticSearchTool:
-        self.embedder.build_if_needed()
-        vectordb = self.embedder.get_vector_db()
-
-        return SemanticSearchTool(retriever=vectordb.as_retriever())
+    def get_semantic_search_tool(self) -> SemanticSearchWrapper:
+        return SemanticSearchWrapper(config=get_embedchain_config())
 
     def get_directory_search_tool(self) -> DirectorySearchTool:
         return DirectorySearchTool(
