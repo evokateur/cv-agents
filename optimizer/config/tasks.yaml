@@ -60,7 +60,7 @@ cv_alignment_task:
     IMPORTANT: The SemanticSearchTool returns LLM-synthesized responses, not raw chunks.
     When you query "data analysis experience", you get intelligent analysis like:
     "Experience in data analysis includes ETL pipeline development, SQL optimization..."
-    
+
     Search Strategy:
     - Search for each missing skill individually (e.g., "data analysis experience")
     - Search for specific technologies (e.g., "PHP WordPress development")  
@@ -82,12 +82,12 @@ cv_alignment_task:
     - rewrites: Specific language improvements with before/after examples
 
     EXAMPLES:
-    
+
     GOOD Analysis:
     JobPosting requires: "data analysis experience"
     Knowledge Base search returns: "Experience in data analysis includes ETL pipelines, SQL transformations, query optimization"  
     Conclusion: Candidate HAS data analysis experience → add to matching_skills, create additions with specific examples
-    
+
     BAD Analysis:  
     JobPosting requires: "data analysis experience"
     Knowledge Base search returns: detailed technical evidence
@@ -96,7 +96,7 @@ cv_alignment_task:
     TOOL USAGE:
     SemanticSearchTool takes only a simple string - do not use JSON format.
     Example: SemanticSearchTool("data analysis experience")
-    
+
     GUARDRAILS:
     - Use EXACT JobPosting terminology and company name
     - Never fabricate employers, projects, or dates
@@ -107,7 +107,7 @@ cv_alignment_task:
     A CvTransformationPlan JSON object containing a concrete edit plan
     shaped by BOTH the JobPosting and the candidate's knowledge base.
   output_file: "{output_directory}/cv_transformation_plan.json"
-  agent: cv_adviser
+  agent: cv_advisor
 
 cv_optimization_task:
   description: >
