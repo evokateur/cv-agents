@@ -133,4 +133,3 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - `cv-agents.ipynb` - Jupyter notebook for experimentation and development
 - `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
 - `vector_db/` - ChromaDB vector store with automatic embedding and retrieval capabilities
-- `llm-context/` - Planning documentation and session context for development tracking (git-ignored, local only)
