@@ -15,6 +15,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pytest -m unit` - Run tests marked as unit tests
 - `pytest -m slow` - Run slow tests only
 
+### CV Optimization Testing
+
+- `make cv-alignment-test` - Test CV alignment task with job posting analysis
+- `make job-analysis-test` - Test job analysis functionality
+- `make agents` - Run CV agents with default configuration
+
 ### Development Setup
 
 - `./setup.sh` - Create virtual environment, install dependencies, and set up Jupyter kernel
@@ -71,17 +77,22 @@ Here are some links to CrewAI documentation to help us understand the target arc
 - `optimizer/config/agents.yaml` - YAML agent configurations (job_analyst, candidate_profiler, cv_strategist)
 - `optimizer/config/tasks.yaml` - YAML task configurations with dependencies and RAG tool instructions
 - `optimizer/models.py` - Pydantic models for job postings, candidate profiles, and CV structure
-- `optimizer/tools/` - Directory for custom CrewAI tool implementations
+- `optimizer/tools/` - Directory for custom CrewAI tool implementations including:
+  - `semantic_search_tool.py` - Original RAG tool for semantic search
+  - `chunky_rag_tool.py` - Enhanced RAG tool with LLM synthesis via embedchain
+  - `chunky_kb_tool.py` - Standalone embedchain tool for knowledge base queries
+  - `semantic_search_wrapper.py` - Clean output formatter for LLM-synthesized results
 - `optimizer/utils/` - Vector database utilities, prompt utilities, and RAG tool management
 - `kickoff_crew.py` - Command-line interface for running the crew with JSON/YAML config
 - `cv_agents.py` - Simple test script for running the crew with hardcoded inputs
 
 **Configuration:**
 
-- `config.py` - Environment-based configuration for AI model settings
+- `config.py` - Environment-based configuration for AI model settings and embedchain setup
 - `sample.env` - Template for required environment variables
 - Models are configurable per agent (JOB_ANALYST_MODEL, CANDIDATE_PROFILER_MODEL, etc.)
 - Requires API keys for various providers (Anthropic, OpenAI, Google, DeepSeek, Serper)
+- `get_embedchain_config()` - Centralized ChromaDB and OpenAI embeddings configuration
 
 ### Template System
 
@@ -97,7 +108,8 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 1. **Simple Generation**: YAML data → Jinja2 template → LaTeX → PDF
 2. **AI Optimization**: Job posting → AI analysis → Optimized CV data → Template → PDF
 3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV optimization → Template → PDF
-4. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB with automatic embedding and retrieval
+4. **LLM Synthesis RAG**: Job posting → AI analysis with chunky tools → LLM-synthesized knowledge retrieval → Enhanced CV optimization → Template → PDF
+5. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB with automatic embedding and retrieval
 
 ### Testing
 
@@ -105,6 +117,10 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - Test structure mirrors source code in `tests/unit/optimizer/`
 - Configuration in `pytest.ini` with verbose output and short tracebacks
 - Filters Pydantic deprecation warnings for cleaner test output
+- Individual tool testing scripts in `scripts/` directory:
+  - `test_chunky_rag_tool.py` - ChunkyRagTool functionality tests
+  - `test_chunky_kb_tool.py` - ChunkyKnowledgeBaseTool tests
+  - `test_semantic_search_wrapper.py` - Wrapper integration tests
 
 ### Key Files
 
@@ -117,3 +133,4 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - `cv-agents.ipynb` - Jupyter notebook for experimentation and development
 - `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
 - `vector_db/` - ChromaDB vector store with automatic embedding and retrieval capabilities
+- `llm-context/` - Planning documentation and session context for development tracking (git-ignored, local only)
