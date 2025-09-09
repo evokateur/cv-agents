@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append(".")
+
 from optimizer.knowledge_embedder import KnowledgeBaseEmbedder
 from config import get_config
 
