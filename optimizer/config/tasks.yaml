@@ -36,72 +36,26 @@ job_analysis_task:
 
 cv_alignment_task:
   description: >
-    MISSION: Create a CvTransformationPlan that describes how to update the candidate's CV 
-    to align with the JobPosting requirements, using Knowledge Base evidence.
+    Create a CvTransformationPlan to align the candidate's CV with the job requirements.
 
-    INPUT CONTEXT:
-    1. JobPosting object (from job_analysis_task) - contains exact requirements
-    2. Candidate's CV at {candidate_cv_path} - current qualifications  
-    3. Knowledge Base - additional projects and achievements via tools
-
-    CRITICAL PROCESS:
-
-    STEP 1: Analyze JobPosting Requirements
-    - Extract JobPosting.technical_skills, hard_requirements, preferred_skills from context
-    - Note exact terminology used (e.g., "data analysis experience", "PHP")
-    - Identify specific technologies, frameworks, and skill areas
-
-    STEP 2: Inventory Current CV  
-    - Read candidate's CV completely
-    - List current skills, technologies, and experiences
-    - Note gaps compared to JobPosting requirements
-
-    STEP 3: Strategic Knowledge Base Search
-    IMPORTANT: The SemanticSearchTool returns LLM-synthesized responses, not raw chunks.
-    When you query "data analysis experience", you get intelligent analysis like:
-    "Experience in data analysis includes ETL pipeline development, SQL optimization..."
-
-    Search Strategy:
-    - Search for each missing skill individually (e.g., "data analysis experience")
-    - Search for specific technologies (e.g., "PHP WordPress development")  
-    - Search for relevant experience types (e.g., "large-scale systems architecture")
-    - The tool response will intelligently connect technical work to conceptual skills
-
-    SKILL INTERPRETATION RULES:
-    - If SemanticSearchTool says "experience in X includes Y activities", then the candidate HAS experience in X
-    - Technical work often demonstrates broader skills:
-      * ETL pipelines + SQL optimization = "data analysis experience"
-      * System architecture + performance tuning = "large-scale systems experience"
-      * Code reviews + technical discussions = "collaboration skills"
-    - Only mark skills as "missing" if Knowledge Base search finds NO related experience
-
-    STEP 4: Build Transformation Plan
-    - additions: Specific evidence from Knowledge Base with exact quotes and file paths
-    - missing_skills: ONLY skills with zero related experience in CV or Knowledge Base
-    - matching_skills: Skills clearly present in CV or found via Knowledge Base search
-    - rewrites: Specific language improvements with before/after examples
-
-    EXAMPLES:
-
-    GOOD Analysis:
-    JobPosting requires: "data analysis experience"
-    Knowledge Base search returns: "Experience in data analysis includes ETL pipelines, SQL transformations, query optimization"  
-    Conclusion: Candidate HAS data analysis experience → add to matching_skills, create additions with specific examples
-
-    BAD Analysis:  
-    JobPosting requires: "data analysis experience"
-    Knowledge Base search returns: detailed technical evidence
-    Conclusion: Mark as missing_skills ← WRONG! The search found relevant experience.
+    PROCESS:
+    1. Read the JobPosting requirements and candidate's CV at {candidate_cv_path}
+    2. For each required skill/technology, use SemanticSearchTool("skill name") to find relevant experience
+    3. Build transformation plan with:
+       - matching_skills: Skills found in CV or Knowledge Base
+       - missing_skills: Skills with no evidence found
+       - additions: Specific quotes and file paths from Knowledge Base searches
+       - rewrites: Improved descriptions using job terminology
 
     TOOL USAGE:
-    SemanticSearchTool takes only a simple string - do not use JSON format.
-    Example: SemanticSearchTool("data analysis experience")
+    - Use SemanticSearchTool with simple strings: SemanticSearchTool("PHP experience")
+    - The tool returns synthesized analysis connecting technical work to broader skills
+    - If the search finds related experience, add to matching_skills (not missing_skills)
 
-    GUARDRAILS:
-    - Use EXACT JobPosting terminology and company name
-    - Never fabricate employers, projects, or dates
-    - Cite specific Knowledge Base file paths for all evidence
-    - If truly no evidence exists, mark as TODO in plan
+    RULES:
+    - Use exact job posting terminology and company name
+    - Never fabricate information
+    - Cite specific file paths for all evidence
 
   expected_output: >
     A CvTransformationPlan JSON object containing a concrete edit plan
