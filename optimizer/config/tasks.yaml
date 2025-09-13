@@ -67,17 +67,12 @@ cv_optimization_task:
   description: >
     You will receive three inputs to complete this task:
 
-    1. A structured job posting object with the following fields:
-    [[JobPosting]]
+    1. A structured job posting object from the previous analysis
+    2. A structured CV transformation plan from the previous alignment analysis
+    3. A file path to the candidate's current CV: {candidate_cv_path}
 
-    2. A structured CV transformation plan object with the following fields:
-    [[CvTransformationPlan]]
-
-    3. A file path to the candidate's current CV:
-    {candidate_cv_path}
-
-    Use your file reading tool to read and analyze the candidate's current CV from this path. 
-    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and 
+    Use your file reading tool to read and analyze the candidate's current CV from this path.
+    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and
     restructured into the output format.
 
     IMPLEMENTATION PROCESS:

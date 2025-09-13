@@ -1,6 +1,5 @@
 from crewai import Task
 from optimizer.models import JobPosting, CvTransformationPlan, CurriculumVitae
-from optimizer.utils.prompt_utils import render_pydantic_models_in_prompt
 import yaml
 
 
@@ -17,36 +16,16 @@ class CustomTasks:
         )
 
     def cv_alignment_task(self, agent, context_tasks) -> Task:
-        description_template = self.tasks_config["cv_alignment_task"][
-            "description"
-        ]
-
-        rendered_description = render_pydantic_models_in_prompt(
-            description_template, model_registry={"JobPosting": JobPosting}
-        )
-
         return Task(
             config=self.tasks_config["cv_alignment_task"],
-            description=rendered_description,
             output_pydantic=CvTransformationPlan,
             context=context_tasks,
             agent=agent,
         )
 
     def cv_optimization_task(self, agent, context_tasks) -> Task:
-        description_template = self.tasks_config["cv_optimization_task"]["description"]
-
-        rendered_description = render_pydantic_models_in_prompt(
-            description_template,
-            model_registry={
-                "JobPosting": JobPosting,
-                "CvTransformationPlan": CvTransformationPlan,
-            },
-        )
-
         return Task(
             config=self.tasks_config["cv_optimization_task"],
-            description=rendered_description,
             output_pydantic=CurriculumVitae,
             context=context_tasks,
             agent=agent,
