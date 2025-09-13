@@ -74,7 +74,10 @@ def get_embedchain_config() -> dict:
     return {
         "llm": {
             "provider": "openai",
-            "config": {"model": "gpt-4o-mini"},
+            "config": {
+                "model": "gpt-4o-mini",
+                "number_documents": 7,
+            },
         },
         "embedder": {
             "provider": "openai",

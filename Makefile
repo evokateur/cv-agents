@@ -14,6 +14,9 @@ job-analysis-test:
 cv-alignment-test:
 	python -m scripts.cv_alignment_test
 
+cv-optimization-test:
+	python -m scripts.cv_optimization_test
+
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
 	pdflatex --output-directory=output output/cv.tex

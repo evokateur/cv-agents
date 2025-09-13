@@ -40,7 +40,7 @@ cv_alignment_task:
 
     PROCESS:
     1. Read the JobPosting requirements and candidate's CV at {candidate_cv_path}
-    2. For each required skill/technology, use SemanticSearchTool("skill name") to find relevant experience
+    2. For each required skill/technology, use Knowledge base("skill name") to find relevant experience
     3. Build transformation plan with:
        - matching_skills: Skills found in CV or Knowledge Base
        - missing_skills: Skills with no evidence found
@@ -48,7 +48,7 @@ cv_alignment_task:
        - rewrites: Improved descriptions using job terminology
 
     TOOL USAGE:
-    - Use SemanticSearchTool with simple strings: SemanticSearchTool("PHP experience")
+    - Use Knowledge base with simple strings: Knowledge base("PHP experience")
     - The tool returns synthesized analysis connecting technical work to broader skills
     - If the search finds related experience, add to matching_skills (not missing_skills)
 
@@ -80,16 +80,30 @@ cv_optimization_task:
     The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and 
     restructured into the output format.
 
+    IMPLEMENTATION PROCESS:
+    1. Read and parse the current CV from the provided file path
+    2. Follow the CvTransformationPlan guidance for restructuring and rewriting
+    3. Use Knowledge base to verify and expand on transformation plan citations
+    4. Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan
+    5. Enhance content with additional relevant details found in the knowledge base
+
+    TOOL USAGE:
+    - Knowledge base("specific skill or project") to find supporting evidence for CV improvements
+    - DirectorySearchTool to locate relevant files mentioned in the transformation plan
+    - FileReadTool to read complete context from knowledge base files for richer content
+
     Your task is to implement the CV transformation plan by:
     - Following the specific guidance provided in the CvTransformationPlan
     - Prioritizing experiences that the plan identifies as most relevant
     - Rewriting descriptions according to the plan's recommendations
+    - Verifying and expanding on knowledge base references from the plan
     - Implementing ATS keyword optimizations specified in the plan
     - Restructuring sections as outlined in the transformation strategy
     - Adding quantifications and metrics as directed by the plan
     - Aligning language and terminology with both job posting and plan guidance
+    - Enriching content with additional relevant details from knowledge base access
 
-    Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate’s strongest qualifications.
+    Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate's strongest qualifications.
   expected_output: >
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS

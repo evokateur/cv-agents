@@ -2,7 +2,7 @@ import argparse
 import json
 import jsonschema
 import yaml
-from optimizer.crew import CvOptimizer, JobAnalysisTest, CvAlignmentTest
+from optimizer.crew import CvOptimizer, JobAnalysisTest, CvAlignmentTest, CvOptimizationTest
 
 
 def dispatch_crew(crew_name, config, crew_functions):
@@ -37,6 +37,7 @@ def main(argv=None):
         "CvOptimizer": kickoff_cv_optimizer,
         "JobAnalysisTest": kickoff_job_analysis_test,
         "CvAlignmentTest": kickoff_cv_alignment_test,
+        "CvOptimizationTest": kickoff_cv_optimization_test,
     }
 
     dispatch_crew(args.crew_name, config, CREW_FUNCTIONS)
@@ -108,6 +109,27 @@ def kickoff_cv_alignment_test(config):
     jsonschema.validate(instance=config, schema=schema)
 
     CvAlignmentTest().crew().kickoff(inputs=config.get("inputs"))
+
+
+def kickoff_cv_optimization_test(config):
+    schema = {
+        "type": "object",
+        "properties": {
+            "inputs": {
+                "type": "object",
+                "properties": {
+                    "candidate_cv_path": {"type": "string"},
+                    "output_directory": {"type": "string"},
+                },
+                "required": ["candidate_cv_path"],
+            }
+        },
+        "required": ["inputs"],
+    }
+
+    jsonschema.validate(instance=config, schema=schema)
+
+    CvOptimizationTest().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":

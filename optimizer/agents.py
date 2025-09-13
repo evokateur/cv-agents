@@ -74,6 +74,10 @@ class CustomAgents:
     def cv_strategist(self) -> Agent:
         return Agent(
             config=self.agents_config["cv_strategist"],
-            tools=[self.get_file_read_tool()],
+            tools=[
+                self.get_semantic_search_tool(),
+                self.get_directory_search_tool(),
+                self.get_file_read_tool(),
+            ],
             llm=self.llms["cv_strategist"],
         )
