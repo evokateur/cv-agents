@@ -436,3 +436,50 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - **Isolated Testing**: CvOptimizationTest enables focused validation of cv_strategist without running full crew pipeline
 
 **Result:** Successfully eliminated the knowledge gap between CV transformation planning and implementation phases. The enhanced cv_strategist now has comprehensive knowledge base access with optimized 7-chunk retrieval, consistent tool naming, and isolated testing capabilities. End-to-end pipeline testing confirms full system functionality from job posting analysis through final optimized CV generation, with all agents working cohesively to produce high-quality, job-specific CV optimizations.
+
+## Schema Injection Removal and Prompt Simplification (September 2025)
+
+**Summary:** Successfully removed redundant Pydantic schema injection from CV optimization task prompts after determining that LLM synthesis tools and rich Pydantic field descriptions provide superior guidance without the complexity of schema placeholder systems.
+
+**Key Problems Investigated:**
+
+- **Schema Injection Necessity**: Questioned whether `[[ModelName]]` placeholder injection was still beneficial given improvements in RAG tool LLM synthesis
+- **Agent Query Analysis**: Investigated what queries agents were actually sending to determine if schema injection influenced query quality
+- **Prompt Complexity**: Schema injection added complexity to task descriptions while potentially providing redundant information
+- **"Sending the Bones" Problem**: Original schema injection solved agents sending structured data chunks instead of natural language queries
+
+**Architecture Analysis:**
+
+- **Schema Injection System**: `render_pydantic_models_in_prompt()` function replaced `[[ModelName]]` placeholders with formatted Pydantic field descriptions
+- **Agent Query Behavior**: CV alignment agent successfully makes natural language queries like `'Production experience with programming languages, particularly PHP and JavaScript'` without schema injection
+- **Pydantic Field Descriptions**: Rich field descriptions in models provide better guidance than generic schema injection
+- **CrewAI Integration**: Framework automatically provides output schemas via `output_pydantic` parameter, making manual injection redundant
+- **LLM Synthesis Evolution**: Modern ChunkyRagTool and SemanticSearchWrapper handle both natural language and structured queries effectively
+
+**Files Updated:**
+
+- `optimizer/config/tasks.yaml` - Removed `[[JobPosting]]` and `[[CvTransformationPlan]]` placeholders from cv_optimization_task description
+- `optimizer/tasks.py` - Removed `render_pydantic_models_in_prompt()` calls from cv_alignment_task and cv_optimization_task methods, cleaned up unused imports
+
+**Technical Implementation:**
+
+- **Schema Placeholder Removal**: Eliminated all `[[ModelName]]` placeholders from task descriptions in YAML configuration
+- **Import Cleanup**: Removed unused `render_pydantic_models_in_prompt` import from tasks module
+- **Preserved Utility Code**: Retained schema injection utilities in `optimizer/utils/prompt_utils.py` for potential future use cases
+- **Maintained Functionality**: CrewAI's `output_pydantic` parameter continues to provide agents with necessary schema information
+
+**Validation Results:**
+
+- **Query Analysis**: Confirmed agents make appropriate natural language queries without schema injection guidance
+- **Field Description Impact**: Rich Pydantic field descriptions (e.g., `"EXACT job title from the JobPosting context - use JobPosting.title exactly"`) provide more specific guidance than generic schema injection
+- **Test Verification**: `make cv-alignment-test` confirms system functionality maintained after schema injection removal
+- **Prompt Simplification**: Task descriptions now cleaner and more focused on actual task requirements
+
+**Key Insights:**
+
+- **Evolution of RAG Tools**: LLM synthesis capabilities in modern RAG tools eliminated the original "sending the bones" problem that schema injection was designed to solve
+- **Pydantic Best Practices**: Detailed field descriptions in Pydantic models provide superior guidance compared to generic schema structure injection
+- **Framework Maturation**: CrewAI's built-in schema handling via `output_pydantic` makes manual schema injection redundant
+- **Query Quality**: Agent queries remain high-quality and contextually appropriate without explicit schema guidance in prompts
+
+**Result:** Successfully simplified CV optimization task prompts by removing redundant schema injection while maintaining full system functionality. The investigation confirmed that modern LLM synthesis tools, rich Pydantic field descriptions, and CrewAI framework capabilities provide superior guidance without the complexity of manual schema injection systems. Task descriptions are now cleaner and more focused on actual requirements rather than structural metadata.
