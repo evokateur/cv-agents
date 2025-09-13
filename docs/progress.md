@@ -383,3 +383,55 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - Enhanced prompts work optimally with low-cost models (gpt-4o-mini) while maintaining sophistication compatibility
 
 **Result:** CV alignment task now generates high-quality transformation plans with intelligent skill recognition, proper context usage, and clean tool integration. The SemanticSearchWrapper provides LLM synthesis capabilities that connect technical experience to conceptual skills, resolving the core output quality issues while optimizing for both low-cost and sophisticated model performance.
+
+## Direct ChromaDB Chunking Implementation and Compatibility Investigation (September 2025)
+
+**Summary:** Successfully implemented direct ChromaDB chunking strategy based on example notebook approach, providing full control over document processing and metadata categorization, but discovered compatibility issues with existing LLM synthesis tools.
+
+**Key Changes:**
+
+- Replaced RagTool-based chunking with direct `DirectoryLoader` + `CharacterTextSplitter` approach from example notebook
+- Added document type categorization based on knowledge base directory structure (projects, developers, companies)
+- Enhanced root document handling to include files in knowledge base root directory without forced categorization
+- Maintained same chunk size/overlap parameters while gaining full visibility into chunking process
+- Successfully tested backward compatibility with existing embedding and retrieval scripts
+
+**Architecture Implementation:**
+
+- **Direct Document Loading**: Used `DirectoryLoader` with `TextLoader` and explicit UTF-8 encoding for reliable file processing
+- **Metadata Categorization**: Automatically assigns `doc_type` metadata based on source directory names (e.g., "projects", "developers", "companies")
+- **Root Document Integration**: Files in knowledge base root directory included without `doc_type` metadata, enabling flexible general searches
+- **Chunk Transparency**: Direct control over `CharacterTextSplitter` configuration with clear reporting of chunk creation and document types
+- **Collection Management**: Proper ChromaDB collection cleanup and recreation using `Chroma.from_documents()` approach
+
+**Files Updated:**
+
+- `optimizer/knowledge_embedder.py` - Complete rewrite from RagTool wrapper to direct LangChain document processing pipeline
+- Updated imports: `DirectoryLoader`, `TextLoader`, `CharacterTextSplitter`, `OpenAIEmbeddings` from LangChain
+- Enhanced logging: Reports total chunks created (275) and document types found during embedding process
+
+**Technical Details:**
+
+- Document loading: Processes subdirectories for categorized content, then root directory for general content
+- Metadata assignment: `add_metadata(doc, doc_type)` function adds directory-based categorization
+- Error handling: Validates knowledge base existence, handles encoding issues, provides meaningful error messages
+- Vector store creation: Direct `Chroma.from_documents()` with proper collection naming and persistence
+
+**Compatibility Investigation Results:**
+
+- **Backward Compatibility**: `scripts/embed_kb.py` works perfectly with new chunking approach
+- **Retrieval Tool Issue**: `SemanticSearchWrapper` returns generic textbook responses instead of knowledge base content
+- **Root Cause Identified**: LLM synthesis tools (ChunkyRagTool, SemanticSearchWrapper) expect RagTool-created ChromaDB format
+- **Evidence**: Same query works with old vector DB but fails with new direct ChromaDB approach, confirming format incompatibility
+- **Source Attribution Missing**: No actual source documents returned in synthesis results, indicating retrieval failure
+
+**Current Status:**
+
+Successfully implemented more transparent and controllable chunking strategy with rich metadata categorization. However, discovered that existing LLM synthesis layer (embedchain integration) is incompatible with direct ChromaDB format, requiring either:
+
+1. **Format Compatibility Fix**: Modify chunking to create ChromaDB in embedchain-expected format
+2. **Tool Architecture Change**: Replace embedchain tools with direct ChromaDB retrieval maintaining LLM synthesis capabilities
+
+The new chunking provides excellent foundation for multi-source knowledge base expansion (GitHub repositories, etc.) and enables targeted document type filtering, but requires resolution of embedchain compatibility issue to restore intelligent semantic synthesis functionality.
+
+**Next Steps:** Branch management to enable switching between RagTool and direct chunking approaches for comparative testing and compatibility resolution.
