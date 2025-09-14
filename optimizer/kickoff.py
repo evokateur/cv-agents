@@ -5,7 +5,19 @@ import logging
 import os
 import warnings
 import yaml
-from optimizer.crew import CvOptimizer, JobAnalysisTest, CvAlignmentTest, CvOptimizationTest
+from optimizer.crew import CvOptimizer, JobAnalysis, CvAlignment, CvOptimization
+
+
+def raise_exception_if_files_missing(file_paths):
+    """Raise FileNotFoundError if any of the specified file paths do not exist."""
+    missing_files = [path for path in file_paths if not os.path.exists(path)]
+
+    if missing_files:
+        raise FileNotFoundError(
+            f"Required input files are missing:\n" +
+            "\n".join(f"  - {file}" for file in missing_files) +
+            "\n\nRun the prerequisite crews to generate these files first."
+        )
 
 
 def setup_logging(output_directory, crew_name):
@@ -61,9 +73,9 @@ def main(argv=None):
 
     CREW_FUNCTIONS = {
         "CvOptimizer": kickoff_cv_optimizer,
-        "JobAnalysisTest": kickoff_job_analysis_test,
-        "CvAlignmentTest": kickoff_cv_alignment_test,
-        "CvOptimizationTest": kickoff_cv_optimization_test,
+        "JobAnalysis": kickoff_job_analysis,
+        "CvAlignment": kickoff_cv_alignment,
+        "CvOptimization": kickoff_cv_optimization,
     }
 
     dispatch_crew(args.crew_name, config, CREW_FUNCTIONS)
@@ -95,7 +107,7 @@ def kickoff_cv_optimizer(config):
     CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_job_analysis_test(config):
+def kickoff_job_analysis(config):
     schema = {
         "type": "object",
         "properties": {
@@ -113,10 +125,10 @@ def kickoff_job_analysis_test(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    JobAnalysisTest().crew().kickoff(inputs=config.get("inputs"))
+    JobAnalysis().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_cv_alignment_test(config):
+def kickoff_cv_alignment(config):
     schema = {
         "type": "object",
         "properties": {
@@ -134,10 +146,15 @@ def kickoff_cv_alignment_test(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    CvAlignmentTest().crew().kickoff(inputs=config.get("inputs"))
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    raise_exception_if_files_missing([
+        os.path.join(output_directory, "job_analysis.json")
+    ])
+
+    CvAlignment().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_cv_optimization_test(config):
+def kickoff_cv_optimization(config):
     schema = {
         "type": "object",
         "properties": {
@@ -155,7 +172,13 @@ def kickoff_cv_optimization_test(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    CvOptimizationTest().crew().kickoff(inputs=config.get("inputs"))
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    raise_exception_if_files_missing([
+        os.path.join(output_directory, "job_analysis.json"),
+        os.path.join(output_directory, "cv_transformation_plan.json")
+    ])
+
+    CvOptimization().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":

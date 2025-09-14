@@ -57,8 +57,8 @@ class CvOptimizer:
         )
 
 
-class JobAnalysisTest:
-    """Job Analysis Test crew - runs only job analysis task"""
+class JobAnalysis:
+    """Job Analysis crew - runs only job analysis task"""
 
     def __init__(self):
         self.custom_agents = CustomAgents()
@@ -76,8 +76,8 @@ class JobAnalysisTest:
         )
 
 
-class CvAlignmentTest:
-    """CV Alignment Test crew - runs only cv alignment task"""
+class CvAlignment:
+    """CV Alignment crew - runs only cv alignment task"""
 
     def __init__(self):
         self.custom_agents = CustomAgents()
@@ -130,8 +130,8 @@ class CvAlignmentTest:
         )
 
 
-class CvOptimizationTest:
-    """CV Optimization Test crew - runs only cv optimization task using pre-generated files"""
+class CvOptimization:
+    """CV Optimization crew - runs only cv optimization task using pre-generated files"""
 
     def __init__(self):
         self.custom_agents = CustomAgents()

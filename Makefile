@@ -8,14 +8,14 @@ endif
 agents:
 	python -m scripts.cv_agents
 
-job-analysis-test:
-	python -m scripts.job_analysis_test
+job-analysis:
+	python -m scripts.job_analysis
 
-cv-alignment-test:
-	python -m scripts.cv_alignment_test
+cv-alignment:
+	python -m scripts.cv_alignment
 
-cv-optimization-test:
-	python -m scripts.cv_optimization_test
+cv-optimization:
+	python -m scripts.cv_optimization
 
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
