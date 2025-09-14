@@ -1,17 +1,44 @@
 import argparse
 import json
 import jsonschema
+import logging
+import os
+import warnings
 import yaml
 from optimizer.crew import CvOptimizer, JobAnalysisTest, CvAlignmentTest, CvOptimizationTest
+
+
+def setup_logging(output_directory, crew_name):
+    os.makedirs(output_directory, exist_ok=True)
+    log_file = os.path.join(output_directory, f"{crew_name.lower()}.log")
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler()
+        ]
+    )
+
+    logger = logging.getLogger(__name__)
+    logger.info(f"Starting {crew_name} with logging to {log_file}")
+    return logger
 
 
 def dispatch_crew(crew_name, config, crew_functions):
     if crew_name not in crew_functions:
         raise ValueError(f"Unknown crew: {crew_name}")
+
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    setup_logging(output_directory, crew_name)
+
     crew_functions[crew_name](config)
 
 
 def main(argv=None):
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--crew_name", default="CvOptimizer", help="Crew name")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -21,7 +48,6 @@ def main(argv=None):
 
     config = {}
     if args.config:
-        # Try JSON first, then YAML
         try:
             config = json.loads(args.config)
         except json.JSONDecodeError:
