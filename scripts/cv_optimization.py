@@ -2,7 +2,7 @@ import json
 import optimizer.kickoff as kickoff
 
 candidate_cv_path = "data/cv.yaml"
-output_directory = "job_postings/tests"
+output_directory = "job_postings/automattic"
 
 
 def cv_optimization_with_config():
@@ -18,3 +18,4 @@ def cv_optimization_with_config():
 
 if __name__ == "__main__":
     cv_optimization_with_config()
+
