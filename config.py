@@ -17,16 +17,16 @@ class Config:
         return os.getenv("JOB_ANALYST_TEMPERATURE", "0.7")
 
     @property
-    def candidate_profiler_model(self) -> str:
-        model = os.getenv("CANDIDATE_PROFILER_MODEL")
+    def cv_advisor_model(self) -> str:
+        model = os.getenv("CV_ADVISOR_MODEL")
         assert model is not None, (
-            "CANDIDATE_PROFILER_MODEL environment variable must be set"
+            "CV_ADVISOR_MODEL environment variable must be set"
         )
         return model
 
     @property
-    def candidate_profiler_temperature(self) -> str:
-        return os.getenv("CANDIDATE_PROFILER_TEMPERATURE", "0.7")
+    def cv_advisor_temperature(self) -> str:
+        return os.getenv("CV_ADVISOR_TEMPERATURE", "0.7")
 
     @property
     def cv_strategist_model(self) -> str:
@@ -61,3 +61,33 @@ class Config:
 
 def get_config() -> Config:
     return Config()
+
+
+def get_embedchain_config() -> dict:
+    """
+    Returns the embedchain configuration for connecting to the existing vector database.
+    
+    This configuration connects to the existing populated vector database used by
+    the SemanticSearchTool, allowing ChunkyRagTool and ChunkyKnowledgeBaseTool
+    to provide LLM synthesis of the same knowledge base content.
+    """
+    return {
+        "llm": {
+            "provider": "openai",
+            "config": {
+                "model": "gpt-4o-mini",
+                "number_documents": 7,
+            },
+        },
+        "embedder": {
+            "provider": "openai",
+            "config": {"model": "text-embedding-ada-002"},
+        },
+        "vectordb": {
+            "provider": "chroma",
+            "config": {
+                "dir": "vector_db",
+                "collection_name": "knowledge_base",
+            },
+        },
+    }

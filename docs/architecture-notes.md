@@ -185,3 +185,142 @@ Then we really start chasing the dragon
 > - **Re-usability:** One plan can drive multiple artifacts (resume, cover letter, LinkedIn).
 > - **Safety:** Executor is constrained by the plan + evidence; fewer hallucinations.
 > - **Iteration:** If you dislike a suggestion, fix the plan and re-apply — deterministic changes.
+
+## Clarification: the KB (may be comprised of a vector db, but it) is not a vector
+
+### Human context window note
+
+Even though the KB changes, and it may have information that wasn't available to inform the original C.V., it cannot be used on its own to plan transformations to the C.V. You need job requirements, implicit or explicit, to drive inquiries.
+
+### GPT-5 context window note
+
+> Totally agree. Here’s a tiny architecture note you can drop into your repo and call it a day:
+>
+> # Architecture Note — CV Alignment System (Short)
+>
+> ## Core Idea
+>
+> - **KB is not a driver.** It’s a *reservoir* of facts.
+> - You need a **requirement vector** to focus change (from a job posting or an amalgam).
+> - The system plans edits against the base CV using that vector, then (optionally) applies them.
+>
+> ## Roles (simple model)
+>
+> - **Requirement Vector (R):** What the market (or you) asks for.
+> - **Base CV (C):** Current state.
+> - **Knowledge Base (K):** Evidence store (projects, metrics, roles).
+> - **Planner (P):** `Plan = f(R, C, query(K | R))` → produces `CvTransformationPlan`.
+> - **Executor (E) \[optional]:** Applies `Plan` to `C` → Draft CV or Patch.
+>
+> ## Two Workflows (kept separate)
+>
+> 1. **Job-driven alignment (now):**
+>    `JobPosting → R → P(R, C, K) → CvTransformationPlan`
+> 2. **Direction/amalgam (later):**
+>    `N postings / self-defined goals → amalgam R → P(R, C, K) → CvTransformationPlan`
+>    *(periodic KB-driven CV evolution can use a default R = “target career profile”)*
+>
+> ## Invariants / Guardrails
+>
+> - No fabrication: only facts from **C** or **K**.
+> - Planner **does not** rewrite; it emits **edits** (add/rewrites/remove/reorder/terms/metrics).
+> - Executor is optional and must be **plan-constrained**.
+> - Prefer **impact metrics** over activity metrics (commit counts are evidence, not headlines).
+>
+> ## Anti-Patterns
+>
+> - Letting **K** “speak on its own” (unfocused project dumps).
+> - Collapsing planner and executor (hard to trace, easy to hallucinate).
+> - Treating projects as employers (disambiguate: employer/client/project).
+>
+> ## Minimal IO Shapes
+>
+> - **JobPosting → (adapted to) JobRequirements**
+>   `hard_requirements, technical_skills, soft_skills, preferred_skills, responsibilities, keywords`
+> - **CvTransformationPlan**
+>   `matching_skills, missing_skills, transferable_skills, additions, rewrites, removals, reordering, quantifications, terminology_alignment, evidence`
+>
+> That’s the whole dynamic system in one page.
+
+## Synthesized Responses from Semantic Search with Sources
+
+"I'm tired, like, totally tired." - Johnny "Slash" Ulasewicz
+
+Yeah, I dug up the RagTool and the embedchain adapter implementations and asked the right questions until I had TWO tools that pretty much do the same thing: give nice synthesized responses (like the RagTool) and lots of chunky metadata.
+
+The JSON needs to be cleaned up as it comes with everything (totally chunky) and the agent will not know what to do with it, at this point.
+
+> Ahh — that’s an important nuance 👌. Let’s reframe the summary with that **true starting point**:
+>
+> ---
+>
+> ## 📓 Architectural Note — Building a RagTool Variant With Metadata
+>
+> ### The Original Problem
+>
+> Our first attempt at a **semantic search tool** returned raw chunks and metadata from the vector DB. While this provided traceability, it **did not synthesize an answer** — the agent only saw raw fragments, with no coherent response from an LLM.
+>
+> So we went back to the drawing board: **how do we get the best of both worlds?**
+>
+> - RagTool’s **synthesized answer** capability.
+> - Semantic search’s **metadata + sources** for traceability.
+>
+> ---
+>
+> ### Investigation
+>
+> We studied two CrewAI source files to see why RagTool dropped metadata:
+>
+> 1. [`rag_tool.py`](https://github.com/crewAIInc/crewAI-tools/blob/main/crewai_tools/tools/rag/rag_tool.py)
+>
+>    - Shows that RagTool delegates entirely to an `Adapter` and only returns `adapter.query(...)`.
+>    - `_run` hardcodes the return as a plain string.
+>
+> 2. [`embedchain_adapter.py`](https://github.com/crewAIInc/crewAI-tools/blob/main/crewai_tools/adapters/embedchain_adapter.py)
+>
+>    - Revealed that under the hood, `embedchain.App.query(citations=True)` already produces **(answer, sources)**.
+>    - But the adapter discards half: if `summarize=True`, you get only the answer; if `False`, only the sources.
+>
+> This explained why RagTool could never provide both synthesis and metadata in one call.
+>
+> ---
+>
+> ### Solution
+>
+> We built two new tools that expose **both answer + sources** as JSON:
+>
+> ```json
+> {
+>   "answer": "Synthesized response here",
+>   "sources": [
+>     {"text": "...chunk...", "metadata": {...}},
+>     ...
+>   ]
+> }
+> ```
+>
+> - **Option A – `ChunkyRagTool`**
+>
+>   - Subclassed `RagTool`.
+>   - Force-cast its adapter to `EmbedchainAdapter` and called `adapter.embedchain_app.query(citations=True)`.
+>   - ✅ Drop-in replacement, reuses RagTool’s config + lockfile.
+>   - ⚠️ Fragile: depends on adapter internals (`embedchain_app`).
+>
+> - **Option B – `ChunkyKnowledgeBaseTool`**
+>
+>   - Reimplemented directly as a `BaseTool` around `embedchain.App`.
+>   - Preserved RagTool’s `portalocker` lock logic for safety.
+>   - ✅ Clean, IDE-safe, future-proof.
+>   - ❌ Requires manually managing config to ensure it points to the same Chroma collection.
+>
+> ---
+>
+> ### Outcome
+>
+> - We now have tools that provide **coherent synthesized answers** (like RagTool) *with* **sources and metadata** (like semantic search).
+> - Both options connect to the same Chroma DB (`knowledge_base` collection) with the same config.
+> - Option A is convenient if RagTool compatibility is needed; Option B is preferred for long-term maintainability.
+>
+> ---
+>
+> 👉 Want me to make a **recommendation footer** along the lines of *“Use Option B (`ChunkyKnowledgeBaseTool`) for all new development, keep Option A as a fallback where RagTool is required”*?

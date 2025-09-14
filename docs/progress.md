@@ -278,3 +278,269 @@
 - Test successfully reads candidate CV (Wesley Hinkle) and performs semantic search for relevant projects
 
 **Result:** Functional candidate profiling test crew that isolates the candidate profiling task for focused testing. Successfully reads CV files, loads job analysis context from standardized output location, and generates candidate profiles with semantic search integration. All naming aligned with task-based conventions.
+
+## Comprehensive Terminology Refactoring: Candidate Profiling to CV Alignment (August 2025)
+
+**Summary:** Completed comprehensive renaming and restructuring of CV optimization system components from "candidate profiling" terminology to "cv alignment" terminology, reflecting the system's actual purpose of creating transformation plans rather than profiling candidates.
+
+**Key Changes:**
+
+- Renamed `CandidateProfile` model to `CvTransformationPlan` with restructured fields for actionable CV transformation guidance
+- Renamed `candidate_profiling_task` to `cv_alignment_task` across all configuration and code references
+- Renamed `candidate_profiler` agent to `cv_advisor` with updated role description to "CV Alignment Adviser"
+- Updated all related file names, environment variables, test classes, and documentation to use "cv alignment" terminology
+- Restructured `CvTransformationPlan` model to include transformation-specific fields: additions, rewrites, removals, reordering, quantifications, terminology_alignment, evidence
+
+**Architecture Implementation:**
+
+- **Model Restructuring**: `CvTransformationPlan` now represents an actionable transformation plan rather than a candidate summary, with fields for specific CV modifications
+- **Systematic Renaming**: Updated all references across Python code, YAML configurations, environment variables, test files, and Makefile targets
+- **Agent Role Evolution**: CV Advisor now focuses on creating transformation plans with specific guidance for CV optimization
+- **Task Output Alignment**: Output files renamed to `cv_transformation_plan.json` to match new model structure
+- **Testing Sequence**: Established proper test execution order (job analysis → cv alignment → full pipeline)
+
+**Files Updated:**
+
+- `optimizer/models.py` - Renamed CandidateProfile to CvTransformationPlan with new field structure and added missing Field import
+- `optimizer/tasks.py` - Renamed method to `cv_alignment_task`, updated imports, fixed indentation syntax error
+- `optimizer/crew.py` - Renamed agent method to `cv_advisor`, updated class names from CandidateProfilingTest to CvAlignmentTest
+- `optimizer/config/tasks.yaml` - Updated task key, output file name, and task descriptions
+- `optimizer/config/agents.yaml` - Renamed agent key and updated role to "CV Alignment Adviser"  
+- `config.py` - Renamed environment variable properties from `candidate_profiler_*` to `cv_advisor_*`
+- `sample.env` and `.env` - Updated environment variable names from CANDIDATE_PROFILER_*to CV_ADVISOR_*
+- `Makefile` - Renamed target from `candidate-profiling-test` to `cv-alignment-test`
+- `scripts/candidate_profiling_test.py` → `scripts/cv_alignment_test.py` - Renamed file and updated function references
+
+**Technical Fixes:**
+
+- **Indentation Error Resolution**: Fixed duplicate "description" lines in cv_alignment_task method causing syntax error
+- **Missing Import Fix**: Added `Field` to Pydantic imports to support new model field definitions
+- **Environment Variable Sync**: Updated .env file with new CV_ADVISOR_* variable names
+- **Vector Database Refresh**: Rebuilt vector database to ensure fresh embeddings for testing
+
+**Model Structure Enhancement:**
+
+The `CvTransformationPlan` model now includes actionable transformation fields:
+
+- `additions`: New bullets/sections from knowledge base to insert
+- `rewrites`: Instructions for rewriting existing bullets for better impact/fit  
+- `removals`: Items to cut or downplay as irrelevant
+- `reordering`: Section/experience prioritization guidance
+- `quantifications`: Locations where real metrics should be added
+- `terminology_alignment`: Exact phrase swaps to match job posting language
+- `evidence`: Knowledge base pointers backing transformation suggestions
+
+**Testing Validation:**
+
+- Successfully tested complete pipeline: job analysis → cv alignment → output generation
+- Verified CV Alignment Advisor now generates proper transformation plans with actionable instructions
+- Confirmed model field validation works correctly with new CvTransformationPlan schema
+- Validated environment variable configuration and agent instantiation
+
+**Result:** Successfully transformed the system from candidate profiling focus to CV alignment and transformation planning. The CV Advisor now generates actionable transformation plans rather than candidate summaries, providing specific guidance for CV optimization based on job requirements. All components properly renamed and tested with new terminology and enhanced functionality.
+
+## LLM Synthesis RAG Tool Implementation and Prompt Engineering Optimization (September 2025)
+
+**Summary:** Implemented LLM-enhanced RAG tools to resolve CV alignment task output quality issues and optimized prompt engineering for low-cost model performance while maintaining compatibility with sophisticated models.
+
+**Key Problems Resolved:**
+
+- **Skill Recognition Gap**: CV alignment agent couldn't connect technical work (ETL pipelines, SQL optimization) to conceptual skills (data analysis experience) using raw text chunks
+- **Context Passing Conflicts**: YAML context declarations overrode Python context passing, causing agents to lose job posting data
+- **Tool Parameter Validation**: Agent passed JSON structures instead of simple strings to SemanticSearchTool
+- **File vs Context Confusion**: Enhanced prompts made agent look for job posting files instead of using context objects
+
+**Architecture Implementation:**
+
+- **LLM Synthesis Tools**: Created ChunkyRagTool and ChunkyKnowledgeBaseTool with embedchain.App integration for intelligent semantic analysis
+- **SemanticSearchWrapper**: Developed wrapper class providing clean agent-friendly output while preserving LLM synthesis capabilities
+- **Centralized Configuration**: Added `get_embedchain_config()` function in config.py for consistent ChromaDB and OpenAI embeddings setup
+- **Enhanced Prompt Engineering**: Optimized cv_alignment_task with step-by-step processes, concrete examples, and clear tool usage instructions
+
+**Files Created/Modified:**
+
+- `optimizer/tools/chunky_rag_tool.py` - LLM-enhanced RAG tool extending existing RagTool with embedchain integration
+- `optimizer/tools/chunky_knowledge_base_tool.py` - Standalone embedchain.App tool for semantic knowledge queries
+- `optimizer/tools/semantic_search_wrapper.py` - Wrapper providing clean output format for chunky tools
+- `config.py` - Added `get_embedchain_config()` for centralized embedchain configuration
+- `optimizer/models.py` - Enhanced CvTransformationPlan with detailed field descriptions including exact job title/company requirements
+- `optimizer/config/tasks.yaml` - Comprehensive prompt engineering with examples, removed conflicting context declarations, fixed "Read" → "Extract from context"
+- `optimizer/crew.py` - Fixed fake job analysis task with FileReadTool and proper file reading instructions
+- `optimizer/agents.py` - Updated to use SemanticSearchWrapper instead of original SemanticSearchTool
+
+**Technical Solutions:**
+
+- **Context Passing Fix**: Removed `context: [job_analysis_task]` from YAML to allow Python context passing
+- **Tool Enhancement**: SemanticSearchWrapper returns format: `"LLM synthesized answer\n\nSources:\n- file1.md\n- file2.md"`  
+- **Prompt Optimization**: Changed "Read JobPosting.technical_skills" to "Extract JobPosting.technical_skills from context"
+- **Schema Validation**: Added detailed Pydantic field descriptions with exact requirements for job titles and company names
+- **LLM Synthesis**: ChunkyRagTool uses embedchain for intelligent connections between technical work and broader skills
+
+**Testing Results:**
+
+- Successfully resolved skill recognition: agent now identifies database experience from MSSQL/MySQL/PostgreSQL references
+- SemanticSearchWrapper provides coherent, actionable answers with proper source attribution
+- Context passing works correctly without file-seeking behavior
+- Enhanced prompts work optimally with low-cost models (gpt-4o-mini) while maintaining sophistication compatibility
+
+**Result:** CV alignment task now generates high-quality transformation plans with intelligent skill recognition, proper context usage, and clean tool integration. The SemanticSearchWrapper provides LLM synthesis capabilities that connect technical experience to conceptual skills, resolving the core output quality issues while optimizing for both low-cost and sophisticated model performance.
+
+## CV Strategist Enhancement and End-to-End Testing Pipeline (September 2025)
+
+**Summary:** Successfully enhanced the cv_strategist agent with comprehensive knowledge base access tools and created a complete testing pipeline for isolated agent validation, resolving the knowledge gap between CV transformation planning and implementation phases.
+
+**Key Problems Resolved:**
+
+- **Knowledge Gap Issue**: cv_strategist lacked access to knowledge base tools that cv_advisor used, creating information asymmetry between planning and execution phases
+- **Insufficient Chunk Retrieval**: Default 3-chunk semantic search provided limited context for complex CV transformations
+- **Tool Naming Inconsistency**: SemanticSearchWrapper naming didn't align with standard RagTool conventions, causing agent confusion
+- **Testing Infrastructure Gap**: No isolated testing capability for cv_strategist using pre-generated transformation plans
+
+**Architecture Implementation:**
+
+- **Agent Tool Enhancement**: Enhanced cv_strategist with SemanticSearchTool, DirectorySearchTool, and FileReadTool matching cv_advisor capabilities
+- **Retrieval Optimization**: Increased semantic search from 3 to 7 chunks via embedchain's number_documents parameter for richer context
+- **Tool Naming Alignment**: Updated SemanticSearchWrapper to use "Knowledge base" name and description matching RagTool conventions
+- **Test Pipeline Creation**: Implemented CvOptimizationTest crew with fake agents for sequential file loading and isolated cv_strategist testing
+
+**Files Updated:**
+
+- `optimizer/agents.py:74-83` - Enhanced cv_strategist agent with comprehensive tool suite (SemanticSearchTool, DirectorySearchTool, FileReadTool)
+- `optimizer/config/tasks.yaml:66-106` - Updated cv_optimization_task with 5-step implementation process and enhanced knowledge base verification instructions
+- `config.py:74-90` - Updated embedchain configuration to retrieve 7 chunks instead of 3 via number_documents parameter
+- `optimizer/tools/semantic_search_wrapper.py:9-12` - Aligned tool naming with RagTool conventions ("Knowledge base" name and description)
+- `optimizer/crew.py:133-217` - Created CvOptimizationTest class with fake agents for loading pre-generated job analysis and transformation plan outputs
+- `optimizer/kickoff.py` - Added kickoff_cv_optimization_test() function with proper schema validation
+- `scripts/cv_optimization_test.py` - New test script following established pattern for isolated cv_strategist validation
+- `Makefile` - Added cv-optimization-test target using module execution pattern
+
+**Technical Implementation:**
+
+- **Enhanced Agent Configuration**: cv_strategist now has same tool access as cv_advisor, eliminating knowledge asymmetry
+- **Optimized Retrieval**: embedchain BaseLlmConfig with number_documents=7 provides richer context for CV transformations
+- **Sequential Test Processing**: fake_job_analysis_task → fake_cv_alignment_task → cv_optimization_task with file-based handoffs
+- **Validation Pipeline**: Schema validation ensures required inputs (candidate_cv_path, output_directory) with automatic output file loading
+- **Tool Consistency**: All agents now reference "Knowledge base" tool with consistent naming and descriptions
+
+**Testing Results:**
+
+- **Job Analysis Test**: Successfully analyzed Automattic Software Engineer position with proper skill extraction and requirements identification
+- **CV Alignment Test**: Generated comprehensive CvTransformationPlan with matching skills (PHP, JavaScript, WordPress, Testing frameworks) and strategic additions from knowledge base
+- **CV Optimization Test**: cv_strategist successfully implemented transformation plan, generating complete optimized CV with enhanced experience descriptions, aligned terminology, and comprehensive technical skills section
+- **End-to-End Validation**: Complete pipeline from job posting URL to final optimized CV JSON output functioning correctly
+
+**Key Performance Improvements:**
+
+- **Enhanced Context**: 7-chunk retrieval provides significantly more comprehensive knowledge base context for CV transformations
+- **Tool Alignment**: Consistent "Knowledge base" naming eliminates agent confusion about tool capabilities and usage
+- **Knowledge Integration**: cv_strategist can now verify and expand on transformation plan citations using same tools as cv_advisor
+- **Isolated Testing**: CvOptimizationTest enables focused validation of cv_strategist without running full crew pipeline
+
+**Result:** Successfully eliminated the knowledge gap between CV transformation planning and implementation phases. The enhanced cv_strategist now has comprehensive knowledge base access with optimized 7-chunk retrieval, consistent tool naming, and isolated testing capabilities. End-to-end pipeline testing confirms full system functionality from job posting analysis through final optimized CV generation, with all agents working cohesively to produce high-quality, job-specific CV optimizations.
+
+## Schema Injection Removal and Prompt Simplification (September 2025)
+
+**Summary:** Successfully removed redundant Pydantic schema injection from CV optimization task prompts after determining that LLM synthesis tools and rich Pydantic field descriptions provide superior guidance without the complexity of schema placeholder systems.
+
+**Key Problems Investigated:**
+
+- **Schema Injection Necessity**: Questioned whether `[[ModelName]]` placeholder injection was still beneficial given improvements in RAG tool LLM synthesis
+- **Agent Query Analysis**: Investigated what queries agents were actually sending to determine if schema injection influenced query quality
+- **Prompt Complexity**: Schema injection added complexity to task descriptions while potentially providing redundant information
+- **"Sending the Bones" Problem**: Original schema injection solved agents sending structured data chunks instead of natural language queries
+
+**Architecture Analysis:**
+
+- **Schema Injection System**: `render_pydantic_models_in_prompt()` function replaced `[[ModelName]]` placeholders with formatted Pydantic field descriptions
+- **Agent Query Behavior**: CV alignment agent successfully makes natural language queries like `'Production experience with programming languages, particularly PHP and JavaScript'` without schema injection
+- **Pydantic Field Descriptions**: Rich field descriptions in models provide better guidance than generic schema injection
+- **CrewAI Integration**: Framework automatically provides output schemas via `output_pydantic` parameter, making manual injection redundant
+- **LLM Synthesis Evolution**: Modern ChunkyRagTool and SemanticSearchWrapper handle both natural language and structured queries effectively
+
+**Files Updated:**
+
+- `optimizer/config/tasks.yaml` - Removed `[[JobPosting]]` and `[[CvTransformationPlan]]` placeholders from cv_optimization_task description
+- `optimizer/tasks.py` - Removed `render_pydantic_models_in_prompt()` calls from cv_alignment_task and cv_optimization_task methods, cleaned up unused imports
+
+**Technical Implementation:**
+
+- **Schema Placeholder Removal**: Eliminated all `[[ModelName]]` placeholders from task descriptions in YAML configuration
+- **Import Cleanup**: Removed unused `render_pydantic_models_in_prompt` import from tasks module
+- **Preserved Utility Code**: Retained schema injection utilities in `optimizer/utils/prompt_utils.py` for potential future use cases
+- **Maintained Functionality**: CrewAI's `output_pydantic` parameter continues to provide agents with necessary schema information
+
+**Validation Results:**
+
+- **Query Analysis**: Confirmed agents make appropriate natural language queries without schema injection guidance
+- **Field Description Impact**: Rich Pydantic field descriptions (e.g., `"EXACT job title from the JobPosting context - use JobPosting.title exactly"`) provide more specific guidance than generic schema injection
+- **Test Verification**: `make cv-alignment-test` confirms system functionality maintained after schema injection removal
+- **Prompt Simplification**: Task descriptions now cleaner and more focused on actual task requirements
+
+**Key Insights:**
+
+- **Evolution of RAG Tools**: LLM synthesis capabilities in modern RAG tools eliminated the original "sending the bones" problem that schema injection was designed to solve
+- **Pydantic Best Practices**: Detailed field descriptions in Pydantic models provide superior guidance compared to generic schema structure injection
+- **Framework Maturation**: CrewAI's built-in schema handling via `output_pydantic` makes manual schema injection redundant
+- **Query Quality**: Agent queries remain high-quality and contextually appropriate without explicit schema guidance in prompts
+
+**Result:** Successfully simplified CV optimization task prompts by removing redundant schema injection while maintaining full system functionality. The investigation confirmed that modern LLM synthesis tools, rich Pydantic field descriptions, and CrewAI framework capabilities provide superior guidance without the complexity of manual schema injection systems. Task descriptions are now cleaner and more focused on actual requirements rather than structural metadata.
+
+## Logging Implementation and Code Quality Improvements (September 2025)
+
+**Summary:** Implemented comprehensive logging functionality in the CV optimization kickoff script and performed code quality improvements including deprecation warning filtering, comment cleanup, debug script removal, and output file renaming for better clarity.
+
+**Key Changes:**
+
+- Added logging configuration with both file and console output to `optimizer/kickoff.py`
+- Implemented deprecation warning filtering to reduce console noise during crew execution
+- Cleaned up unnecessary comments from kickoff.py following self-documenting code principles
+- Renamed cv_optimization_task output file to `optimized_cv.json` for improved clarity
+
+**Architecture Implementation:**
+
+- **Logging System**: Created `setup_logging()` function that writes log files to output directory with format `{crew_name}.log`
+- **Warning Management**: Added `warnings.filterwarnings("ignore", category=DeprecationWarning)` to main() function
+- **Code Quality**: Removed comments in favor of self-documenting code approach
+- **Output Naming**: Updated cv_optimization_task output from generic "cv_optimization.json" to descriptive "optimized_cv.json"
+
+**Files Updated:**
+
+- `optimizer/kickoff.py` - Added logging infrastructure with FileHandler and StreamHandler, added deprecation warning filtering, removed unnecessary comments for cleaner code
+- `optimizer/config/tasks.yaml:106` - Updated cv_optimization_task output file from "cv_optimization.json" to "optimized_cv.json"
+- Root directory cleanup - Removed temporary debug scripts: `debug_optimization_queries.py`, `debug_queries.py`, `debug_rag_queries.py`
+
+**Code Quality Results:**
+
+- **Clean Console Output**: Deprecation warning filtering eliminates noise during crew execution
+- **Comprehensive Logging**: Both file and console logging provide development and production visibility
+- **Self-Documenting**: Removed unnecessary comments in favor of clear, descriptive code
+- **Clear Output Naming**: Final CV output file now clearly named "optimized_cv.json"
+
+**Result:** Successfully implemented production-ready logging infrastructure and improved overall code quality through warning management, comment cleanup, workspace organization, and clearer output file naming. The kickoff script now provides comprehensive logging capabilities while maintaining clean, self-documenting code that follows established best practices.
+
+## Architecture Cleanup and Test Naming Fixes (September 2025)
+
+**Summary:** Removed Test suffixes from crew operations, added file validation to prevent non-deterministic failures, and fixed test naming to accurately reflect what's being tested.
+
+**Key Changes:**
+
+- Renamed crew classes: JobAnalysisTest → JobAnalysis, CvAlignmentTest → CvAlignment, CvOptimizationTest → CvOptimization
+- Added file validation in kickoff.py to check required inputs before crew execution
+- Renamed test file to accurately reflect what's being tested: test_semantic_search_tool.py → test_semantic_search_wrapper.py
+- Added `make vector_db` target for convenient vector database rebuilding
+
+**Architecture Implementation:**
+
+- **Clean Naming**: Removed Test/test suffixes to make individual task crews equivalent to full crew execution
+- **Fail-Fast Validation**: Added `raise_exception_if_files_missing()` function to prevent confusing errors from missing prerequisite files
+- **Test Accuracy**: Renamed semantic search test to match actual tool being tested (SemanticSearchWrapper)
+
+**Files Updated:**
+
+- `optimizer/crew.py` - Renamed all Test suffixed classes to clean names
+- `optimizer/kickoff.py` - Added file validation function, updated crew imports and function names
+- `scripts/` - Renamed all *_test.py files to remove test suffix
+- `Makefile` - Updated targets, added vector_db target with .PHONY declaration
+- `tests/test_semantic_search_wrapper.py` - Renamed from test_semantic_search_tool.py, fixed assertion
+
+**Result:** Simplified architecture with clean naming conventions, reliable file validation, and accurate test naming that reflects actual functionality being tested.

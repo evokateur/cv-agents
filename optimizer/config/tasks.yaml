@@ -34,87 +34,74 @@ job_analysis_task:
   output_file: "{output_directory}/job_analysis.json"
   agent: job_analyst
 
-candidate_profiling_task:
+cv_alignment_task:
   description: >
-    You will receive structured job requirements from the job analysis task:
+    Create a CvTransformationPlan to align the candidate's CV with the job requirements.
 
-    [[JobPosting]]
+    PROCESS:
+    1. Read the JobPosting requirements and candidate's CV at {candidate_cv_path}
+    2. For each required skill/technology, use Knowledge base("skill name") to find relevant experience
+    3. Build transformation plan with:
+       - matching_skills: Skills found in CV or Knowledge Base
+       - missing_skills: Skills with no evidence found
+       - additions: Specific quotes and file paths from Knowledge Base searches
+       - rewrites: Improved descriptions using job terminology
 
-    Your task is to build a comprehensive profile of the job candidate using the following approach:
+    TOOL USAGE:
+    - Use Knowledge base with simple strings: Knowledge base("PHP experience")
+    - The tool returns synthesized analysis connecting technical work to broader skills
+    - If the search finds related experience, add to matching_skills (not missing_skills)
 
-    1. **Primary Data Source - CV Analysis:**
-       Read the candidate's current CV at {candidate_cv_path} to extract basic information 
-       like name, contact details, work history, and skills overview.
+    RULES:
+    - Use exact job posting terminology and company name
+    - Never fabricate information
+    - Cite specific file paths for all evidence
 
-    2. **Knowledge Base Enhancement:**
-       Use the CandidateKnowledgeBase tool to search for additional context and details 
-       about the candidate's work experience and qualifications.
-
-    When constructing the profile of the candidate, focus on:
-
-    - Projects and experiences that match required and preferred skills
-    - Relevant technical achievements and their business impact
-    - Leadership and collaboration examples appropriate to the role level
-    - Domain expertise aligned with the industry and responsibilities
-    - Quantifiable results and measurable outcomes from past work
-
-    Use semantic search to find related experiences, even if the match is not exact. 
-
-    To use the SemanticSearchTool:
-    - Always call it with exactly one argument: {"query": "<natural language text>"}
-    - Do not pass structured data, JSON objects, or dictionaries as the query.
-    - Convert the relevant job requirements into a single natural language query string first.
-    - The tool returns relevant text chunks along with their source file paths.
-
-    Example of correct usage:
-    {"query": "Find projects and experiences related to backend engineering with Python and AWS in the fintech industry."}
-
-    Example of incorrect usage (do NOT do this):
-    {"query": {"description": "Python, AWS, backend"}}  
-
-    When the SemanticSearchTool returns results, each result includes a "Source:" line 
-    with the full file path. You can read the complete document using the FileReadTool with 
-    that exact path to get additional context and details.
-
-    Summarize and integrate retrieved findings into a structured CandidateProfile object
-    tailored to the provided job requirements.
   expected_output: >
-    A structured CandidateProfile containing relevant experiences, matching skills,
-    key projects, achievements, and contextual information tailored to the job requirements.
-  output_file: "{output_directory}/candidate_profile.json"
-  context: [job_analysis_task]
-  agent: candidate_profiler
+    A CvTransformationPlan JSON object containing a concrete edit plan
+    shaped by BOTH the JobPosting and the candidate's knowledge base.
+  output_file: "{output_directory}/cv_transformation_plan.json"
+  agent: cv_advisor
 
 cv_optimization_task:
   description: >
     You will receive three inputs to complete this task:
 
-    1. A structured job posting object with the following fields:
-    [[JobPosting]]
+    1. A structured job posting object from the previous analysis
+    2. A structured CV transformation plan from the previous alignment analysis
+    3. A file path to the candidate's current CV: {candidate_cv_path}
 
-    2. A structured candidate profile object with the following fields:
-    [[CandidateProfile]]
-
-    3. A file path to the candidate's current CV:
-    {candidate_cv_path}
-
-    Use your file reading tool to read and analyze the candidate's current CV from this path. 
-    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and 
+    Use your file reading tool to read and analyze the candidate's current CV from this path.
+    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and
     restructured into the output format.
 
-    Your task is to optimize the candidate's CV for the target job by:
-    - Prioritizing experiences that best match the required and preferred skills
-    - Rewriting descriptions to emphasize relevant achievements and responsibilities
-    - Optimizing keyword usage for applicant tracking system (ATS) compatibility
-    - Structuring sections to highlight strengths for this specific role
-    - Quantifying impact (e.g., metrics, results) wherever possible
-    - Aligning language, tone, and terminology with the job posting
+    IMPLEMENTATION PROCESS:
+    1. Read and parse the current CV from the provided file path
+    2. Follow the CvTransformationPlan guidance for restructuring and rewriting
+    3. Use Knowledge base to verify and expand on transformation plan citations
+    4. Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan
+    5. Enhance content with additional relevant details found in the knowledge base
 
-    Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate’s strongest qualifications.
+    TOOL USAGE:
+    - Knowledge base("specific skill or project") to find supporting evidence for CV improvements
+    - DirectorySearchTool to locate relevant files mentioned in the transformation plan
+    - FileReadTool to read complete context from knowledge base files for richer content
+
+    Your task is to implement the CV transformation plan by:
+    - Following the specific guidance provided in the CvTransformationPlan
+    - Prioritizing experiences that the plan identifies as most relevant
+    - Rewriting descriptions according to the plan's recommendations
+    - Verifying and expanding on knowledge base references from the plan
+    - Implementing ATS keyword optimizations specified in the plan
+    - Restructuring sections as outlined in the transformation strategy
+    - Adding quantifications and metrics as directed by the plan
+    - Aligning language and terminology with both job posting and plan guidance
+    - Enriching content with additional relevant details from knowledge base access
+
+    Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate's strongest qualifications.
   expected_output: >
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS
     and human review.
-  output_file: "{output_directory}/cv_optimization.json"
-  context: [job_analysis_task, candidate_profiling_task]
+  output_file: "{output_directory}/optimized_cv.json"
   agent: cv_strategist

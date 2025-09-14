@@ -8,7 +8,7 @@ def describe_pydantic_model_for_prompt(model_class: Type[BaseModel]) -> str:
     Generate a natural-language-friendly description of a Pydantic model for use in LLM prompts.
 
     Args:
-        model_class: A subclass of BaseModel (e.g. JobPosting, CandidateProfile)
+        model_class: A subclass of BaseModel (e.g. JobPosting, CvTransformationPlan)
 
     Returns:
         A formatted string listing field names, types, and any available descriptions.

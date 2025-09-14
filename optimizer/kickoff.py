@@ -1,17 +1,56 @@
 import argparse
 import json
 import jsonschema
+import logging
+import os
+import warnings
 import yaml
-from optimizer.crew import CvOptimizer, JobAnalysisTest, CandidateProfilingTest
+from optimizer.crew import CvOptimizer, JobAnalysis, CvAlignment, CvOptimization
+
+
+def raise_exception_if_files_missing(file_paths):
+    """Raise FileNotFoundError if any of the specified file paths do not exist."""
+    missing_files = [path for path in file_paths if not os.path.exists(path)]
+
+    if missing_files:
+        raise FileNotFoundError(
+            f"Required input files are missing:\n" +
+            "\n".join(f"  - {file}" for file in missing_files) +
+            "\n\nRun the prerequisite crews to generate these files first."
+        )
+
+
+def setup_logging(output_directory, crew_name):
+    os.makedirs(output_directory, exist_ok=True)
+    log_file = os.path.join(output_directory, f"{crew_name.lower()}.log")
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler()
+        ]
+    )
+
+    logger = logging.getLogger(__name__)
+    logger.info(f"Starting {crew_name} with logging to {log_file}")
+    return logger
 
 
 def dispatch_crew(crew_name, config, crew_functions):
     if crew_name not in crew_functions:
         raise ValueError(f"Unknown crew: {crew_name}")
+
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    setup_logging(output_directory, crew_name)
+
     crew_functions[crew_name](config)
 
 
 def main(argv=None):
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--crew_name", default="CvOptimizer", help="Crew name")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -21,7 +60,6 @@ def main(argv=None):
 
     config = {}
     if args.config:
-        # Try JSON first, then YAML
         try:
             config = json.loads(args.config)
         except json.JSONDecodeError:
@@ -35,8 +73,9 @@ def main(argv=None):
 
     CREW_FUNCTIONS = {
         "CvOptimizer": kickoff_cv_optimizer,
-        "JobAnalysisTest": kickoff_job_analysis_test,
-        "CandidateProfilingTest": kickoff_candidate_profiling_test,
+        "JobAnalysis": kickoff_job_analysis,
+        "CvAlignment": kickoff_cv_alignment,
+        "CvOptimization": kickoff_cv_optimization,
     }
 
     dispatch_crew(args.crew_name, config, CREW_FUNCTIONS)
@@ -68,7 +107,7 @@ def kickoff_cv_optimizer(config):
     CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_job_analysis_test(config):
+def kickoff_job_analysis(config):
     schema = {
         "type": "object",
         "properties": {
@@ -86,10 +125,10 @@ def kickoff_job_analysis_test(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    JobAnalysisTest().crew().kickoff(inputs=config.get("inputs"))
+    JobAnalysis().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_candidate_profiling_test(config):
+def kickoff_cv_alignment(config):
     schema = {
         "type": "object",
         "properties": {
@@ -107,7 +146,39 @@ def kickoff_candidate_profiling_test(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    CandidateProfilingTest().crew().kickoff(inputs=config.get("inputs"))
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    raise_exception_if_files_missing([
+        os.path.join(output_directory, "job_analysis.json")
+    ])
+
+    CvAlignment().crew().kickoff(inputs=config.get("inputs"))
+
+
+def kickoff_cv_optimization(config):
+    schema = {
+        "type": "object",
+        "properties": {
+            "inputs": {
+                "type": "object",
+                "properties": {
+                    "candidate_cv_path": {"type": "string"},
+                    "output_directory": {"type": "string"},
+                },
+                "required": ["candidate_cv_path"],
+            }
+        },
+        "required": ["inputs"],
+    }
+
+    jsonschema.validate(instance=config, schema=schema)
+
+    output_directory = config.get("inputs", {}).get("output_directory", "output")
+    raise_exception_if_files_missing([
+        os.path.join(output_directory, "job_analysis.json"),
+        os.path.join(output_directory, "cv_transformation_plan.json")
+    ])
+
+    CvOptimization().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":

@@ -5,8 +5,9 @@ from crewai_tools import (
     FileReadTool,
     DirectorySearchTool,
 )
-from config import get_config
+from config import get_config, get_embedchain_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
+from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
 from optimizer.knowledge_embedder import KnowledgeBaseEmbedder
 import yaml
 
@@ -24,9 +25,9 @@ class CustomAgents:
                 model=self.config.job_analyst_model,
                 temperature=float(self.config.job_analyst_temperature),
             ),
-            "candidate_profiler": LLM(
-                model=self.config.candidate_profiler_model,
-                temperature=float(self.config.candidate_profiler_temperature),
+            "cv_advisor": LLM(
+                model=self.config.cv_advisor_model,
+                temperature=float(self.config.cv_advisor_temperature),
             ),
             "cv_strategist": LLM(
                 model=self.config.cv_strategist_model,
@@ -40,11 +41,8 @@ class CustomAgents:
             force_rebuild=False,
         )
 
-    def get_semantic_search_tool(self) -> SemanticSearchTool:
-        self.embedder.build_if_needed()
-        vectordb = self.embedder.get_vector_db()
-
-        return SemanticSearchTool(retriever=vectordb.as_retriever())
+    def get_semantic_search_tool(self) -> SemanticSearchWrapper:
+        return SemanticSearchWrapper(config=get_embedchain_config())
 
     def get_directory_search_tool(self) -> DirectorySearchTool:
         return DirectorySearchTool(
@@ -62,20 +60,24 @@ class CustomAgents:
             llm=self.llms["job_analyst"],
         )
 
-    def candidate_profiler(self) -> Agent:
+    def cv_advisor(self) -> Agent:
         return Agent(
-            config=self.agents_config["candidate_profiler"],
+            config=self.agents_config["cv_advisor"],
             tools=[
                 self.get_semantic_search_tool(),
                 self.get_directory_search_tool(),
                 FileReadTool(),
             ],
-            llm=self.llms["candidate_profiler"],
+            llm=self.llms["cv_advisor"],
         )
 
     def cv_strategist(self) -> Agent:
         return Agent(
             config=self.agents_config["cv_strategist"],
-            tools=[self.get_file_read_tool()],
+            tools=[
+                self.get_semantic_search_tool(),
+                self.get_directory_search_tool(),
+                self.get_file_read_tool(),
+            ],
             llm=self.llms["cv_strategist"],
         )
