@@ -5,6 +5,8 @@ else ifeq ($(shell uname), Linux)
 OPEN = xdg-open
 endif
 
+.PHONY: vector_db agents job-analysis cv-alignment cv-optimization test clean
+
 agents:
 	python -m scripts.cv_agents
 
@@ -16,6 +18,9 @@ cv-alignment:
 
 cv-optimization:
 	python -m scripts.cv_optimization
+
+vector_db:
+	python scripts/embed_kb.py
 
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
