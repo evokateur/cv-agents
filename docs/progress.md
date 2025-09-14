@@ -517,3 +517,30 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - **Clear Output Naming**: Final CV output file now clearly named "optimized_cv.json"
 
 **Result:** Successfully implemented production-ready logging infrastructure and improved overall code quality through warning management, comment cleanup, workspace organization, and clearer output file naming. The kickoff script now provides comprehensive logging capabilities while maintaining clean, self-documenting code that follows established best practices.
+
+## Architecture Cleanup and Test Naming Fixes (September 2025)
+
+**Summary:** Removed Test suffixes from crew operations, added file validation to prevent non-deterministic failures, and fixed test naming to accurately reflect what's being tested.
+
+**Key Changes:**
+
+- Renamed crew classes: JobAnalysisTest → JobAnalysis, CvAlignmentTest → CvAlignment, CvOptimizationTest → CvOptimization
+- Added file validation in kickoff.py to check required inputs before crew execution
+- Renamed test file to accurately reflect what's being tested: test_semantic_search_tool.py → test_semantic_search_wrapper.py
+- Added `make vector_db` target for convenient vector database rebuilding
+
+**Architecture Implementation:**
+
+- **Clean Naming**: Removed Test/test suffixes to make individual task crews equivalent to full crew execution
+- **Fail-Fast Validation**: Added `raise_exception_if_files_missing()` function to prevent confusing errors from missing prerequisite files
+- **Test Accuracy**: Renamed semantic search test to match actual tool being tested (SemanticSearchWrapper)
+
+**Files Updated:**
+
+- `optimizer/crew.py` - Renamed all Test suffixed classes to clean names
+- `optimizer/kickoff.py` - Added file validation function, updated crew imports and function names
+- `scripts/` - Renamed all *_test.py files to remove test suffix
+- `Makefile` - Updated targets, added vector_db target with .PHONY declaration
+- `tests/test_semantic_search_wrapper.py` - Renamed from test_semantic_search_tool.py, fixed assertion
+
+**Result:** Simplified architecture with clean naming conventions, reliable file validation, and accurate test naming that reflects actual functionality being tested.
