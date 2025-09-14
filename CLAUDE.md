@@ -18,6 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### CV Optimization Testing
 
 - `make cv-alignment-test` - Test CV alignment task with job posting analysis
+- `make cv-optimization-test` - Test CV optimization task using pre-generated alignment output
 - `make job-analysis-test` - Test job analysis functionality
 - `make agents` - Run CV agents with default configuration
 

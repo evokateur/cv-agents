@@ -7,11 +7,8 @@ import json
 
 
 class SemanticSearchWrapper(BaseTool):
-    name: str = "SemanticSearchTool"
-    description: str = (
-        "Searches the knowledge base using semantic similarity and returns "
-        "intelligent synthesis of relevant information with source attribution."
-    )
+    name: str = "Knowledge base"
+    description: str = "A knowledge base that can be used to answer questions."
     chunky_tool: Any = None
 
     def __init__(self, config: dict = None, **kwargs):
