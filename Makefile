@@ -20,7 +20,7 @@ cv-optimization:
 	python -m scripts.cv_optimization
 
 vector_db:
-	python scripts/embed_kb.py
+	python -m scripts.embed_kb
 
 cv:
 	python make-cv.py data/cv.yaml output/cv.tex
