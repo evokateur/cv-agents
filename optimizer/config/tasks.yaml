@@ -103,5 +103,5 @@ cv_optimization_task:
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS
     and human review.
-  output_file: "{output_directory}/cv_optimization.json"
+  output_file: "{output_directory}/optimized_cv.json"
   agent: cv_strategist
