@@ -57,6 +57,25 @@ class CvOptimizer:
         )
 
 
+class CvStructuring:
+    """CV Structuring crew - runs only CV structuring task"""
+
+    def __init__(self):
+        self.custom_agents = CustomAgents()
+        self.custom_tasks = CustomTasks()
+
+    def crew(self) -> Crew:
+        cv_structurer = self.custom_agents.cv_structurer()
+        cv_structuring_task = self.custom_tasks.cv_structuring_task(cv_structurer)
+
+        return Crew(
+            agents=[cv_structurer],
+            tasks=[cv_structuring_task],
+            process=Process.sequential,
+            verbose=True,
+        )
+
+
 class JobAnalysis:
     """Job Analysis crew - runs only job analysis task"""
 
