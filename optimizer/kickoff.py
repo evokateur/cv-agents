@@ -6,6 +6,7 @@ import os
 import warnings
 import yaml
 from optimizer.crew import CvOptimizer, JobAnalysis, CvAlignment, CvOptimization
+from optimizer.logging import CrewExecutionLogger
 
 
 def raise_exception_if_files_missing(file_paths):
@@ -22,19 +23,27 @@ def raise_exception_if_files_missing(file_paths):
 
 def setup_logging(output_directory, crew_name):
     os.makedirs(output_directory, exist_ok=True)
-    log_file = os.path.join(output_directory, f"{crew_name.lower()}.log")
 
+    # Convert PascalCase to snake_case
+    snake_case_name = ''.join(['_' + c.lower() if c.isupper() and i > 0 else c.lower()
+                              for i, c in enumerate(crew_name)])
+
+    crew_execution_log = os.path.join(output_directory, f"{snake_case_name}_execution.log")
+
+    # Only set up console logging for the kickoff script
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_file),
-            logging.StreamHandler()
-        ]
+        handlers=[logging.StreamHandler()]
     )
 
     logger = logging.getLogger(__name__)
-    logger.info(f"Starting {crew_name} with logging to {log_file}")
+    logger.info(f"Starting {crew_name} crew")
+    logger.info(f"CrewAI execution logging to {crew_execution_log}")
+
+    # Set up CrewAI event listener for detailed execution logging
+    crew_logger = CrewExecutionLogger(crew_execution_log)
+
     return logger
 
 
@@ -43,7 +52,7 @@ def dispatch_crew(crew_name, config, crew_functions):
         raise ValueError(f"Unknown crew: {crew_name}")
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
-    setup_logging(output_directory, crew_name)
+    logger = setup_logging(output_directory, crew_name)
 
     crew_functions[crew_name](config)
 
