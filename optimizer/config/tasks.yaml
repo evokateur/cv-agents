@@ -74,8 +74,13 @@ cv_alignment_task:
   description: >
     Create a CvTransformationPlan to align the candidate's CV with the job requirements.
 
+    INPUTS:
+    You will receive structured data from the previous tasks:
+    1. JobPosting object - structured job requirements from job analysis
+    2. CurriculumVitae object - structured CV data from CV structuring
+
     PROCESS:
-    1. Read the JobPosting requirements and candidate's CV at {candidate_cv_path}
+    1. Analyze the JobPosting requirements and CurriculumVitae data provided
     2. For each required skill/technology, use Knowledge base("skill name") to find relevant experience
     3. Build transformation plan with:
        - matching_skills: Skills found in CV or Knowledge Base
@@ -101,18 +106,14 @@ cv_alignment_task:
 
 cv_optimization_task:
   description: >
-    You will receive three inputs to complete this task:
+    You will receive structured inputs from the previous tasks:
 
-    1. A structured job posting object from the previous analysis
-    2. A structured CV transformation plan from the previous alignment analysis
-    3. A file path to the candidate's current CV: {candidate_cv_path}
-
-    Use your file reading tool to read and analyze the candidate's current CV from this path.
-    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and
-    restructured into the output format.
+    1. CurriculumVitae object - structured CV data from CV structuring
+    2. JobPosting object - structured job requirements from job analysis
+    3. CvTransformationPlan object - detailed transformation plan from CV alignment
 
     IMPLEMENTATION PROCESS:
-    1. Read and parse the current CV from the provided file path
+    1. Use the structured CurriculumVitae data provided as your base CV content
     2. Follow the CvTransformationPlan guidance for restructuring and rewriting
     3. Use Knowledge base to verify and expand on transformation plan citations
     4. Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan

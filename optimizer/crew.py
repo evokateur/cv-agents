@@ -3,7 +3,7 @@ from crewai.project import CrewBase, agent, task, crew
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from optimizer.agents import CustomAgents
 from optimizer.tasks import CustomTasks
-from optimizer.models import JobPosting
+from optimizer.models import JobPosting, CurriculumVitae
 from typing import List
 
 
@@ -19,6 +19,10 @@ class CvOptimizer:
         self.custom_tasks = CustomTasks()
 
     @agent
+    def cv_structurer(self):
+        return self.custom_agents.cv_structurer()
+
+    @agent
     def job_analyst(self):
         return self.custom_agents.job_analyst()
 
@@ -31,20 +35,28 @@ class CvOptimizer:
         return self.custom_agents.cv_strategist()
 
     @task
+    def cv_structuring_task(self):
+        task = self.custom_tasks.cv_structuring_task(self.cv_structurer())
+        task.async_execution = True
+        return task
+
+    @task
     def job_analysis_task(self):
-        return self.custom_tasks.job_analysis_task(self.job_analyst())
+        task = self.custom_tasks.job_analysis_task(self.job_analyst())
+        task.async_execution = True
+        return task
 
     @task
     def cv_alignment_task(self):
         return self.custom_tasks.cv_alignment_task(
-            self.cv_advisor(), [self.job_analysis_task()]
+            self.cv_advisor(), [self.cv_structuring_task(), self.job_analysis_task()]
         )
 
     @task
     def cv_optimization_task(self):
         return self.custom_tasks.cv_optimization_task(
             self.cv_strategist(),
-            [self.job_analysis_task(), self.cv_alignment_task()],
+            [self.cv_structuring_task(), self.job_analysis_task(), self.cv_alignment_task()],
         )
 
     @crew
