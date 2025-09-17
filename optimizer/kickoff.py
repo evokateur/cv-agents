@@ -3,10 +3,11 @@ import json
 import jsonschema
 import logging
 import os
+import sys
 import warnings
 import yaml
 from optimizer.crew import CvOptimizer, JobAnalysis, CvAlignment, CvOptimization
-from optimizer.logging import CrewExecutionLogger
+from optimizer.logging.console_capture import capture_console_output
 
 
 def raise_exception_if_files_missing(file_paths):
@@ -28,7 +29,7 @@ def setup_logging(output_directory, crew_name):
     snake_case_name = ''.join(['_' + c.lower() if c.isupper() and i > 0 else c.lower()
                               for i, c in enumerate(crew_name)])
 
-    crew_execution_log = os.path.join(output_directory, f"{snake_case_name}_execution.log")
+    console_output_log = os.path.join(output_directory, f"{snake_case_name}_console.log")
 
     # Only set up console logging for the kickoff script
     logging.basicConfig(
@@ -39,12 +40,9 @@ def setup_logging(output_directory, crew_name):
 
     logger = logging.getLogger(__name__)
     logger.info(f"Starting {crew_name} crew")
-    logger.info(f"CrewAI execution logging to {crew_execution_log}")
+    logger.info(f"Console output logging to {console_output_log}")
 
-    # Set up CrewAI event listener for detailed execution logging
-    crew_logger = CrewExecutionLogger(crew_execution_log)
-
-    return logger
+    return logger, console_output_log
 
 
 def dispatch_crew(crew_name, config, crew_functions):
@@ -52,9 +50,11 @@ def dispatch_crew(crew_name, config, crew_functions):
         raise ValueError(f"Unknown crew: {crew_name}")
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
-    logger = setup_logging(output_directory, crew_name)
+    logger, console_output_log = setup_logging(output_directory, crew_name)
 
-    crew_functions[crew_name](config)
+    # Capture console output while still printing to terminal
+    with capture_console_output(console_output_log):
+        crew_functions[crew_name](config)
 
 
 def main(argv=None):
