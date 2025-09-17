@@ -612,3 +612,31 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - All Makefile targets function correctly with standardized snake_case naming
 
 **Result:** Eliminated template hard-coding issues and created flexible CV structuring pipeline that can parse arbitrary CV formats into standardized schema. The system now supports both structured (JSON/YAML) and unstructured (plain text) CV inputs through a dedicated agent-as-tool approach, enabling the cv_alignment_task to work with consistent structured data for more targeted optimization recommendations.
+
+## Parallel Task Implementation and Code Deduplication (September 2025)
+
+**Summary:** Implemented parallel task execution in the main CV optimization workflow and eliminated code duplication by factoring out shared fake agent components into a reusable module.
+
+**Key Changes:**
+
+- Implemented parallel execution for cv_structuring_task and job_analysis_task using `async_execution=True`
+- Updated cv_alignment_task to depend on both parallel tasks using context parameter
+- Fixed task prompts to clarify structured data flow between tasks instead of file-based inputs
+- Updated CvAlignment crew to mirror main crew's parallel structure with fake tasks
+- Eliminated ~165 lines of duplicate code by creating shared fakers.py module with static methods
+
+**Architecture Implementation:**
+
+- **Parallel Task Execution**: cv_structuring_task and job_analysis_task now run concurrently using CrewAI's async_execution feature
+- **Task Dependencies**: cv_alignment_task receives structured outputs from both parallel tasks via context parameter
+- **Code Deduplication**: Created FakeAgents and FakeTasks classes with static methods for shared fake components
+- **Prompt Clarification**: Updated task descriptions to explicitly state inputs come from previous task outputs, not files
+- **Consistent Structure**: All crew classes now follow the same parallel workflow pattern
+
+**Files Updated:**
+
+- `optimizer/crew.py` - Added cv_structuring_task to main crew with async execution, updated CvAlignment crew structure, integrated shared fake components
+- `optimizer/config/tasks.yaml` - Updated cv_alignment_task and cv_optimization_task prompts to clarify structured data inputs
+- `optimizer/fakers.py` - New module containing FakeAgents and FakeTasks classes with static methods for shared components
+
+**Result:** Successfully implemented parallel task execution reducing workflow time while maintaining data consistency. Eliminated significant code duplication through shared fake agent components, improving maintainability and following DRY principles. All crew classes now consistently use parallel cv_structuring and job_analysis tasks feeding into cv_alignment_task.
