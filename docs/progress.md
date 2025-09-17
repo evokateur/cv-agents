@@ -544,3 +544,30 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - `tests/test_semantic_search_wrapper.py` - Renamed from test_semantic_search_tool.py, fixed assertion
 
 **Result:** Simplified architecture with clean naming conventions, reliable file validation, and accurate test naming that reflects actual functionality being tested.
+
+## Console Output Logging and ANSI Code Handling (September 2025)
+
+**Summary:** Implemented comprehensive console output capture functionality with ANSI escape code stripping for clean log files while preserving colorized terminal output.
+
+**Key Changes:**
+
+- Created `TeeOutput` class and `capture_console_output` context manager for dual stream writing
+- Implemented ANSI escape code stripping using regex patterns for log file cleanliness
+- Removed unused execution logger code and simplified logging architecture
+- Added snake_case naming for log files based on crew names
+
+**Architecture Implementation:**
+
+- **Console Capture**: `capture_console_output()` context manager captures full CrewAI verbose output equivalent to `tee` functionality
+- **ANSI Stripping**: `TeeOutput.write()` method strips ANSI codes from log files while preserving them for console display
+- **Clean Output**: Log files contain readable text without terminal formatting codes for debugging purposes
+- **Simplified Logging**: Removed redundant execution logger in favor of console-only capture
+
+**Files Updated:**
+
+- `optimizer/logging/console_capture.py` - Created TeeOutput class with ANSI code stripping functionality
+- `optimizer/kickoff.py` - Updated import and integrated console capture in crew execution
+- `optimizer/logging/__init__.py` - Simplified exports to only include console capture functionality
+- Removed `optimizer/logging/crew_execution_logger.py` - Unused execution logger code
+
+**Result:** Clean, readable console log files without ANSI escape sequences while maintaining full colorized terminal output for optimal debugging experience.

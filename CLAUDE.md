@@ -17,10 +17,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### CV Optimization Testing
 
-- `make cv-alignment-test` - Test CV alignment task with job posting analysis
-- `make cv-optimization-test` - Test CV optimization task using pre-generated alignment output
-- `make job-analysis-test` - Test job analysis functionality
+- `make cv-alignment` - Test CV alignment task with job posting analysis
+- `make cv-optimization` - Test CV optimization task using pre-generated alignment output
+- `make job-analysis` - Test job analysis functionality
 - `make agents` - Run CV agents with default configuration
+- `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content
 
 ### Development Setup
 
@@ -33,7 +34,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - `python kickoff_crew.py --config_path config.json` - Run crew with JSON config file
 - `python kickoff_crew.py --config '{"inputs": {...}}'` - Run crew with inline JSON config
-- `python cv_agents.py` - Simple test runner with hardcoded inputs
+- `python -m scripts.cv_agents` - Simple test runner with hardcoded inputs
 
 ## Architecture
 
@@ -74,10 +75,10 @@ Here are some links to CrewAI documentation to help us understand the target arc
 - `optimizer/` - CrewAI-based system for job-specific CV optimization following recommended project structure
 - `optimizer/crew.py` - Main crew class with @CrewBase decorator using hybrid YAML/Python configuration
 - `optimizer/agents.py` - Agent implementations with RAG tool integration, loads YAML configurations from `config/agents.yaml`
-- `optimizer/tasks.py` - Task implementations with schema injection and RAG prompting, loads YAML configurations from `config/tasks.yaml`
-- `optimizer/config/agents.yaml` - YAML agent configurations (job_analyst, candidate_profiler, cv_strategist)
+- `optimizer/tasks.py` - Task implementations with RAG prompting, loads YAML configurations from `config/tasks.yaml`
+- `optimizer/config/agents.yaml` - YAML agent configurations (job_analyst, cv_advisor, cv_strategist)
 - `optimizer/config/tasks.yaml` - YAML task configurations with dependencies and RAG tool instructions
-- `optimizer/models.py` - Pydantic models for job postings, candidate profiles, and CV structure
+- `optimizer/models.py` - Pydantic models for job postings, CV transformation plans, and CV structure
 - `optimizer/tools/` - Directory for custom CrewAI tool implementations including:
   - `semantic_search_tool.py` - Original RAG tool for semantic search
   - `chunky_rag_tool.py` - Enhanced RAG tool with LLM synthesis via embedchain
@@ -91,9 +92,10 @@ Here are some links to CrewAI documentation to help us understand the target arc
 
 - `config.py` - Environment-based configuration for AI model settings and embedchain setup
 - `sample.env` - Template for required environment variables
-- Models are configurable per agent (JOB_ANALYST_MODEL, CANDIDATE_PROFILER_MODEL, etc.)
+- Models are configurable per agent (JOB_ANALYST_MODEL, CV_ADVISOR_MODEL, CV_STRATEGIST_MODEL, etc.)
 - Requires API keys for various providers (Anthropic, OpenAI, Google, DeepSeek, Serper)
 - `get_embedchain_config()` - Centralized ChromaDB and OpenAI embeddings configuration
+- Comprehensive logging with console output capture and ANSI code stripping for clean log files
 
 ### Template System
 
@@ -107,9 +109,9 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 ### Data Flow
 
 1. **Simple Generation**: YAML data → Jinja2 template → LaTeX → PDF
-2. **AI Optimization**: Job posting → AI analysis → Optimized CV data → Template → PDF
-3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV optimization → Template → PDF
-4. **LLM Synthesis RAG**: Job posting → AI analysis with chunky tools → LLM-synthesized knowledge retrieval → Enhanced CV optimization → Template → PDF
+2. **AI Optimization**: Job posting → Job analysis → CV alignment planning → CV optimization → Template → PDF
+3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV transformation → Template → PDF
+4. **LLM Synthesis RAG**: Job posting → AI analysis with chunky tools → LLM-synthesized knowledge retrieval → CV transformation planning → CV optimization → Template → PDF
 5. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB with automatic embedding and retrieval
 
 ### Testing
@@ -118,10 +120,10 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - Test structure mirrors source code in `tests/unit/optimizer/`
 - Configuration in `pytest.ini` with verbose output and short tracebacks
 - Filters Pydantic deprecation warnings for cleaner test output
-- Individual tool testing scripts in `scripts/` directory:
-  - `test_chunky_rag_tool.py` - ChunkyRagTool functionality tests
-  - `test_chunky_kb_tool.py` - ChunkyKnowledgeBaseTool tests
-  - `test_semantic_search_wrapper.py` - Wrapper integration tests
+- Individual crew testing scripts in `scripts/` directory for isolated testing:
+  - `job_analysis.py` - Test job analysis functionality independently
+  - `cv_alignment.py` - Test CV alignment task with job posting analysis
+  - `cv_optimization.py` - Test CV optimization task using pre-generated outputs
 
 ### Key Files
 
@@ -129,7 +131,8 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - `optimizer/crew.py` - Main CrewAI crew implementation with @agent, @task, and @crew decorators
 - `optimizer/config/` - YAML configuration files for agents and tasks following CrewAI best practices
 - `optimizer/utils/vector_utils.py` - ChromaDB validation and vector database management utilities
-- `optimizer/utils/prompt_utils.py` - Pydantic model schema injection for dynamic task descriptions
+- `optimizer/utils/prompt_utils.py` - Pydantic utilities for dynamic task descriptions (schema injection capabilities)
+- `optimizer/logging/console_capture.py` - Console output capture with ANSI code stripping for log files
 - `kickoff_crew.py` - CLI entry point for running the optimization crew
 - `cv-agents.ipynb` - Jupyter notebook for experimentation and development
 - `knowledge-base/` - Symlinked directory containing candidate and project information for RAG
