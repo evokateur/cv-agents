@@ -17,10 +17,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### CV Optimization Testing
 
-- `make cv-alignment` - Test CV alignment task with job posting analysis
-- `make cv-optimization` - Test CV optimization task using pre-generated alignment output
-- `make job-analysis` - Test job analysis functionality
-- `make agents` - Run CV agents with default configuration
+- `make cv_alignment` - Test CV alignment task with job posting analysis
+- `make cv_optimization` - Test CV optimization task using pre-generated alignment output
+- `make job_analysis` - Test job analysis functionality
+- `make cv_structuring` - Test CV structuring agent with CV parsing
+- `make cv_agents` - Run CV agents with default configuration
 - `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content
 
 ### Development Setup

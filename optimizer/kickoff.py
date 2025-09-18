@@ -6,7 +6,7 @@ import os
 import sys
 import warnings
 import yaml
-from optimizer.crew import CvOptimizer, JobAnalysis, CvAlignment, CvOptimization
+from optimizer.crew import CvOptimizer, CvStructuring, JobAnalysis, CvAlignment, CvOptimization
 from optimizer.logging.console_capture import capture_console_output
 
 
@@ -82,6 +82,7 @@ def main(argv=None):
 
     CREW_FUNCTIONS = {
         "CvOptimizer": kickoff_cv_optimizer,
+        "CvStructuring": kickoff_cv_structuring,
         "JobAnalysis": kickoff_job_analysis,
         "CvAlignment": kickoff_cv_alignment,
         "CvOptimization": kickoff_cv_optimization,
@@ -114,6 +115,27 @@ def kickoff_cv_optimizer(config):
     jsonschema.validate(instance=config, schema=schema)
 
     CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
+
+
+def kickoff_cv_structuring(config):
+    schema = {
+        "type": "object",
+        "properties": {
+            "inputs": {
+                "type": "object",
+                "properties": {
+                    "candidate_cv_path": {"type": "string"},
+                    "output_directory": {"type": "string"},
+                },
+                "required": ["candidate_cv_path"],
+            }
+        },
+        "required": ["inputs"],
+    }
+
+    jsonschema.validate(instance=config, schema=schema)
+
+    CvStructuring().crew().kickoff(inputs=config.get("inputs"))
 
 
 def kickoff_job_analysis(config):

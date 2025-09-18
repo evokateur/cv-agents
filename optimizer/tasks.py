@@ -8,6 +8,13 @@ class CustomTasks:
         with open("optimizer/config/tasks.yaml", "r") as f:
             self.tasks_config = yaml.safe_load(f)
 
+    def cv_structuring_task(self, agent) -> Task:
+        return Task(
+            config=self.tasks_config["cv_structuring_task"],
+            output_pydantic=CurriculumVitae,
+            agent=agent,
+        )
+
     def job_analysis_task(self, agent) -> Task:
         return Task(
             config=self.tasks_config["job_analysis_task"],
