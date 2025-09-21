@@ -640,3 +640,54 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - `optimizer/fakers.py` - New module containing FakeAgents and FakeTasks classes with static methods for shared components
 
 **Result:** Successfully implemented parallel task execution reducing workflow time while maintaining data consistency. Eliminated significant code duplication through shared fake agent components, improving maintainability and following DRY principles. All crew classes now consistently use parallel cv_structuring and job_analysis tasks feeding into cv_alignment_task.
+
+## Personal Project Prompt Planning (September 2025)
+
+**Summary:** Documented how to adapt the existing project prompt so personal GitHub repositories can be captured without implying MultiEmployer affiliation.
+
+**Key Points:**
+- Reviewed the knowledge base directory structure to keep personal project docs separate from company materials.
+- Determined that cloning each personal repository locally and prompting an LLM with that context is the most direct path for generating docs.
+- Authored `_docs/personal-project-prompt-plan.md` to capture prompt adjustments and labeling guidance for personal projects.
+
+**Result:** Personal project documentation can now be generated with clear separation from corporate knowledge base artifacts.
+
+## CLAUDE.md Documentation Update and CV Alignment Task Enhancement (September 2025)
+
+**Summary:** Updated project documentation to reflect current Makefile and scripts directory structure, and enhanced the cv_alignment_task with section prioritization framework to focus on narrative impact rather than technical skills listing.
+
+**Key Changes:**
+
+- Updated CLAUDE.md with current Makefile targets and comprehensive script descriptions
+- Enhanced cv_alignment_task prompt with section priorities focusing on Professional Summary, Core Experience, Technical Skills, and Education
+- Added Knowledge Base Utilities section documenting vector database management and semantic search tools
+- Preserved existing functionality while adding strategic section-focused guidance
+
+**Architecture Implementation:**
+
+- **Documentation Alignment**: Updated CLAUDE.md to reflect snake_case Makefile targets and current scripts directory structure
+- **Section Prioritization Framework**: Added four-level priority system for CV transformation planning with specific guidance for each section
+- **Script Documentation**: Added comprehensive descriptions for cv_agents.py, cv_alignment.py, cv_optimization.py, cv_structuring.py, job_analysis.py, embed_kb.py, query_kb.py, and utility scripts
+- **Strategic Focus**: Enhanced cv_alignment_task to discourage "mere name-dropping" of technologies in favor of narrative impact and value demonstration
+
+**Files Updated:**
+
+- `CLAUDE.md` - Updated CV Optimization Testing section, added Knowledge Base Utilities section, enhanced script documentation with detailed descriptions
+- `optimizer/config/tasks.yaml` - Enhanced cv_alignment_task with section priorities framework, added guidance for Professional Summary (HIGHEST), Core Experience (HIGH), Technical Skills (MEDIUM), and Education/Certifications (LOWER)
+
+**Key Enhancement Details:**
+
+The cv_alignment_task now includes structured section priorities:
+
+1. **Professional Summary/Summary of Qualifications (HIGHEST PRIORITY)**: Craft compelling 3-4 line narrative connecting strongest qualifications to job requirements, focus on outcomes and value delivered
+2. **Core Experience (HIGH PRIORITY)**: Align job responsibilities and achievements with posting requirements, rewrite bullet points to mirror job posting terminology
+3. **Technical Skills (MEDIUM PRIORITY)**: Support narrative with relevant technologies, avoid mere name-dropping, focus on technologies used in meaningful projects
+4. **Education/Certifications (LOWER PRIORITY)**: Highlight relevant credentials, position strategically based on job emphasis
+
+**Process Enhancement:**
+
+- Added explicit guidance to search Knowledge base for quantifiable achievements and leadership examples
+- Included instructions for building transformation plans with matching_skills, missing_skills, additions, rewrites, and section_strategy
+- Preserved all existing tool usage patterns while adding strategic section focus
+
+**Result:** Successfully updated project documentation to reflect current architecture and enhanced the CV alignment task with section prioritization framework. The system now provides strategic guidance for narrative-focused CV transformation while maintaining all existing functionality and tool integration patterns.

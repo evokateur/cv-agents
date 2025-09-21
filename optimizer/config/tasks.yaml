@@ -79,14 +79,39 @@ cv_alignment_task:
     1. JobPosting object - structured job requirements from job analysis
     2. CurriculumVitae object - structured CV data from CV structuring
 
+    SECTION PRIORITIES:
+    Focus your transformation strategy on these sections in order of impact:
+
+    1. **Professional Summary/Summary of Qualifications** (HIGHEST PRIORITY)
+       - Craft a compelling 3-4 line narrative connecting candidate's strongest qualifications to job requirements
+       - Focus on outcomes and value delivered, not just technical skills
+       - Use job posting language naturally within the narrative
+       - Search Knowledge base for quantifiable achievements and leadership examples
+
+    2. **Core Experience** (HIGH PRIORITY)
+       - Align job responsibilities and achievements with posting requirements
+       - Prioritize experiences that demonstrate required skills in action
+       - Rewrite bullet points to mirror job posting terminology and responsibilities
+       - Search Knowledge base for specific projects and measurable outcomes
+
+    3. **Technical Skills** (MEDIUM PRIORITY)
+       - Support the narrative with relevant technologies (avoid mere name-dropping)
+       - Group skills strategically to match job requirements
+       - Focus on technologies actually used in meaningful projects
+
+    4. **Education/Certifications** (LOWER PRIORITY)
+       - Highlight relevant credentials that match job requirements
+       - Position strategically based on job emphasis on education vs experience
+
     PROCESS:
     1. Analyze the JobPosting requirements and CurriculumVitae data provided
-    2. For each required skill/technology, use Knowledge base("skill name") to find relevant experience
+    2. For each section priority, use Knowledge base("skill name") to find relevant experience
     3. Build transformation plan with:
        - matching_skills: Skills found in CV or Knowledge Base
        - missing_skills: Skills with no evidence found
        - additions: Specific quotes and file paths from Knowledge Base searches
        - rewrites: Improved descriptions using job terminology
+       - section_strategy: Specific guidance for each CV section prioritization
 
     TOOL USAGE:
     - Use Knowledge base with simple strings: Knowledge base("PHP experience")
@@ -97,6 +122,7 @@ cv_alignment_task:
     - Use exact job posting terminology and company name
     - Never fabricate information
     - Cite specific file paths for all evidence
+    - Prioritize narrative impact over technical keyword lists
 
   expected_output: >
     A CvTransformationPlan JSON object containing a concrete edit plan
