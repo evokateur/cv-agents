@@ -746,3 +746,72 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 - Confirmed model capability limitations affecting comprehensive requirement analysis
 
 **Result:** Successfully transformed CV alignment task from generic prompt to schema-aware, systematic approach focusing on realistic CV improvements. Enhanced knowledge base integration with candidate-specific queries and comprehensive job requirement coverage. Identified need for model upgrade to achieve full systematic searching capabilities while maintaining cost-effectiveness for simpler pipeline tasks.
+
+## CvTransformationPlan Model Enhancement and CV Optimization Task Rewrite (September 2025)
+
+**Summary:** Enhanced CvTransformationPlan model with four primary target fields aligned with CV Alignment Task prompt and completely rewrote CV Optimization Task to be schema-aware and field-specific, removing legacy fields to eliminate confusion.
+
+**Key Changes:**
+
+- Enhanced CvTransformationPlan with four primary target fields: profession_optimization, core_expertise_changes, summary_qualification_rewrites, experience_responsibility_updates
+- Removed legacy fields (additions, rewrites, removals, reordering) that created confusion and redundancy
+- Completely rewrote cv_optimization_task prompt to be schema-aware with explicit field-by-field implementation guidance
+- Added detailed Pydantic field descriptions with concrete examples and knowledge base citation requirements
+- Aligned transformation plan structure with CV Alignment Task's four-field focus approach
+
+**Architecture Implementation:**
+
+- **Primary Target Fields**: Added four new fields to CvTransformationPlan matching the highest-impact CV areas identified in CV Alignment Task
+- **Field-Specific Guidance**: Each primary target field includes detailed descriptions with before/after examples and knowledge base evidence requirements
+- **Schema Compliance**: CV Optimization Task now includes explicit PRIMARY TARGET FIELD IMPLEMENTATIONS section with step-by-step instructions
+- **Legacy Cleanup**: Removed redundant fields that weren't aligned with the focused four-field approach
+
+**Files Updated:**
+
+- `optimizer/models.py` - Enhanced CvTransformationPlan with four primary target fields and removed legacy fields:
+  ```python
+  # PRIMARY TARGET FIELD MODIFICATIONS (schema-aware, highest impact)
+  profession_optimization: Optional[str] = Field(
+      default=None, description="New profession field value to better align with job title, e.g. 'Senior PHP Developer' instead of 'Full Stack Developer'"
+  )
+
+  core_expertise_changes: List[str] = Field(
+      default_factory=list, description="Specific core_expertise field modifications with knowledge base evidence, e.g. 'Move \"PHP Development\" to first position based on job requirements' or 'Add \"WordPress Development\" based on 569trusts.md experience'"
+  )
+
+  summary_qualification_rewrites: List[str] = Field(
+      default_factory=list, description="Specific summary_of_qualifications bullet point rewrites with before/after examples and knowledge base citations, e.g. 'Replace \"Experienced developer\" with \"Senior PHP developer with 8+ years building scalable web applications (see 569trusts.md, projectx.md)\"'"
+  )
+
+  experience_responsibility_updates: List[str] = Field(
+      default_factory=list, description="Specific experience[].responsibilities bullet updates with job index, responsibility index, and knowledge base evidence, e.g. 'Experience[0].responsibilities[1]: Change to \"Developed REST APIs using PHP/Symfony serving 5,000+ users\" (from 569trusts.md)'"
+  )
+  ```
+
+- `optimizer/config/tasks.yaml` - Completely rewrote cv_optimization_task description with:
+  - PRIMARY TARGET FIELD IMPLEMENTATIONS section with detailed instructions for each of the four target fields
+  - SCHEMA COMPLIANCE section preventing impossible structural changes
+  - KNOWLEDGE BASE INTEGRATION section for evidence verification and expansion
+  - QUALITY ASSURANCE section ensuring modifications are supported by knowledge base evidence
+
+**Technical Implementation:**
+
+- **Field-Specific Instructions**: CV Optimization Task now provides explicit guidance for implementing each of the four primary target fields
+- **Evidence Requirements**: Each field modification requires knowledge base evidence and specific file path citations
+- **Schema Awareness**: Task explicitly states schema constraints and focuses only on content modifications within existing fields
+- **Quality Validation**: Added requirements to verify modifications are supported by knowledge base evidence and align with job requirements
+
+**Backward Compatibility Decision:**
+
+- **User Insight**: User correctly identified that they control the workflow definition through CvTransformationPlan, making backward compatibility unnecessary
+- **Cleanup Approach**: Removed legacy fields entirely rather than maintaining them for non-existent external dependencies
+- **Focused Design**: CvTransformationPlan now exclusively focuses on the four highest-impact CV areas with clear, actionable guidance
+
+**Testing Validation:**
+
+- Enhanced model aligns with CV Alignment Task's four-field focus approach
+- CV Optimization Task now provides concrete, implementable instructions for each target field
+- Removed confusion between legacy fields and new primary target fields
+- Schema compliance ensures agents cannot recommend impossible structural changes
+
+**Result:** Successfully aligned CvTransformationPlan model with CV Alignment Task prompt's four-field approach and created explicit, schema-aware implementation guidance for CV Optimization Task. The enhanced model provides clear, actionable transformation instructions while preventing impossible structural modifications, creating a more focused and effective CV optimization pipeline.

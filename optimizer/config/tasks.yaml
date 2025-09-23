@@ -170,30 +170,54 @@ cv_optimization_task:
     2. JobPosting object - structured job requirements from job analysis
     3. CvTransformationPlan object - detailed transformation plan from CV alignment
 
-    IMPLEMENTATION PROCESS:
-    1. Use the structured CurriculumVitae data provided as your base CV content
-    2. Follow the CvTransformationPlan guidance for restructuring and rewriting
-    3. Use Knowledge base to verify and expand on transformation plan citations
-    4. Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan
-    5. Enhance content with additional relevant details found in the knowledge base
+    **IMPLEMENTATION PROCESS:**
+    Apply the CvTransformationPlan to modify the CurriculumVitae object, focusing on the four primary target fields that have the highest impact for job alignment:
 
-    TOOL USAGE:
-    - Knowledge base("specific skill or project") to find supporting evidence for CV improvements
-    - DirectorySearchTool to locate relevant files mentioned in the transformation plan
-    - FileReadTool to read complete context from knowledge base files for richer content
+    **PRIMARY TARGET FIELD IMPLEMENTATIONS:**
 
-    Your task is to implement the CV transformation plan by:
-    - Following the specific guidance provided in the CvTransformationPlan
-    - Prioritizing experiences that the plan identifies as most relevant
-    - Rewriting descriptions according to the plan's recommendations
-    - Verifying and expanding on knowledge base references from the plan
-    - Implementing ATS keyword optimizations specified in the plan
-    - Restructuring sections as outlined in the transformation strategy
-    - Adding quantifications and metrics as directed by the plan
-    - Aligning language and terminology with both job posting and plan guidance
-    - Enriching content with additional relevant details from knowledge base access
+    1. **profession field optimization**
+       - If CvTransformationPlan.profession_optimization is provided, update the CV's profession field with the new value
+       - Example: Change "Full Stack Developer" to "Senior PHP Developer"
 
-    Your final output must be a structured CurriculumVitae object that is tailored to the job requirements and enriched with the candidate's strongest qualifications.
+    2. **core_expertise field modifications**
+       - Apply all changes from CvTransformationPlan.core_expertise_changes to the CV's core_expertise list
+       - This may include reordering, adding, or modifying expertise areas based on job requirements
+       - Prioritize job-relevant skills in the order they appear
+
+    3. **summary_of_qualifications rewrites**
+       - Apply all transformations from CvTransformationPlan.summary_qualification_rewrites
+       - Replace or enhance bullet points with job-aligned narratives that connect candidate strengths to job requirements
+       - Include quantifiable achievements and outcomes from knowledge base evidence
+
+    4. **experience[].responsibilities updates**
+       - Apply all updates from CvTransformationPlan.experience_responsibility_updates
+       - Parse the specific experience and responsibility indices (e.g., "Experience[0].responsibilities[1]")
+       - Rewrite responsibility bullets to mirror job posting terminology and requirements
+       - Include specific achievements, metrics, and project context from knowledge base
+
+    **ATS & LANGUAGE OPTIMIZATIONS:**
+    - Apply CvTransformationPlan.quantifications to add specific metrics throughout relevant sections
+    - Apply CvTransformationPlan.terminology_alignment for exact phrase replacements to match JobPosting keywords
+    - Ensure job-relevant keywords from the JobPosting appear naturally in the updated content
+
+    **KNOWLEDGE BASE INTEGRATION:**
+    - Use Knowledge base to verify and expand on transformation plan citations
+    - Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan
+    - Cross-reference CvTransformationPlan.evidence file paths for additional relevant details
+    - Enhance content with concrete examples, project names, and specific achievements found in the knowledge base
+
+    **SCHEMA COMPLIANCE:**
+    - Maintain the exact CurriculumVitae schema structure - do not add or remove fields
+    - Only modify content within existing fields as specified in the transformation plan
+    - Preserve data types and field constraints (e.g., profession remains a single string, core_expertise remains a list of strings)
+
+    **QUALITY ASSURANCE:**
+    - Ensure all modifications are supported by knowledge base evidence
+    - Verify that updated content aligns with both job requirements and candidate's actual experience
+    - Maintain professional language and consistent formatting throughout
+    - Double-check that quantifications and metrics are accurate based on knowledge base sources
+
+    Your final output must be a structured CurriculumVitae object that implements all the primary target field modifications while preserving the original schema structure.
   expected_output: >
     A CurriculumVitae object with restructured and rewritten content sections
     tailored specifically to the job requirements, optimized for both ATS

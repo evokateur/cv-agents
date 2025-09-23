@@ -37,21 +37,24 @@ class CvTransformationPlan(BaseModel):
     missing_skills: List[str] = Field(default_factory=list, description="Skills explicitly required in JobPosting that are absent from candidate's CV - use exact terms from JobPosting")
     transferable_skills: List[str] = Field(default_factory=list, description="Candidate's existing skills that relate to JobPosting requirements but need repositioning or reframing")
 
-    # edit plan
-    additions: List[str] = Field(
-        default_factory=list, description="Specific text snippets from knowledge base to add to CV - include exact quotes with context, e.g. 'Add bullet: Built scalable architecture supporting 5,000+ active participants (from 569trusts.md)'"
-    )
-    rewrites: List[str] = Field(
-        default_factory=list, description="Specific CV text improvements with before/after examples, e.g. 'Change \"Backend Developer\" to \"Senior PHP Developer with WordPress expertise\" to match JobPosting requirements'"
-    )
-    removals: List[str] = Field(
-        default_factory=list, description="Specific CV items to remove or de-emphasize - quote exact text to remove and explain why it doesn't align with JobPosting"
-    )
-    reordering: List[str] = Field(
-        default_factory=list, description="Specific sections or experiences to reorder for better alignment - provide exact section names and new priority order"
+    # PRIMARY TARGET FIELD MODIFICATIONS (schema-aware, highest impact)
+    profession_optimization: Optional[str] = Field(
+        default=None, description="New profession field value to better align with job title, e.g. 'Senior PHP Developer' instead of 'Full Stack Developer'"
     )
 
-    # ATS & language
+    core_expertise_changes: List[str] = Field(
+        default_factory=list, description="Specific core_expertise field modifications with knowledge base evidence, e.g. 'Move \"PHP Development\" to first position based on job requirements' or 'Add \"WordPress Development\" based on 569trusts.md experience'"
+    )
+
+    summary_qualification_rewrites: List[str] = Field(
+        default_factory=list, description="Specific summary_of_qualifications bullet point rewrites with before/after examples and knowledge base citations, e.g. 'Replace \"Experienced developer\" with \"Senior PHP developer with 8+ years building scalable web applications (see 569trusts.md, projectx.md)\"'"
+    )
+
+    experience_responsibility_updates: List[str] = Field(
+        default_factory=list, description="Specific experience[].responsibilities bullet updates with job index, responsibility index, and knowledge base evidence, e.g. 'Experience[0].responsibilities[1]: Change to \"Developed REST APIs using PHP/Symfony serving 5,000+ users\" (from 569trusts.md)'"
+    )
+
+    # ATS & quantification enhancements
     quantifications: List[str] = Field(
         default_factory=list, description="Specific metrics from knowledge base to add to CV with exact context, e.g. 'Add \"reduced processing time by 95%\" to 569 Trusts project description'"
     )
