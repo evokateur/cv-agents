@@ -79,50 +79,82 @@ cv_alignment_task:
     1. JobPosting object - structured job requirements from job analysis
     2. CurriculumVitae object - structured CV data from CV structuring
 
-    SECTION PRIORITIES:
-    Focus your transformation strategy on these sections in order of impact:
+    **CRITICAL: CV SCHEMA STRUCTURE**
+    The CurriculumVitae schema has a FIXED structure that cannot be rearranged. You can ONLY modify content within these fields:
 
-    1. **Professional Summary/Summary of Qualifications** (HIGHEST PRIORITY)
-       - Craft a compelling 3-4 line narrative connecting candidate's strongest qualifications to job requirements
-       - Focus on outcomes and value delivered, not just technical skills
-       - Use job posting language naturally within the narrative
-       - Search Knowledge base for quantifiable achievements and leadership examples
+    [[CurriculumVitae]]
 
-    2. **Core Experience** (HIGH PRIORITY)
-       - Align job responsibilities and achievements with posting requirements
-       - Prioritize experiences that demonstrate required skills in action
-       - Rewrite bullet points to mirror job posting terminology and responsibilities
-       - Search Knowledge base for specific projects and measurable outcomes
+    **FOCUS AREAS FOR IMPROVEMENT** (think hard about what can realistically be improved from the knowledge base):
 
-    3. **Technical Skills** (MEDIUM PRIORITY)
-       - Support the narrative with relevant technologies (avoid mere name-dropping)
-       - Group skills strategically to match job requirements
-       - Focus on technologies actually used in meaningful projects
+    **PRIMARY TARGETS** (highest impact for job alignment):
 
-    4. **Education/Certifications** (LOWER PRIORITY)
-       - Highlight relevant credentials that match job requirements
-       - Position strategically based on job emphasis on education vs experience
+    1. **summary_of_qualifications: List[str]** (HIGHEST PRIORITY)
+       - List of bullet points summarizing key qualifications
+       - Replace existing points with job-aligned narratives that connect candidate strengths to job requirements
+       - Search Knowledge base for quantifiable achievements, leadership examples, and outcomes
+       - Focus on value delivered, not just technical skills listing
 
-    PROCESS:
-    1. Analyze the JobPosting requirements and CurriculumVitae data provided
-    2. For each section priority, use Knowledge base("skill name") to find relevant experience
-    3. Build transformation plan with:
-       - matching_skills: Skills found in CV or Knowledge Base
-       - missing_skills: Skills with no evidence found
-       - additions: Specific quotes and file paths from Knowledge Base searches
-       - rewrites: Improved descriptions using job terminology
-       - section_strategy: Specific guidance for each CV section prioritization
+    2. **experience[].responsibilities: Optional[List[str]]** (HIGHEST PRIORITY)
+       - Each experience item can have a list of responsibility bullet points
+       - Rewrite these bullets to mirror job posting terminology and requirements
+       - Search Knowledge base for detailed project context, measurable outcomes, and specific achievements
+       - Align descriptions with job posting responsibilities
 
-    TOOL USAGE:
-    - Use Knowledge base with simple strings: Knowledge base("PHP experience")
-    - The tool returns synthesized analysis connecting technical work to broader skills
-    - If the search finds related experience, add to matching_skills (not missing_skills)
+    3. **profession: str** (HIGH PRIORITY)
+       - Single field defining the professional title/role
+       - Align with target job title while staying truthful to candidate background
+       - Example: "Full Stack Developer" → "Senior PHP Developer" if job emphasizes PHP
 
-    RULES:
+    4. **core_expertise: List[str]** (MEDIUM PRIORITY)
+       - List of key skill areas and technologies
+       - Prioritize and reorder to emphasize job-relevant skills first
+       - Replace generic items with specific, job-aligned expertise areas
+       - Only include skills with meaningful knowledge base evidence
+
+    **SCHEMA CONSTRAINTS** (DO NOT recommend these - they are impossible):
+    - Moving sections around (education, experience order is fixed)
+    - Adding new section types not in the schema
+    - Reorganizing the overall CV layout or structure
+    - Changing field types or adding new top-level fields
+
+    **LIMITED IMPROVEMENT POTENTIAL:**
+    - education: Likely minimal improvement without more detailed academic information in knowledge base
+    - additional_experience: Usually contains older/less relevant roles with limited detail
+    - areas_of_expertise: May lack detailed evidence in knowledge base for meaningful changes
+
+    **KNOWLEDGE BASE ANALYSIS APPROACH:**
+    Before making any recommendations, think critically:
+    1. What specific evidence exists in the knowledge base for each job requirement?
+    2. Which CV fields have sufficient knowledge base content to support meaningful improvements?
+    3. What job requirements have NO supporting evidence and belong in missing_skills?
+    4. Can you find concrete examples, metrics, or project details to enhance the target fields?
+
+    **PROCESS:**
+    1. Analyze JobPosting requirements against content within current CurriculumVitae structure 
+    2. **SYSTEMATICALLY search or check the KB for experience in every item of each list in the job posting
+    3. For each item, search Knowledge base("What experience does [candidate] have with [item]") (the first name of the candidate taken from the C.V. should be sufficient)
+    4. Only recommend changes where you have concrete knowledge base evidence
+    5. Focus transformation plan on the four primary target fields: summary_of_qualifications, experience.responsibilities, profession, core_expertise
+    6. Be explicit about job requirements that cannot be addressed due to insufficient knowledge base evidence
+
+    **TOOL USAGE:**
+    - Use candidate-specific queries: Knowledge base("What experience does [candidate's name] have with [skill/technology]")
+    - This returns the candidate's actual experience rather than generic descriptions
+    - Examples:
+      * Knowledge base("What experience does [candidate] have with Data Analysis")
+      * Knowledge base("What experience does [candidate] have with PHP")
+      * Knowledge base("What experience does [candidate] have with API development")
+    - If the search returns specific candidate experience, add to matching_skills (not missing_skills)
+    - If no candidate-specific evidence is found, add to missing_skills and do not recommend changes
+    - Extract concrete project names, metrics, and file paths from the candidate-specific results
+
+    **RULES:**
     - Use exact job posting terminology and company name
-    - Never fabricate information
-    - Cite specific file paths for all evidence
-    - Prioritize narrative impact over technical keyword lists
+    - Never fabricate information or recommend changes without knowledge base evidence
+    - Only suggest modifications to the four primary target fields where you have concrete evidence
+    - Cite specific file paths for all evidence found
+    - Do not recommend structural changes that violate the schema constraints
+    - Focus on content optimization within the existing, fixed CV structure
 
   expected_output: >
     A CvTransformationPlan JSON object containing a concrete edit plan
