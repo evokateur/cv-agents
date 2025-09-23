@@ -691,3 +691,58 @@ The cv_alignment_task now includes structured section priorities:
 - Preserved all existing tool usage patterns while adding strategic section focus
 
 **Result:** Successfully updated project documentation to reflect current architecture and enhanced the CV alignment task with section prioritization framework. The system now provides strategic guidance for narrative-focused CV transformation while maintaining all existing functionality and tool integration patterns.
+
+## CV Alignment Task Prompt Rewrite and Schema Injection Enhancement (September 2025)
+
+**Summary:** Completely rewrote the CV alignment task prompt to be schema-aware, focusing on specific improvable CV fields and preventing impossible structural recommendations. Enhanced with systematic search guidance and candidate-specific knowledge base queries.
+
+**Key Changes:**
+
+- Implemented schema injection using `[[CurriculumVitae]]` placeholders to make agent aware of CV structure and constraints
+- Rewrote cv_alignment_task prompt to focus on four primary targets: `summary_of_qualifications`, `experience[].responsibilities`, `profession`, and `core_expertise`
+- Fixed knowledge base search strategy from generic queries to candidate-specific format: "What experience does [candidate's name] have with [skill/technology]"
+- Added systematic search requirements to ensure agent evaluates ALL job requirements, not just obvious technical skills
+- Identified model capability issues with gpt-4o-mini for complex reasoning tasks like comprehensive job requirement analysis
+
+**Architecture Implementation:**
+
+- **Schema Injection Enhancement**: Updated `optimizer/tasks.py` to inject CurriculumVitae schema into cv_alignment_task using `render_pydantic_models_in_prompt`
+- **Prompt Restructuring**: Completely rewrote cv_alignment_task description with PRIMARY TARGETS, SCHEMA CONSTRAINTS, and TOOL USAGE sections
+- **Query Strategy Fix**: Changed from generic "Data Analysis" queries to candidate-specific "What experience does Wesley have with Data Analysis" format
+- **Systematic Search Framework**: Added explicit guidance for agent to search for ALL job requirements including technical_skills, preferred_skills, and hard_requirements
+
+**Files Updated:**
+
+- `optimizer/tasks.py` - Added schema injection functionality to cv_alignment_task method with CurriculumVitae model injection
+- `optimizer/config/tasks.yaml` - Complete rewrite of cv_alignment_task description with schema-aware guidance, systematic search requirements, and candidate-specific query examples
+- Testing revealed execution in `job_postings/automattic/cv_alignment_console.log` showing improved KB queries but incomplete systematic searching
+
+**Technical Fixes:**
+
+- **Schema Placeholder Format**: Fixed from `[[ CurriculumVitae ]]` (with spaces) to `[[CurriculumVitae]]` (without spaces) to match regex pattern
+- **Knowledge Base Query Strategy**: Shifted from generic technology queries returning generic descriptions to candidate-specific queries returning actual experience
+- **Systematic Search Implementation**: Added "SYSTEMATICALLY search for ALL job requirements" guidance to prevent agent from only checking obvious skills like PHP/JavaScript while missing requirements like "Data analysis experience" and "Knowledge of tooling and build systems"
+
+**Model Performance Analysis:**
+
+- Identified that current `gpt-4o-mini` model for CV_ADVISOR_MODEL lacks sophistication for comprehensive job requirement analysis
+- Recommended upgrading CV alignment agent to Claude 3.5 Sonnet while maintaining gpt-4o-mini for simpler tasks (CV structuring, job analysis)
+- Performance gap evident in agent's failure to systematically search beyond obvious technical skills despite explicit guidance
+
+**Schema-Aware Improvements:**
+
+The enhanced prompt now focuses on realistic CV modifications within schema constraints:
+
+1. **Primary Targets**: Four specific improvable fields identified from CV schema analysis
+2. **Schema Constraints**: Prevents impossible recommendations like moving sections around or changing fixed layout
+3. **Candidate-Specific Searches**: Knowledge base queries now target actual candidate experience rather than generic technology descriptions
+4. **Systematic Coverage**: Explicit requirements to evaluate ALL job posting requirements, not just subset
+
+**Testing Results:**
+
+- Successfully implemented schema injection with correct placeholder format
+- Improved knowledge base query results using candidate-specific format
+- Identified systematic search gaps where agent missed "Data analysis experience" and "Knowledge of tooling and build systems" from job posting
+- Confirmed model capability limitations affecting comprehensive requirement analysis
+
+**Result:** Successfully transformed CV alignment task from generic prompt to schema-aware, systematic approach focusing on realistic CV improvements. Enhanced knowledge base integration with candidate-specific queries and comprehensive job requirement coverage. Identified need for model upgrade to achieve full systematic searching capabilities while maintaining cost-effectiveness for simpler pipeline tasks.
