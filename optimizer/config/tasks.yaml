@@ -1,3 +1,39 @@
+cv_structuring_task:
+  description: >
+    Parse and structure the CV/resume data from the provided file path ({candidate_cv_path})
+    into a standardized CurriculumVitae schema. Follow these rules:
+
+    **1. Data Extraction**
+    - Parse the input file (text format: JSON, YAML, or plain text)
+    - Extract all relevant information including personal details, experience, education, skills
+
+    **2. Schema Compliance**
+    - Structure data according to the CurriculumVitae Pydantic model
+    - Ensure all required fields are populated
+    - Organize skills into appropriate categories (Languages, Technologies, Patterns & Principles)
+
+    **3. Experience Categorization**
+    - Separate main experience from additional/earlier experience
+    - Extract detailed responsibilities as individual bullet points
+    - Preserve dates, locations, and company information
+
+    **4. Skills Organization**
+    - Group technical skills into logical categories
+    - Distinguish between programming languages, frameworks, tools, and methodologies
+    - Extract both hard and soft skills appropriately
+
+    **5. Data Quality**
+    - Normalize formatting and terminology
+    - Ensure consistency in date formats, location formats
+    - Preserve all quantifiable achievements and metrics
+
+    Output must be a valid CurriculumVitae object that matches the established schema.
+  expected_output: >
+    A structured CurriculumVitae JSON object with all sections properly organized
+    and compliant with the established schema, ready for optimization processing.
+  output_file: "{output_directory}/original_cv.json"
+  agent: cv_structurer
+
 job_analysis_task:
   description: >
     Analyze the job posting URL provided ({job_posting_url}) and extract structured
@@ -38,24 +74,87 @@ cv_alignment_task:
   description: >
     Create a CvTransformationPlan to align the candidate's CV with the job requirements.
 
-    PROCESS:
-    1. Read the JobPosting requirements and candidate's CV at {candidate_cv_path}
-    2. For each required skill/technology, use Knowledge base("skill name") to find relevant experience
-    3. Build transformation plan with:
-       - matching_skills: Skills found in CV or Knowledge Base
-       - missing_skills: Skills with no evidence found
-       - additions: Specific quotes and file paths from Knowledge Base searches
-       - rewrites: Improved descriptions using job terminology
+    INPUTS:
+    You will receive structured data from the previous tasks:
+    1. JobPosting object - structured job requirements from job analysis
+    2. CurriculumVitae object - structured CV data from CV structuring
 
-    TOOL USAGE:
-    - Use Knowledge base with simple strings: Knowledge base("PHP experience")
-    - The tool returns synthesized analysis connecting technical work to broader skills
-    - If the search finds related experience, add to matching_skills (not missing_skills)
+    **CRITICAL: CV SCHEMA STRUCTURE**
+    The CurriculumVitae schema has a FIXED structure that cannot be rearranged. You can ONLY modify content within these fields:
 
-    RULES:
+    [[CurriculumVitae]]
+
+    **FOCUS AREAS FOR IMPROVEMENT** (think hard about what can realistically be improved from the knowledge base):
+
+    **PRIMARY TARGETS** (highest impact for job alignment):
+
+    1. **summary_of_qualifications: List[str]** (HIGHEST PRIORITY)
+       - List of bullet points summarizing key qualifications
+       - Replace existing points with job-aligned narratives that connect candidate strengths to job requirements
+       - Search Knowledge base for quantifiable achievements, leadership examples, and outcomes
+       - Focus on value delivered, not just technical skills listing
+
+    2. **experience[].responsibilities: Optional[List[str]]** (HIGHEST PRIORITY)
+       - Each experience item can have a list of responsibility bullet points
+       - Rewrite these bullets to mirror job posting terminology and requirements
+       - Search Knowledge base for detailed project context, measurable outcomes, and specific achievements
+       - Align descriptions with job posting responsibilities
+
+    3. **profession: str** (HIGH PRIORITY)
+       - Single field defining the professional title/role
+       - Align with target job title while staying truthful to candidate background
+       - Example: "Full Stack Developer" → "Senior PHP Developer" if job emphasizes PHP
+
+    4. **core_expertise: List[str]** (MEDIUM PRIORITY)
+       - List of key skill areas and technologies
+       - Prioritize and reorder to emphasize job-relevant skills first
+       - Replace generic items with specific, job-aligned expertise areas
+       - Only include skills with meaningful knowledge base evidence
+
+    **SCHEMA CONSTRAINTS** (DO NOT recommend these - they are impossible):
+    - Moving sections around (education, experience order is fixed)
+    - Adding new section types not in the schema
+    - Reorganizing the overall CV layout or structure
+    - Changing field types or adding new top-level fields
+
+    **LIMITED IMPROVEMENT POTENTIAL:**
+    - education: Likely minimal improvement without more detailed academic information in knowledge base
+    - additional_experience: Usually contains older/less relevant roles with limited detail
+    - areas_of_expertise: May lack detailed evidence in knowledge base for meaningful changes
+
+    **KNOWLEDGE BASE ANALYSIS APPROACH:**
+    Before making any recommendations, think critically:
+    1. What specific evidence exists in the knowledge base for each job requirement?
+    2. Which CV fields have sufficient knowledge base content to support meaningful improvements?
+    3. What job requirements have NO supporting evidence and belong in missing_skills?
+    4. Can you find concrete examples, metrics, or project details to enhance the target fields?
+
+    **PROCESS:**
+    1. Analyze JobPosting requirements against content within current CurriculumVitae structure 
+    2. **SYSTEMATICALLY search or check the KB for experience in every item of each list in the job posting
+    3. For each item, search Knowledge base("What experience does [candidate] have with [item]") (the first name of the candidate taken from the C.V. should be sufficient)
+    4. Only recommend changes where you have concrete knowledge base evidence
+    5. Focus transformation plan on the four primary target fields: summary_of_qualifications, experience.responsibilities, profession, core_expertise
+    6. Be explicit about job requirements that cannot be addressed due to insufficient knowledge base evidence
+
+    **TOOL USAGE:**
+    - Use candidate-specific queries: Knowledge base("What experience does [candidate's name] have with [skill/technology]")
+    - This returns the candidate's actual experience rather than generic descriptions
+    - Examples:
+      * Knowledge base("What experience does [candidate] have with Data Analysis")
+      * Knowledge base("What experience does [candidate] have with PHP")
+      * Knowledge base("What experience does [candidate] have with API development")
+    - If the search returns specific candidate experience, add to matching_skills (not missing_skills)
+    - If no candidate-specific evidence is found, add to missing_skills and do not recommend changes
+    - Extract concrete project names, metrics, and file paths from the candidate-specific results
+
+    **RULES:**
     - Use exact job posting terminology and company name
-    - Never fabricate information
-    - Cite specific file paths for all evidence
+    - Never fabricate information or recommend changes without knowledge base evidence
+    - Only suggest modifications to the four primary target fields where you have concrete evidence
+    - Cite specific file paths for all evidence found
+    - Do not recommend structural changes that violate the schema constraints
+    - Focus on content optimization within the existing, fixed CV structure
 
   expected_output: >
     A CvTransformationPlan JSON object containing a concrete edit plan
@@ -65,18 +164,14 @@ cv_alignment_task:
 
 cv_optimization_task:
   description: >
-    You will receive three inputs to complete this task:
+    You will receive structured inputs from the previous tasks:
 
-    1. A structured job posting object from the previous analysis
-    2. A structured CV transformation plan from the previous alignment analysis
-    3. A file path to the candidate's current CV: {candidate_cv_path}
-
-    Use your file reading tool to read and analyze the candidate's current CV from this path.
-    The CV may be in various formats (JSON, YAML, CSV) and will need to be interpreted and
-    restructured into the output format.
+    1. CurriculumVitae object - structured CV data from CV structuring
+    2. JobPosting object - structured job requirements from job analysis
+    3. CvTransformationPlan object - detailed transformation plan from CV alignment
 
     IMPLEMENTATION PROCESS:
-    1. Read and parse the current CV from the provided file path
+    1. Use the structured CurriculumVitae data provided as your base CV content
     2. Follow the CvTransformationPlan guidance for restructuring and rewriting
     3. Use Knowledge base to verify and expand on transformation plan citations
     4. Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan

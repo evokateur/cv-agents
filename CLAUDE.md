@@ -17,11 +17,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### CV Optimization Testing
 
-- `make cv-alignment` - Test CV alignment task with job posting analysis
-- `make cv-optimization` - Test CV optimization task using pre-generated alignment output
-- `make job-analysis` - Test job analysis functionality
-- `make agents` - Run CV agents with default configuration
-- `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content
+- `make cv_alignment` - Test CV alignment task with job posting analysis
+- `make cv_optimization` - Test CV optimization task using pre-generated alignment output
+- `make job_analysis` - Test job analysis functionality
+- `make cv_structuring` - Test CV structuring agent with CV parsing
+- `make cv_agents` - Run CV agents with default configuration
+- `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content (runs `scripts/embed_kb.py`)
 
 ### Development Setup
 
@@ -35,6 +36,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `python kickoff_crew.py --config_path config.json` - Run crew with JSON config file
 - `python kickoff_crew.py --config '{"inputs": {...}}'` - Run crew with inline JSON config
 - `python -m scripts.cv_agents` - Simple test runner with hardcoded inputs
+
+### Knowledge Base Utilities
+
+- `python -m scripts.embed_kb` - Rebuild ChromaDB vector database from knowledge base content
+- `python -m scripts.query_kb [query]` - Query knowledge base using semantic search (optional query parameter)
+- `python -m scripts.inspect_chroma` - Inspect ChromaDB vector database contents
+- `python -m scripts.chroma_test` - Test ChromaDB functionality
 
 ## Architecture
 
@@ -86,7 +94,7 @@ Here are some links to CrewAI documentation to help us understand the target arc
   - `semantic_search_wrapper.py` - Clean output formatter for LLM-synthesized results
 - `optimizer/utils/` - Vector database utilities, prompt utilities, and RAG tool management
 - `kickoff_crew.py` - Command-line interface for running the crew with JSON/YAML config
-- `cv_agents.py` - Simple test script for running the crew with hardcoded inputs
+- `scripts/` - Directory containing individual test scripts for each crew component and knowledge base utilities
 
 **Configuration:**
 
@@ -121,9 +129,15 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - Configuration in `pytest.ini` with verbose output and short tracebacks
 - Filters Pydantic deprecation warnings for cleaner test output
 - Individual crew testing scripts in `scripts/` directory for isolated testing:
-  - `job_analysis.py` - Test job analysis functionality independently
+  - `cv_agents.py` - Main CV agents test runner with hardcoded inputs
   - `cv_alignment.py` - Test CV alignment task with job posting analysis
   - `cv_optimization.py` - Test CV optimization task using pre-generated outputs
+  - `cv_structuring.py` - Test CV structuring agent with CV parsing
+  - `job_analysis.py` - Test job analysis functionality independently
+  - `embed_kb.py` - Rebuild vector database using KnowledgeBaseEmbedder
+  - `query_kb.py` - Query knowledge base using SemanticSearchWrapper (accepts optional query argument)
+  - `chroma_test.py` - ChromaDB testing utilities
+  - `inspect_chroma.py` - Vector database inspection tools
 
 ### Key Files
 

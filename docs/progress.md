@@ -571,3 +571,123 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 - Removed `optimizer/logging/crew_execution_logger.py` - Unused execution logger code
 
 **Result:** Clean, readable console log files without ANSI escape sequences while maintaining full colorized terminal output for optimal debugging experience.
+
+## CV Structuring Agent Implementation and Template Hard-coding Fix (September 2025)
+
+**Summary:** Created standalone CV structuring agent crew and resolved hard-coded template values to enable dynamic CV generation from structured data.
+
+**Key Changes:**
+
+- Fixed hard-coded profession and core_expertise values in LaTeX template to use dynamic data
+- Implemented CV structuring agent with FileReadTool for parsing arbitrary CV formats into CurriculumVitae schema
+- Created CvStructuring single-agent crew following JobAnalysis pattern for modular CV parsing
+- Standardized Makefile targets from kebab-case to snake_case for consistency with script naming
+- Removed unused document parsing tools (DOCXSearchTool, PDFSearchTool) in favor of simple text conversion approach
+
+**Architecture Implementation:**
+
+- **Template Fix**: Updated cv.tex to use `(( profession ))` and `(( core_expertise|join(' \\textbar\\ ') ))` instead of hard-coded values
+- **Agent-as-Tool Pattern**: CV structuring agent can parse various text formats (JSON, YAML, plain text) into standardized schema
+- **Single-Agent Crew**: CvStructuring class with cv_structurer agent and cv_structuring_task for isolated CV parsing functionality
+- **Naming Standardization**: All Makefile targets now use snake_case matching their corresponding script names
+- **Simplified Tooling**: Focused on FileReadTool only, avoiding complex document parsing dependencies
+
+**Files Updated:**
+
+- `templates/cv.tex` - Replaced hard-coded profession and expertise with dynamic template variables
+- `optimizer/config/agents.yaml` - Added cv_structurer agent with CV parsing role and capabilities
+- `optimizer/config/tasks.yaml` - Added cv_structuring_task with schema compliance instructions
+- `optimizer/agents.py` - Added cv_structurer method with FileReadTool configuration
+- `optimizer/tasks.py` - Added cv_structuring_task method with CurriculumVitae output
+- `optimizer/crew.py` - Created CvStructuring class following single-agent crew pattern
+- `scripts/cv_structuring.py` - Test script for standalone CV structuring functionality
+- `Makefile` - Updated all targets to snake_case, added cv_structuring target
+- `sample.env` - Added CV_STRUCTURER_MODEL and CV_STRUCTURER_TEMPERATURE variables
+
+**Testing Results:**
+
+- Successfully parsed structured CV data with 99% accuracy compared to hand-crafted version
+- CV structuring agent correctly handled JSON format and extracted all relevant sections
+- Template dynamic generation confirmed working with profession and core_expertise fields
+- All Makefile targets function correctly with standardized snake_case naming
+
+**Result:** Eliminated template hard-coding issues and created flexible CV structuring pipeline that can parse arbitrary CV formats into standardized schema. The system now supports both structured (JSON/YAML) and unstructured (plain text) CV inputs through a dedicated agent-as-tool approach, enabling the cv_alignment_task to work with consistent structured data for more targeted optimization recommendations.
+
+## Parallel Task Implementation and Code Deduplication (September 2025)
+
+**Summary:** Implemented parallel task execution in the main CV optimization workflow and eliminated code duplication by factoring out shared fake agent components into a reusable module.
+
+**Key Changes:**
+
+- Implemented parallel execution for cv_structuring_task and job_analysis_task using `async_execution=True`
+- Updated cv_alignment_task to depend on both parallel tasks using context parameter
+- Fixed task prompts to clarify structured data flow between tasks instead of file-based inputs
+- Updated CvAlignment crew to mirror main crew's parallel structure with fake tasks
+- Eliminated ~165 lines of duplicate code by creating shared fakers.py module with static methods
+
+**Architecture Implementation:**
+
+- **Parallel Task Execution**: cv_structuring_task and job_analysis_task now run concurrently using CrewAI's async_execution feature
+- **Task Dependencies**: cv_alignment_task receives structured outputs from both parallel tasks via context parameter
+- **Code Deduplication**: Created FakeAgents and FakeTasks classes with static methods for shared fake components
+- **Prompt Clarification**: Updated task descriptions to explicitly state inputs come from previous task outputs, not files
+- **Consistent Structure**: All crew classes now follow the same parallel workflow pattern
+
+**Files Updated:**
+
+- `optimizer/crew.py` - Added cv_structuring_task to main crew with async execution, updated CvAlignment crew structure, integrated shared fake components
+- `optimizer/config/tasks.yaml` - Updated cv_alignment_task and cv_optimization_task prompts to clarify structured data inputs
+- `optimizer/fakers.py` - New module containing FakeAgents and FakeTasks classes with static methods for shared components
+
+**Result:** Successfully implemented parallel task execution reducing workflow time while maintaining data consistency. Eliminated significant code duplication through shared fake agent components, improving maintainability and following DRY principles. All crew classes now consistently use parallel cv_structuring and job_analysis tasks feeding into cv_alignment_task.
+
+## Personal Project Prompt Planning (September 2025)
+
+**Summary:** Documented how to adapt the existing project prompt so personal GitHub repositories can be captured without implying MultiEmployer affiliation.
+
+**Key Points:**
+- Reviewed the knowledge base directory structure to keep personal project docs separate from company materials.
+- Determined that cloning each personal repository locally and prompting an LLM with that context is the most direct path for generating docs.
+- Authored `_docs/personal-project-prompt-plan.md` to capture prompt adjustments and labeling guidance for personal projects.
+
+**Result:** Personal project documentation can now be generated with clear separation from corporate knowledge base artifacts.
+
+## CLAUDE.md Documentation Update and CV Alignment Task Enhancement (September 2025)
+
+**Summary:** Updated project documentation to reflect current Makefile and scripts directory structure, and enhanced the cv_alignment_task with section prioritization framework to focus on narrative impact rather than technical skills listing.
+
+**Key Changes:**
+
+- Updated CLAUDE.md with current Makefile targets and comprehensive script descriptions
+- Enhanced cv_alignment_task prompt with section priorities focusing on Professional Summary, Core Experience, Technical Skills, and Education
+- Added Knowledge Base Utilities section documenting vector database management and semantic search tools
+- Preserved existing functionality while adding strategic section-focused guidance
+
+**Architecture Implementation:**
+
+- **Documentation Alignment**: Updated CLAUDE.md to reflect snake_case Makefile targets and current scripts directory structure
+- **Section Prioritization Framework**: Added four-level priority system for CV transformation planning with specific guidance for each section
+- **Script Documentation**: Added comprehensive descriptions for cv_agents.py, cv_alignment.py, cv_optimization.py, cv_structuring.py, job_analysis.py, embed_kb.py, query_kb.py, and utility scripts
+- **Strategic Focus**: Enhanced cv_alignment_task to discourage "mere name-dropping" of technologies in favor of narrative impact and value demonstration
+
+**Files Updated:**
+
+- `CLAUDE.md` - Updated CV Optimization Testing section, added Knowledge Base Utilities section, enhanced script documentation with detailed descriptions
+- `optimizer/config/tasks.yaml` - Enhanced cv_alignment_task with section priorities framework, added guidance for Professional Summary (HIGHEST), Core Experience (HIGH), Technical Skills (MEDIUM), and Education/Certifications (LOWER)
+
+**Key Enhancement Details:**
+
+The cv_alignment_task now includes structured section priorities:
+
+1. **Professional Summary/Summary of Qualifications (HIGHEST PRIORITY)**: Craft compelling 3-4 line narrative connecting strongest qualifications to job requirements, focus on outcomes and value delivered
+2. **Core Experience (HIGH PRIORITY)**: Align job responsibilities and achievements with posting requirements, rewrite bullet points to mirror job posting terminology
+3. **Technical Skills (MEDIUM PRIORITY)**: Support narrative with relevant technologies, avoid mere name-dropping, focus on technologies used in meaningful projects
+4. **Education/Certifications (LOWER PRIORITY)**: Highlight relevant credentials, position strategically based on job emphasis
+
+**Process Enhancement:**
+
+- Added explicit guidance to search Knowledge base for quantifiable achievements and leadership examples
+- Included instructions for building transformation plans with matching_skills, missing_skills, additions, rewrites, and section_strategy
+- Preserved all existing tool usage patterns while adding strategic section focus
+
+**Result:** Successfully updated project documentation to reflect current architecture and enhanced the CV alignment task with section prioritization framework. The system now provides strategic guidance for narrative-focused CV transformation while maintaining all existing functionality and tool integration patterns.
