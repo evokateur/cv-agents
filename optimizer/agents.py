@@ -8,7 +8,7 @@ from crewai_tools import (
 from config import get_config, get_embedchain_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
 from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
-from optimizer.knowledge_embedder import KnowledgeBaseEmbedder
+from optimizer.embedder import KnowledgeBaseEmbedder
 import yaml
 
 
