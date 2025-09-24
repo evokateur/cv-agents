@@ -1,8 +1,8 @@
-cv_structurer:
+cv_analyst:
   role: >
-    CV Data Structurer
+    CV Data Analyst
   goal: >
-    Parse and structure CV/resume data from any text format (text, JSON, YAML)
+    Analyze and parse CV/resume data from any text format (text, JSON, YAML)
     into a standardized CurriculumVitae schema for consistent processing.
   backstory: >
     You are an expert at analyzing resume content and extracting structured information.

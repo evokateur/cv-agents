@@ -19,8 +19,8 @@ class CvOptimizer:
         self.custom_tasks = CustomTasks()
 
     @agent
-    def cv_structurer(self):
-        return self.custom_agents.cv_structurer()
+    def cv_analyst(self):
+        return self.custom_agents.cv_analyst()
 
     @agent
     def job_analyst(self):
@@ -35,8 +35,8 @@ class CvOptimizer:
         return self.custom_agents.cv_strategist()
 
     @task
-    def cv_structuring_task(self):
-        task = self.custom_tasks.cv_structuring_task(self.cv_structurer())
+    def cv_analysis_task(self):
+        task = self.custom_tasks.cv_analysis_task(self.cv_analyst())
         task.async_execution = True
         return task
 
@@ -49,7 +49,7 @@ class CvOptimizer:
     @task
     def cv_alignment_task(self):
         return self.custom_tasks.cv_alignment_task(
-            self.cv_advisor(), [self.cv_structuring_task(), self.job_analysis_task()]
+            self.cv_advisor(), [self.cv_analysis_task(), self.job_analysis_task()]
         )
 
     @task
@@ -57,7 +57,7 @@ class CvOptimizer:
         return self.custom_tasks.cv_optimization_task(
             self.cv_strategist(),
             [
-                self.cv_structuring_task(),
+                self.cv_analysis_task(),
                 self.job_analysis_task(),
                 self.cv_alignment_task(),
             ],
@@ -73,20 +73,20 @@ class CvOptimizer:
         )
 
 
-class CvStructuring:
-    """CV Structuring crew - runs only CV structuring task"""
+class CvAnalysis:
+    """CV Analysis crew - runs only CV analysis task"""
 
     def __init__(self):
         self.custom_agents = CustomAgents()
         self.custom_tasks = CustomTasks()
 
     def crew(self) -> Crew:
-        cv_structurer = self.custom_agents.cv_structurer()
-        cv_structuring_task = self.custom_tasks.cv_structuring_task(cv_structurer)
+        cv_analyst = self.custom_agents.cv_analyst()
+        cv_analysis_task = self.custom_tasks.cv_analysis_task(cv_analyst)
 
         return Crew(
-            agents=[cv_structurer],
-            tasks=[cv_structuring_task],
+            agents=[cv_analyst],
+            tasks=[cv_analysis_task],
             process=Process.sequential,
             verbose=True,
         )
@@ -119,23 +119,23 @@ class CvAlignment:
         self.custom_tasks = CustomTasks()
 
     def crew(self) -> Crew:
-        fake_cv_structurer = FakeAgents.cv_structurer()
+        fake_cv_analyst = FakeAgents.cv_analyst()
         fake_job_analyst = FakeAgents.job_analyst()
         cv_advisor = self.custom_agents.cv_advisor()
 
-        fake_cv_structuring_task = FakeTasks.cv_structuring_task(fake_cv_structurer)
-        fake_cv_structuring_task.async_execution = True
+        fake_cv_analysis_task = FakeTasks.cv_analysis_task(fake_cv_analyst)
+        fake_cv_analysis_task.async_execution = True
 
         fake_job_analysis_task = FakeTasks.job_analysis_task(fake_job_analyst)
         fake_job_analysis_task.async_execution = True
 
         cv_alignment_task = self.custom_tasks.cv_alignment_task(
-            cv_advisor, [fake_cv_structuring_task, fake_job_analysis_task]
+            cv_advisor, [fake_cv_analysis_task, fake_job_analysis_task]
         )
 
         return Crew(
-            agents=[fake_cv_structurer, fake_job_analyst, cv_advisor],
-            tasks=[fake_cv_structuring_task, fake_job_analysis_task, cv_alignment_task],
+            agents=[fake_cv_analyst, fake_job_analyst, cv_advisor],
+            tasks=[fake_cv_analysis_task, fake_job_analysis_task, cv_alignment_task],
             process=Process.sequential,
             verbose=True,
         )
@@ -149,37 +149,37 @@ class CvOptimization:
         self.custom_tasks = CustomTasks()
 
     def crew(self) -> Crew:
-        fake_cv_structurer = FakeAgents.cv_structurer()
+        fake_cv_analyst = FakeAgents.cv_analyst()
         fake_job_analyst = FakeAgents.job_analyst()
         fake_cv_advisor = FakeAgents.cv_advisor()
         cv_strategist = self.custom_agents.cv_strategist()
 
-        fake_cv_structuring_task = FakeTasks.cv_structuring_task(fake_cv_structurer)
-        fake_cv_structuring_task.async_execution = True
+        fake_cv_analysis_task = FakeTasks.cv_analysis_task(fake_cv_analyst)
+        fake_cv_analysis_task.async_execution = True
 
         fake_job_analysis_task = FakeTasks.job_analysis_task(fake_job_analyst)
         fake_job_analysis_task.async_execution = True
 
         fake_cv_alignment_task = FakeTasks.cv_alignment_task(fake_cv_advisor)
         fake_cv_alignment_task.context = [
-            fake_cv_structuring_task,
+            fake_cv_analysis_task,
             fake_job_analysis_task,
         ]
 
         cv_optimization_task = self.custom_tasks.cv_optimization_task(
             cv_strategist,
-            [fake_cv_structuring_task, fake_job_analysis_task, fake_cv_alignment_task],
+            [fake_cv_analysis_task, fake_job_analysis_task, fake_cv_alignment_task],
         )
 
         return Crew(
             agents=[
-                fake_cv_structurer,
+                fake_cv_analyst,
                 fake_job_analyst,
                 fake_cv_advisor,
                 cv_strategist,
             ],
             tasks=[
-                fake_cv_structuring_task,
+                fake_cv_analysis_task,
                 fake_job_analysis_task,
                 fake_cv_alignment_task,
                 cv_optimization_task,

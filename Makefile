@@ -5,13 +5,13 @@ else ifeq ($(shell uname), Linux)
 OPEN = xdg-open
 endif
 
-.PHONY: vector_db cv_agents cv_structuring job_analysis cv_alignment cv_optimization test clean
+.PHONY: vector_db cv_agents cv_analysis job_analysis cv_alignment cv_optimization test clean
 
 cv_agents:
 	python -m scripts.cv_agents
 
-cv_structuring:
-	python -m scripts.cv_structuring
+cv_analysis:
+	python -m scripts.cv_analysis
 
 job_analysis:
 	python -m scripts.job_analysis

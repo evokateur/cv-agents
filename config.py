@@ -7,14 +7,14 @@ class Config:
         load_dotenv()
 
     @property
-    def cv_structurer_model(self) -> str:
-        model = os.getenv("CV_STRUCTURER_MODEL")
-        assert model is not None, "CV_STRUCTURER_MODEL environment variable must be set"
+    def cv_analyst_model(self) -> str:
+        model = os.getenv("CV_ANALYST_MODEL")
+        assert model is not None, "CV_ANALYST_MODEL environment variable must be set"
         return model
 
     @property
-    def cv_structurer_temperature(self) -> str:
-        return os.getenv("CV_STRUCTURER_TEMPERATURE", "0.7")
+    def cv_analyst_temperature(self) -> str:
+        return os.getenv("CV_ANALYST_TEMPERATURE", "0.7")
 
     @property
     def job_analyst_model(self) -> str:

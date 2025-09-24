@@ -21,9 +21,9 @@ class CustomAgents:
         # Initialize LLMs
         self.config = get_config()
         self.llms = {
-            "cv_structurer": LLM(
-                model=self.config.cv_structurer_model,
-                temperature=float(self.config.cv_structurer_temperature),
+            "cv_analyst": LLM(
+                model=self.config.cv_analyst_model,
+                temperature=float(self.config.cv_analyst_temperature),
             ),
             "job_analyst": LLM(
                 model=self.config.job_analyst_model,
@@ -57,11 +57,11 @@ class CustomAgents:
     def get_file_read_tool(self) -> FileReadTool:
         return FileReadTool()
 
-    def cv_structurer(self) -> Agent:
+    def cv_analyst(self) -> Agent:
         return Agent(
-            config=self.agents_config["cv_structurer"],
+            config=self.agents_config["cv_analyst"],
             tools=[FileReadTool()],
-            llm=self.llms["cv_structurer"],
+            llm=self.llms["cv_analyst"],
         )
 
     def job_analyst(self) -> Agent:

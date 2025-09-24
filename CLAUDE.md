@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `make cv_alignment` - Test CV alignment task with job posting analysis
 - `make cv_optimization` - Test CV optimization task using pre-generated alignment output
 - `make job_analysis` - Test job analysis functionality
-- `make cv_structuring` - Test CV structuring agent with CV parsing
+- `make cv_analysis` - Test CV analysis agent with CV parsing
 - `make cv_agents` - Run CV agents with default configuration
 - `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content (runs `scripts/embed_kb.py`)
 
@@ -132,7 +132,7 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
   - `cv_agents.py` - Main CV agents test runner with hardcoded inputs
   - `cv_alignment.py` - Test CV alignment task with job posting analysis
   - `cv_optimization.py` - Test CV optimization task using pre-generated outputs
-  - `cv_structuring.py` - Test CV structuring agent with CV parsing
+  - `cv_analysis.py` - Test CV analysis agent with CV parsing
   - `job_analysis.py` - Test job analysis functionality independently
   - `embed_kb.py` - Rebuild vector database using KnowledgeBaseEmbedder
   - `query_kb.py` - Query knowledge base using SemanticSearchWrapper (accepts optional query argument)

@@ -6,7 +6,7 @@ import os
 import sys
 import warnings
 import yaml
-from optimizer.crew import CvOptimizer, CvStructuring, JobAnalysis, CvAlignment, CvOptimization
+from optimizer.crew import CvOptimizer, CvAnalysis, JobAnalysis, CvAlignment, CvOptimization
 from optimizer.logging.console_capture import capture_console_output
 
 
@@ -82,7 +82,7 @@ def main(argv=None):
 
     CREW_FUNCTIONS = {
         "CvOptimizer": kickoff_cv_optimizer,
-        "CvStructuring": kickoff_cv_structuring,
+        "CvAnalysis": kickoff_cv_analysis,
         "JobAnalysis": kickoff_job_analysis,
         "CvAlignment": kickoff_cv_alignment,
         "CvOptimization": kickoff_cv_optimization,
@@ -117,7 +117,7 @@ def kickoff_cv_optimizer(config):
     CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_cv_structuring(config):
+def kickoff_cv_analysis(config):
     schema = {
         "type": "object",
         "properties": {
@@ -135,7 +135,7 @@ def kickoff_cv_structuring(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    CvStructuring().crew().kickoff(inputs=config.get("inputs"))
+    CvAnalysis().crew().kickoff(inputs=config.get("inputs"))
 
 
 def kickoff_job_analysis(config):
@@ -179,7 +179,7 @@ def kickoff_cv_alignment(config):
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
     raise_exception_if_files_missing([
-        os.path.join(output_directory, "job_analysis.json")
+        os.path.join(output_directory, "job_posting.json")
     ])
 
     CvAlignment().crew().kickoff(inputs=config.get("inputs"))
@@ -205,7 +205,7 @@ def kickoff_cv_optimization(config):
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
     raise_exception_if_files_missing([
-        os.path.join(output_directory, "job_analysis.json"),
+        os.path.join(output_directory, "job_posting.json"),
         os.path.join(output_directory, "cv_transformation_plan.json")
     ])
 

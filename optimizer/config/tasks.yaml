@@ -1,4 +1,4 @@
-cv_structuring_task:
+cv_analysis_task:
   description: >
     Parse and structure the CV/resume data from the provided file path ({candidate_cv_path})
     into a standardized CurriculumVitae schema. Follow these rules:
@@ -32,7 +32,7 @@ cv_structuring_task:
     A structured CurriculumVitae JSON object with all sections properly organized
     and compliant with the established schema, ready for optimization processing.
   output_file: "{output_directory}/original_cv.json"
-  agent: cv_structurer
+  agent: cv_analyst
 
 job_analysis_task:
   description: >
@@ -67,7 +67,7 @@ job_analysis_task:
   expected_output: >
     A validated JobPosting object with all fields populated where possible,
     ensuring consistency and ATS-awareness.
-  output_file: "{output_directory}/job_analysis.json"
+  output_file: "{output_directory}/job_posting.json"
   agent: job_analyst
 
 cv_alignment_task:

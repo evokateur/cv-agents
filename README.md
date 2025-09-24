@@ -133,7 +133,7 @@ python -m scripts.cv_agents
 make cv_alignment          # Test CV alignment task
 make cv_optimization       # Test CV optimization task
 make job_analysis          # Test job analysis functionality
-make cv_structuring        # Test CV structuring agent
+make cv_analysis           # Test CV analysis agent
 ```
 
 ### Knowledge Base Tools
