@@ -7,8 +7,8 @@ endif
 
 .PHONY: vector_db cv_agents cv_analysis job_analysis cv_alignment cv_transformation test clean
 
-cv_agents:
-	python -m scripts.cv_agents
+cv_optimization:
+	python -m scripts.cv_optimization
 
 cv_analysis:
 	python -m scripts.cv_analysis
