@@ -29,7 +29,7 @@ class FakeAgents:
         )
 
     @staticmethod
-    def cv_advisor() -> Agent:
+    def cv_strategist() -> Agent:
         """Fake agent that loads cv transformation plan from file"""
         return Agent(
             role="CV Transformation Plan Reader",

@@ -27,26 +27,26 @@ class Config:
         return os.getenv("JOB_ANALYST_TEMPERATURE", "0.7")
 
     @property
-    def cv_advisor_model(self) -> str:
-        model = os.getenv("CV_ADVISOR_MODEL")
-        assert model is not None, (
-            "CV_ADVISOR_MODEL environment variable must be set"
-        )
-        return model
-
-    @property
-    def cv_advisor_temperature(self) -> str:
-        return os.getenv("CV_ADVISOR_TEMPERATURE", "0.7")
-
-    @property
     def cv_strategist_model(self) -> str:
         model = os.getenv("CV_STRATEGIST_MODEL")
-        assert model is not None, "CV_STRATEGIST_MODEL environment variable must be set"
+        assert model is not None, (
+            "CV_STRATEGIST_MODEL environment variable must be set"
+        )
         return model
 
     @property
     def cv_strategist_temperature(self) -> str:
         return os.getenv("CV_STRATEGIST_TEMPERATURE", "0.7")
+
+    @property
+    def cv_rewriter_model(self) -> str:
+        model = os.getenv("CV_REWRITER_MODEL")
+        assert model is not None, "CV_REWRITER_MODEL environment variable must be set"
+        return model
+
+    @property
+    def cv_rewriter_temperature(self) -> str:
+        return os.getenv("CV_REWRITER_TEMPERATURE", "0.7")
 
     @property
     def crew_manager_model(self) -> str:

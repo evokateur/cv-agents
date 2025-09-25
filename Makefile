@@ -5,7 +5,7 @@ else ifeq ($(shell uname), Linux)
 OPEN = xdg-open
 endif
 
-.PHONY: vector_db cv_agents cv_analysis job_analysis cv_alignment cv_optimization test clean
+.PHONY: vector_db cv_agents cv_analysis job_analysis cv_alignment cv_transformation test clean
 
 cv_agents:
 	python -m scripts.cv_agents
@@ -19,8 +19,8 @@ job_analysis:
 cv_alignment:
 	python -m scripts.cv_alignment
 
-cv_optimization:
-	python -m scripts.cv_optimization
+cv_transformation:
+	python -m scripts.cv_transformation
 
 vector_db:
 	python -m scripts.embed_kb

@@ -130,10 +130,10 @@ python -m scripts.cv_agents
 ### Testing Individual Components
 
 ```bash
-make cv_alignment          # Test CV alignment task
-make cv_optimization       # Test CV optimization task
-make job_analysis          # Test job analysis functionality
-make cv_analysis           # Test CV analysis agent
+make job_analysis          # Run job analysis task 
+make cv_analysis           # Run CV analysis task
+make cv_alignment          # Run CV alignment task
+make cv_transformation     # Run CV transformation task
 ```
 
 ### Knowledge Base Tools

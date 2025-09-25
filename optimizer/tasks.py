@@ -38,9 +38,9 @@ class CustomTasks:
             agent=agent,
         )
 
-    def cv_optimization_task(self, agent, context_tasks) -> Task:
+    def cv_transformation_task(self, agent, context_tasks) -> Task:
         return Task(
-            config=self.tasks_config["cv_optimization_task"],
+            config=self.tasks_config["cv_transformation_task"],
             output_pydantic=CurriculumVitae,
             context=context_tasks,
             agent=agent,

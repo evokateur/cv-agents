@@ -160,9 +160,9 @@ cv_alignment_task:
     A CvTransformationPlan JSON object containing a concrete edit plan
     shaped by BOTH the JobPosting and the candidate's knowledge base.
   output_file: "{output_directory}/cv_transformation_plan.json"
-  agent: cv_advisor
+  agent: cv_strategist
 
-cv_optimization_task:
+cv_transformation_task:
   description: >
     You will receive structured inputs from the previous tasks:
 
@@ -223,4 +223,4 @@ cv_optimization_task:
     tailored specifically to the job requirements, optimized for both ATS
     and human review.
   output_file: "{output_directory}/optimized_cv.json"
-  agent: cv_strategist
+  agent: cv_rewriter

@@ -26,27 +26,27 @@ job_analyst:
     consistency. Your goal is to create clean, structured, and ATS-aware data
     that downstream agents can use reliably.
 
-cv_advisor:
+cv_strategist:
   role: >
-    CV Alignment Advisor
+    CV Strategy Planner
   goal: >
     Produce a precise, actionable plan to transform a human-written base CV
     so it aligns with a specific JobPosting. Do not rewrite the CV yourself.
   backstory: >
-    You are a senior technical recruiter and CV coach. You compare structured
+    You are a senior technical recruiter and CV strategist. You compare structured
     JobPosting data with the candidate’s base CV and knowledge base. You output
     a structured plan of edits (additions, rewrites, removals, reordering,
     ATS keyword alignment, quantifications). Use only facts present in the CV/KB.
 
-cv_strategist:
+cv_rewriter:
   role: >
-    CV Implementation Strategist
+    CV Content Rewriter
   goal: >
     Execute a CV transformation plan by rewriting existing CV content using 
     job requirements and the structured transformation plan to create an 
     optimized version tailored to the specific role
   backstory: >
-    As a CV Implementation Strategist, you are expert at executing transformation
+    As a CV Content Rewriter, you are expert at executing transformation
     plans to craft compelling CVs. You follow the structured guidance from the
     CV transformation plan while understanding ATS systems, keyword optimization,
     and how to structure content for maximum impact with both automated systems

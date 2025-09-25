@@ -815,3 +815,70 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 - Schema compliance ensures agents cannot recommend impossible structural changes
 
 **Result:** Successfully aligned CvTransformationPlan model with CV Alignment Task prompt's four-field approach and created explicit, schema-aware implementation guidance for CV Optimization Task. The enhanced model provides clear, actionable transformation instructions while preventing impossible structural modifications, creating a more focused and effective CV optimization pipeline.
+
+## Comprehensive System Renaming for Clarity and Logical Consistency (September 2025)
+
+**Summary:** Completed systematic renaming across the entire CV optimization system to improve clarity, logical consistency, and naming conventions. Aligned output filenames with Pydantic models, fixed confusing task names, resolved illogical agent role assignments, and established consistent crew naming patterns.
+
+**Key Changes:**
+
+- **File-Model Alignment**: Renamed job analysis output from "job_analysis.json" to "job_posting.json" to match JobPosting model
+- **Task Name Clarity**: Renamed cv_structuring_task to cv_analysis_task to better reflect its purpose of analyzing CVs and producing structured versions
+- **Agent Role Logic Fix**: Swapped cv_advisor and cv_strategist roles so strategist creates transformation plans and rewriter executes them
+- **Workflow Consistency**: Renamed cv_optimization_task to cv_transformation_task to align with CvTransformationPlan model output
+- **Crew Naming Standardization**: Updated crew names for grammatical consistency - CvOptimizer to CvOptimization to match other process-named crews
+- **Log File Simplification**: Removed "_console" suffix from log output files while maintaining task-based naming
+
+**Architecture Implementation:**
+
+- **Logical Workflow**: Established clear cv_analyst → cv_strategist → cv_rewriter agent progression
+- **Consistent Naming**: All components now follow coherent naming where names accurately reflect their function
+- **Model-File Alignment**: Output filenames directly correspond to their Pydantic models (JobPosting, CurriculumVitae, CvTransformationPlan)
+- **Process-Based Crews**: All crew names represent processes rather than actors for consistency
+- **Clear Task Purpose**: Task names explicitly describe what they analyze, plan, or transform
+
+**Files Updated:**
+
+- `optimizer/config/tasks.yaml` - Updated all task names, agent assignments, and output filenames
+- `optimizer/config/agents.yaml` - Renamed agents and swapped role assignments for logical consistency
+- `optimizer/tasks.py` - Updated method names and configuration keys for renamed tasks
+- `optimizer/agents.py` - Updated LLM configurations and agent factory methods
+- `optimizer/crew.py` - Renamed all crew classes and updated agent/task method calls
+- `optimizer/kickoff.py` - Updated crew imports, function names, and file validation logic
+- `config.py` - Updated environment variable properties for renamed agents
+- `embedder.py` - Renamed from knowledge_embedder.py for brevity
+- `scripts/` directory - Renamed cv_structuring.py to cv_analysis.py and cv_optimization.py to cv_transformation.py
+- `Makefile` - Updated all targets to reflect new naming conventions
+- `cv-agents.ipynb` - Updated crew name references in notebook cells
+
+**Technical Implementation:**
+
+- **Agent Role Clarity**: cv_strategist now creates CvTransformationPlan, cv_rewriter implements it into optimized CurriculumVitae
+- **Crew Structure**: CvAnalysis → CvAlignment → CvTransformation → CvOptimization workflow progression
+- **File Consistency**: job_posting.json, cv_analysis.json, cv_transformation_plan.json, optimized_cv.json outputs
+- **Environment Variables**: Updated CV_ANALYST_*, CV_STRATEGIST_*, CV_REWRITER_* configuration properties
+- **Logging Simplification**: Task-based log files without unnecessary suffixes (cv_analysis.log, cv_transformation.log)
+
+**Problem Solving:**
+
+- **Circular Dependencies**: Managed agent role swaps through careful edit ordering to avoid substring conflicts
+- **Framework Compliance**: Maintained all CrewAI @CrewBase decorator functionality during renaming
+- **Workflow Logic**: Fixed illogical naming where "advisor" made plans and "strategist" executed them
+- **Grammatical Consistency**: Distinguished between actors (optimizer) and processes (optimization) for crew naming
+
+**Testing Results:**
+
+- All Makefile targets function correctly with new naming: cv_analysis, cv_alignment, cv_transformation
+- Crew execution maintains proper task dependencies and file handoffs
+- Agent-task relationships preserved throughout renaming process
+- Environment variable configurations updated and tested
+- Documentation accuracy improved with "Run" vs "Test" clarification
+
+**Key Insights:**
+
+- **Naming Impact**: Consistent, logical naming significantly improves codebase comprehension
+- **Workflow Clarity**: Agent roles now accurately reflect their responsibilities in the optimization pipeline
+- **Model Alignment**: Direct correspondence between Pydantic models and output files reduces confusion
+- **Process vs Actor**: Process-named crews (CvOptimization) provide clearer context than actor-named crews (CvOptimizer)
+
+**Result:** Successfully transformed the entire CV optimization system with coherent naming conventions. The workflow now logically progresses through "optimization" as the overall process, comprised of sub-tasks: "analysis" (CV and job analysis), "alignment" (strategy planning), and "transformation" (implementation). All components have clear, descriptive names that accurately reflect their function, creating a more maintainable and understandable codebase.

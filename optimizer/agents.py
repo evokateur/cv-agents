@@ -29,13 +29,13 @@ class CustomAgents:
                 model=self.config.job_analyst_model,
                 temperature=float(self.config.job_analyst_temperature),
             ),
-            "cv_advisor": LLM(
-                model=self.config.cv_advisor_model,
-                temperature=float(self.config.cv_advisor_temperature),
-            ),
             "cv_strategist": LLM(
                 model=self.config.cv_strategist_model,
                 temperature=float(self.config.cv_strategist_temperature),
+            ),
+            "cv_rewriter": LLM(
+                model=self.config.cv_rewriter_model,
+                temperature=float(self.config.cv_rewriter_temperature),
             ),
         }
 
@@ -71,24 +71,24 @@ class CustomAgents:
             llm=self.llms["job_analyst"],
         )
 
-    def cv_advisor(self) -> Agent:
-        return Agent(
-            config=self.agents_config["cv_advisor"],
-            tools=[
-                self.get_semantic_search_tool(),
-                self.get_directory_search_tool(),
-                FileReadTool(),
-            ],
-            llm=self.llms["cv_advisor"],
-        )
-
     def cv_strategist(self) -> Agent:
         return Agent(
             config=self.agents_config["cv_strategist"],
             tools=[
                 self.get_semantic_search_tool(),
                 self.get_directory_search_tool(),
-                self.get_file_read_tool(),
+                FileReadTool(),
             ],
             llm=self.llms["cv_strategist"],
+        )
+
+    def cv_rewriter(self) -> Agent:
+        return Agent(
+            config=self.agents_config["cv_rewriter"],
+            tools=[
+                self.get_semantic_search_tool(),
+                self.get_directory_search_tool(),
+                self.get_file_read_tool(),
+            ],
+            llm=self.llms["cv_rewriter"],
         )

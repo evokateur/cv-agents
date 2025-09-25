@@ -6,7 +6,7 @@ import os
 import sys
 import warnings
 import yaml
-from optimizer.crew import CvOptimizer, CvAnalysis, JobAnalysis, CvAlignment, CvOptimization
+from optimizer.crew import CvOptimization, CvAnalysis, JobAnalysis, CvAlignment, CvTransformation
 from optimizer.logging.console_capture import capture_console_output
 
 
@@ -29,7 +29,7 @@ def setup_logging(output_directory, crew_name):
     snake_case_name = ''.join(['_' + c.lower() if c.isupper() and i > 0 else c.lower()
                               for i, c in enumerate(crew_name)])
 
-    console_output_log = os.path.join(output_directory, f"{snake_case_name}_console.log")
+    console_output_log = os.path.join(output_directory, f"{snake_case_name}.log")
 
     # Only set up console logging for the kickoff script
     logging.basicConfig(
@@ -81,17 +81,17 @@ def main(argv=None):
                 config = yaml.safe_load(f)
 
     CREW_FUNCTIONS = {
-        "CvOptimizer": kickoff_cv_optimizer,
+        "CvOptimization": kickoff_cv_optimization,
         "CvAnalysis": kickoff_cv_analysis,
         "JobAnalysis": kickoff_job_analysis,
         "CvAlignment": kickoff_cv_alignment,
-        "CvOptimization": kickoff_cv_optimization,
+        "CvTransformation": kickoff_cv_transformation,
     }
 
     dispatch_crew(args.crew_name, config, CREW_FUNCTIONS)
 
 
-def kickoff_cv_optimizer(config):
+def kickoff_cv_optimization(config):
     schema = {
         "type": "object",
         "properties": {
@@ -114,7 +114,7 @@ def kickoff_cv_optimizer(config):
 
     jsonschema.validate(instance=config, schema=schema)
 
-    CvOptimizer().crew().kickoff(inputs=config.get("inputs"))
+    CvOptimization().crew().kickoff(inputs=config.get("inputs"))
 
 
 def kickoff_cv_analysis(config):
@@ -185,7 +185,7 @@ def kickoff_cv_alignment(config):
     CvAlignment().crew().kickoff(inputs=config.get("inputs"))
 
 
-def kickoff_cv_optimization(config):
+def kickoff_cv_transformation(config):
     schema = {
         "type": "object",
         "properties": {
@@ -209,7 +209,7 @@ def kickoff_cv_optimization(config):
         os.path.join(output_directory, "cv_transformation_plan.json")
     ])
 
-    CvOptimization().crew().kickoff(inputs=config.get("inputs"))
+    CvTransformation().crew().kickoff(inputs=config.get("inputs"))
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### CV Optimization Testing
 
 - `make cv_alignment` - Test CV alignment task with job posting analysis
-- `make cv_optimization` - Test CV optimization task using pre-generated alignment output
+- `make cv_transformation` - Test CV transformation task using pre-generated alignment output
 - `make job_analysis` - Test job analysis functionality
 - `make cv_analysis` - Test CV analysis agent with CV parsing
 - `make cv_agents` - Run CV agents with default configuration
@@ -131,7 +131,7 @@ Uses custom Jinja2 delimiters to avoid LaTeX conflicts:
 - Individual crew testing scripts in `scripts/` directory for isolated testing:
   - `cv_agents.py` - Main CV agents test runner with hardcoded inputs
   - `cv_alignment.py` - Test CV alignment task with job posting analysis
-  - `cv_optimization.py` - Test CV optimization task using pre-generated outputs
+  - `cv_transformation.py` - Test CV transformation task using pre-generated outputs
   - `cv_analysis.py` - Test CV analysis agent with CV parsing
   - `job_analysis.py` - Test job analysis functionality independently
   - `embed_kb.py` - Rebuild vector database using KnowledgeBaseEmbedder
