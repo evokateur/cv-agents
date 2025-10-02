@@ -3,10 +3,15 @@ import json
 import jsonschema
 import logging
 import os
-import sys
 import warnings
 import yaml
-from optimizer.crew import CvOptimization, CvAnalysis, JobAnalysis, CvAlignment, CvTransformation
+from optimizer.crew import (
+    CvOptimization,
+    CvAnalysis,
+    JobAnalysis,
+    CvAlignment,
+    CvTransformation,
+)
 from optimizer.logging.console_capture import capture_console_output
 
 
@@ -16,9 +21,9 @@ def raise_exception_if_files_missing(file_paths):
 
     if missing_files:
         raise FileNotFoundError(
-            f"Required input files are missing:\n" +
-            "\n".join(f"  - {file}" for file in missing_files) +
-            "\n\nRun the prerequisite crews to generate these files first."
+            "Required input files are missing:\n"
+            + "\n".join(f"  - {file}" for file in missing_files)
+            + "\n\nRun the prerequisite crews to generate these files first."
         )
 
 
@@ -26,16 +31,20 @@ def setup_logging(output_directory, crew_name):
     os.makedirs(output_directory, exist_ok=True)
 
     # Convert PascalCase to snake_case
-    snake_case_name = ''.join(['_' + c.lower() if c.isupper() and i > 0 else c.lower()
-                              for i, c in enumerate(crew_name)])
+    snake_case_name = "".join(
+        [
+            "_" + c.lower() if c.isupper() and i > 0 else c.lower()
+            for i, c in enumerate(crew_name)
+        ]
+    )
 
     console_output_log = os.path.join(output_directory, f"{snake_case_name}.log")
 
     # Only set up console logging for the kickoff script
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[logging.StreamHandler()]
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[logging.StreamHandler()],
     )
 
     logger = logging.getLogger(__name__)
@@ -178,9 +187,9 @@ def kickoff_cv_alignment(config):
     jsonschema.validate(instance=config, schema=schema)
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
-    raise_exception_if_files_missing([
-        os.path.join(output_directory, "job_posting.json")
-    ])
+    raise_exception_if_files_missing(
+        [os.path.join(output_directory, "job_posting.json")]
+    )
 
     CvAlignment().crew().kickoff(inputs=config.get("inputs"))
 
@@ -204,10 +213,12 @@ def kickoff_cv_transformation(config):
     jsonschema.validate(instance=config, schema=schema)
 
     output_directory = config.get("inputs", {}).get("output_directory", "output")
-    raise_exception_if_files_missing([
-        os.path.join(output_directory, "job_posting.json"),
-        os.path.join(output_directory, "cv_transformation_plan.json")
-    ])
+    raise_exception_if_files_missing(
+        [
+            os.path.join(output_directory, "job_posting.json"),
+            os.path.join(output_directory, "cv_transformation_plan.json"),
+        ]
+    )
 
     CvTransformation().crew().kickoff(inputs=config.get("inputs"))
 
