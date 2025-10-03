@@ -72,155 +72,74 @@ job_analysis_task:
 
 cv_alignment_task:
   description: >
-    Create a CvTransformationPlan to align the candidate's CV with the job requirements.
+    Analyze the candidate’s CurriculumVitae and the JobPosting to generate a CvTransformationPlan — a structured proposal for aligning the CV to the job requirements.
 
-    INPUTS:
-    You will receive structured data from the previous tasks:
-    1. JobPosting object - structured job requirements from job analysis
-    2. CurriculumVitae object - structured CV data from CV structuring
+    Focus ONLY on modifying the following fields within the fixed CV schema:
+    - summary_of_qualifications
+    - experience[].responsibilities
+    - profession
+    - core_expertise
 
-    **CRITICAL: CV SCHEMA STRUCTURE**
-    The CurriculumVitae schema has a FIXED structure that cannot be rearranged. You can ONLY modify content within these fields:
+    For each, identify what can be improved based on concrete evidence from the knowledge base.
 
-    [[CurriculumVitae]]
+    **Rules:**
+    - Use exact terminology from the job posting.
+    - DO NOT fabricate experience or make changes without evidence.
+    - Maintain the schema structure: no new fields or reordering allowed.
 
-    **FOCUS AREAS FOR IMPROVEMENT** (think hard about what can realistically be improved from the knowledge base):
+    **Steps:**
+    1. Compare JobPosting requirements to the current CurriculumVitae content.
+    2. For each skill, technology, or requirement in the JobPosting:
+      a. Run a targeted search against the knowledge base: 
+          "What experience does [candidate name] have with [item]?"
+      b. If the knowledge base returns concrete experience, treat the skill as **matched** and include relevant improvements in the plan.
+      c. Only list a skill in `missing_skills` if:
+          - It is **not present** in the CV, **AND**
+          - The knowledge base returns no useful or relevant experience.
+    3. Use only verified experience when suggesting edits.
+    4. Cite file paths for all matching evidence used in the transformation plan.
 
-    **PRIMARY TARGETS** (highest impact for job alignment):
+    **Rules:**
+    - Every item in `missing_skills` must be preceded by a failed search in the knowledge base.
 
-    1. **summary_of_qualifications: List[str]** (HIGHEST PRIORITY)
-       - List of bullet points summarizing key qualifications
-       - Replace existing points with job-aligned narratives that connect candidate strengths to job requirements
-       - Search Knowledge base for quantifiable achievements, leadership examples, and outcomes
-       - Focus on value delivered, not just technical skills listing
-
-    2. **experience[].responsibilities: Optional[List[str]]** (HIGHEST PRIORITY)
-       - Each experience item can have a list of responsibility bullet points
-       - Rewrite these bullets to mirror job posting terminology and requirements
-       - Search Knowledge base for detailed project context, measurable outcomes, and specific achievements
-       - Align descriptions with job posting responsibilities
-
-    3. **profession: str** (HIGH PRIORITY)
-       - Single field defining the professional title/role
-       - Align with target job title while staying truthful to candidate background
-       - Example: "Full Stack Developer" → "Senior PHP Developer" if job emphasizes PHP
-
-    4. **core_expertise: List[str]** (MEDIUM PRIORITY)
-       - List of key skill areas and technologies
-       - Prioritize and reorder to emphasize job-relevant skills first
-       - Replace generic items with specific, job-aligned expertise areas
-       - Only include skills with meaningful knowledge base evidence
-
-    **SCHEMA CONSTRAINTS** (DO NOT recommend these - they are impossible):
-    - Moving sections around (education, experience order is fixed)
-    - Adding new section types not in the schema
-    - Reorganizing the overall CV layout or structure
-    - Changing field types or adding new top-level fields
-
-    **LIMITED IMPROVEMENT POTENTIAL:**
-    - education: Likely minimal improvement without more detailed academic information in knowledge base
-    - additional_experience: Usually contains older/less relevant roles with limited detail
-    - areas_of_expertise: May lack detailed evidence in knowledge base for meaningful changes
-
-    **KNOWLEDGE BASE ANALYSIS APPROACH:**
-    Before making any recommendations, think critically:
-    1. What specific evidence exists in the knowledge base for each job requirement?
-    2. Which CV fields have sufficient knowledge base content to support meaningful improvements?
-    3. What job requirements have NO supporting evidence and belong in missing_skills?
-    4. Can you find concrete examples, metrics, or project details to enhance the target fields?
-
-    **PROCESS:**
-    1. Analyze JobPosting requirements against content within current CurriculumVitae structure 
-    2. **SYSTEMATICALLY search or check the KB for experience in every item of each list in the job posting
-    3. For each item, search Knowledge base("What experience does [candidate] have with [item]") (the first name of the candidate taken from the C.V. should be sufficient)
-    4. Only recommend changes where you have concrete knowledge base evidence
-    5. Focus transformation plan on the four primary target fields: summary_of_qualifications, experience.responsibilities, profession, core_expertise
-    6. Be explicit about job requirements that cannot be addressed due to insufficient knowledge base evidence
-
-    **TOOL USAGE:**
-    - Use candidate-specific queries: Knowledge base("What experience does [candidate's name] have with [skill/technology]")
-    - This returns the candidate's actual experience rather than generic descriptions
-    - Examples:
-      * Knowledge base("What experience does [candidate] have with Data Analysis")
-      * Knowledge base("What experience does [candidate] have with PHP")
-      * Knowledge base("What experience does [candidate] have with API development")
-    - If the search returns specific candidate experience, add to matching_skills (not missing_skills)
-    - If no candidate-specific evidence is found, add to missing_skills and do not recommend changes
-    - Extract concrete project names, metrics, and file paths from the candidate-specific results
-
-    **RULES:**
-    - Use exact job posting terminology and company name
-    - Never fabricate information or recommend changes without knowledge base evidence
-    - Only suggest modifications to the four primary target fields where you have concrete evidence
-    - Cite specific file paths for all evidence found
-    - Do not recommend structural changes that violate the schema constraints
-    - Focus on content optimization within the existing, fixed CV structure
+    **Output:**
+    A CvTransformationPlan object with proposed modifications and justifications,
+    limited to the four editable fields only.
 
   expected_output: >
-    A CvTransformationPlan JSON object containing a concrete edit plan
-    shaped by BOTH the JobPosting and the candidate's knowledge base.
+    A CvTransformationPlan JSON object detailing proposed edits,
+    grounded in the JobPosting and supported by concrete evidence.
   output_file: "{output_directory}/cv_transformation_plan.json"
   agent: cv_strategist
 
 cv_transformation_task:
   description: >
-    You will receive structured inputs from the previous tasks:
+    Apply the provided CvTransformationPlan to update the candidate's CurriculumVitae object for alignment with the JobPosting.
 
-    1. CurriculumVitae object - structured CV data from CV structuring
-    2. JobPosting object - structured job requirements from job analysis
-    3. CvTransformationPlan object - detailed transformation plan from CV alignment
+    You will receive:
+    - CurriculumVitae: the original CV
+    - JobPosting: the structured job requirements
+    - CvTransformationPlan: a set of verified, evidence-based content updates
 
-    **IMPLEMENTATION PROCESS:**
-    Apply the CvTransformationPlan to modify the CurriculumVitae object, focusing on the four primary target fields that have the highest impact for job alignment:
+    **Primary fields to update:**
+    1. profession — update using CvTransformationPlan.profession_optimization
+    2. core_expertise — apply changes from CvTransformationPlan.core_expertise_changes
+    3. summary_of_qualifications — rewrite bullets per CvTransformationPlan.summary_qualification_rewrites
+    4. experience[].responsibilities — apply updates from CvTransformationPlan.experience_responsibility_updates
 
-    **PRIMARY TARGET FIELD IMPLEMENTATIONS:**
+    **Additional Optimizations:**
+    - Inject CvTransformationPlan.quantifications to add measurable impact
+    - Apply CvTransformationPlan.terminology_alignment for keyword optimization
 
-    1. **profession field optimization**
-       - If CvTransformationPlan.profession_optimization is provided, update the CV's profession field with the new value
-       - Example: Change "Full Stack Developer" to "Senior PHP Developer"
+    **Rules:**
+    - Modify only the specified fields. Do not alter CV structure, layout, or schema.
+    - Preserve all data types and list formats.
+    - Do not fabricate or re-interpret — follow the plan exactly.
+    - Maintain professional tone, clarity, and formatting.
 
-    2. **core_expertise field modifications**
-       - Apply all changes from CvTransformationPlan.core_expertise_changes to the CV's core_expertise list
-       - This may include reordering, adding, or modifying expertise areas based on job requirements
-       - Prioritize job-relevant skills in the order they appear
-
-    3. **summary_of_qualifications rewrites**
-       - Apply all transformations from CvTransformationPlan.summary_qualification_rewrites
-       - Replace or enhance bullet points with job-aligned narratives that connect candidate strengths to job requirements
-       - Include quantifiable achievements and outcomes from knowledge base evidence
-
-    4. **experience[].responsibilities updates**
-       - Apply all updates from CvTransformationPlan.experience_responsibility_updates
-       - Parse the specific experience and responsibility indices (e.g., "Experience[0].responsibilities[1]")
-       - Rewrite responsibility bullets to mirror job posting terminology and requirements
-       - Include specific achievements, metrics, and project context from knowledge base
-
-    **ATS & LANGUAGE OPTIMIZATIONS:**
-    - Apply CvTransformationPlan.quantifications to add specific metrics throughout relevant sections
-    - Apply CvTransformationPlan.terminology_alignment for exact phrase replacements to match JobPosting keywords
-    - Ensure job-relevant keywords from the JobPosting appear naturally in the updated content
-
-    **KNOWLEDGE BASE INTEGRATION:**
-    - Use Knowledge base to verify and expand on transformation plan citations
-    - Use DirectorySearchTool and FileReadTool to access full context from knowledge base files referenced in the plan
-    - Cross-reference CvTransformationPlan.evidence file paths for additional relevant details
-    - Enhance content with concrete examples, project names, and specific achievements found in the knowledge base
-
-    **SCHEMA COMPLIANCE:**
-    - Maintain the exact CurriculumVitae schema structure - do not add or remove fields
-    - Only modify content within existing fields as specified in the transformation plan
-    - Preserve data types and field constraints (e.g., profession remains a single string, core_expertise remains a list of strings)
-
-    **QUALITY ASSURANCE:**
-    - Ensure all modifications are supported by knowledge base evidence
-    - Verify that updated content aligns with both job requirements and candidate's actual experience
-    - Maintain professional language and consistent formatting throughout
-    - Double-check that quantifications and metrics are accurate based on knowledge base sources
-
-    Your final output must be a structured CurriculumVitae object that implements all the primary target field modifications while preserving the original schema structure.
+    **Output:**
+    An updated CurriculumVitae object reflecting all approved transformations and optimized for both ATS and human review.
   expected_output: >
-    A CurriculumVitae object with restructured and rewritten content sections
-    tailored specifically to the job requirements, optimized for both ATS
-    and human review.
+    A CurriculumVitae object with updated field content, based on the CvTransformationPlan and aligned with the JobPosting.
   output_file: "{output_directory}/optimized_cv.json"
   agent: cv_rewriter
