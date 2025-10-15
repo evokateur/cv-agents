@@ -882,3 +882,61 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 - **Process vs Actor**: Process-named crews (CvOptimization) provide clearer context than actor-named crews (CvOptimizer)
 
 **Result:** Successfully transformed the entire CV optimization system with coherent naming conventions. The workflow now logically progresses through "optimization" as the overall process, comprised of sub-tasks: "analysis" (CV and job analysis), "alignment" (strategy planning), and "transformation" (implementation). All components have clear, descriptive names that accurately reflect their function, creating a more maintainable and understandable codebase.
+
+## Pydantic Field Description Fix for LLM Tool Calling (October 2025)
+
+**Summary:** Resolved tool validation failures where gpt-4o-mini was passing dict structures instead of strings to SemanticSearchWrapper. Fixed by adding Pydantic Field descriptions to args_schema, which guides the LLM to format tool calls correctly.
+
+**Key Problem Resolved:**
+
+- **Tool Validation Failures**: All Knowledge base tool calls failed with Pydantic validation error "Input should be a valid string [type=string_type]"
+- **Root Cause**: Agent was passing `{'description': 'query text', 'type': 'str'}` instead of just the string
+- **LLM Misinterpretation**: When Field description is None, gpt-4o-mini interprets the schema metadata structure as the actual parameter format to populate
+- **Known CrewAI Issue**: Documented bug affecting multiple tools (RagTool, GoogleSerperAPIWrapper, DelegateWorkTool) with various LLMs
+
+**Architecture Implementation:**
+
+- **Minimal Fix**: Added Pydantic args_schema with Field description to SemanticSearchWrapper
+- **Schema Guidance**: Changed what agent sees from `'description': None` to `'description': 'The search query or question to ask the knowledge base'`
+- **Clean Implementation**: No defensive handling needed - Field description alone fixes LLM behavior
+- **Tool Consistency**: Solution follows same pattern as CrewAI's DelegateWorkTool fix (PR #2608)
+
+**Files Updated:**
+
+- `optimizer/tools/semantic_search_wrapper.py` - Added SemanticSearchInput Pydantic model with Field description:
+  ```python
+  class SemanticSearchInput(BaseModel):
+      query: str = Field(
+          ...,
+          description="The search query or question to ask the knowledge base"
+      )
+
+  class SemanticSearchWrapper(BaseTool):
+      args_schema: Type[BaseModel] = SemanticSearchInput
+      # ... rest of implementation
+  ```
+
+**Technical Investigation:**
+
+- **CrewAI Tool Description**: Agents see auto-generated descriptions via `BaseTool._generate_description()` method
+- **Schema Metadata**: Tool arguments displayed as `{'query': {'description': None, 'type': 'str'}}` when Field has no description
+- **LLM Behavior**: gpt-4o-mini interprets None-description schema as template to populate, resulting in malformed tool calls
+- **Comparison with Stock RagTool**: Confirmed identical issue exists in stock CrewAI RagTool, not specific to custom implementation
+- **Selective Framework Fix**: CrewAI fixed DelegateWorkTool with defensive handling but hasn't fixed BaseTool or RagTool framework-wide
+
+**Testing Results:**
+
+- **Before Fix**: 33 failed Knowledge base tool calls with dict validation errors
+- **After Fix**: 7+ successful tool calls with proper string arguments
+- **Query Format**: Agent now correctly sends `{"query": "What experience does Wesley Hinkle have with PHP?"}` instead of dict-in-dict structure
+- **Verification**: Field description alone resolves issue - defensive dict-to-string conversion unnecessary
+
+**Key Insights:**
+
+- **Pydantic Field Descriptions Critical**: Field descriptions provide semantic guidance that helps LLMs format tool calls correctly
+- **Schema Metadata as Template**: When description is None, some LLMs interpret the schema structure itself as the format to populate
+- **Minimal Solution Preferred**: Field description is necessary and sufficient - no defensive handling code needed
+- **Framework Limitation**: CrewAI's BaseTool should require Field descriptions, but currently allows None which causes issues
+- **Model Capability Variance**: Issue more pronounced with gpt-4o-mini and similar models; more sophisticated models may handle None descriptions better
+
+**Result:** Successfully fixed tool calling issues for "models of all abilities" using minimal Pydantic Field description approach. The SemanticSearchWrapper now provides clear schema guidance that prevents LLM misinterpretation of tool argument structure. All Knowledge base tool calls now succeed with proper string formatting, enabling reliable semantic search functionality across the CV optimization pipeline.

@@ -1,14 +1,23 @@
 """Wrapper for ChunkyRagTool that provides clean, agent-friendly output"""
 
 from crewai.tools import BaseTool
-from typing import Any
+from pydantic import BaseModel, Field
+from typing import Any, Type
 from optimizer.tools.chunky_rag_tool import ChunkyRagTool
 import json
+
+
+class SemanticSearchInput(BaseModel):
+    query: str = Field(
+        ...,
+        description="The search query or question to ask the knowledge base"
+    )
 
 
 class SemanticSearchWrapper(BaseTool):
     name: str = "Knowledge base"
     description: str = "A knowledge base that can be used to answer questions."
+    args_schema: Type[BaseModel] = SemanticSearchInput
     chunky_tool: Any = None
 
     def __init__(self, config: dict = None, **kwargs):
@@ -16,7 +25,6 @@ class SemanticSearchWrapper(BaseTool):
         self.chunky_tool = ChunkyRagTool(config=config)
 
     def _run(self, query: str) -> str:
-        # Delegate to chunky tool
         json_result = self.chunky_tool._run(query)
 
         # Parse the JSON response
@@ -35,4 +43,3 @@ class SemanticSearchWrapper(BaseTool):
 
     async def _arun(self, query: str) -> str:
         return self._run(query)
-
