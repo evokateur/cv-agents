@@ -76,7 +76,6 @@ class CustomAgents:
             config=self.agents_config["cv_strategist"],
             tools=[
                 self.get_semantic_search_tool(),
-                self.get_directory_search_tool(),
                 FileReadTool(),
             ],
             llm=self.llms["cv_strategist"],
