@@ -1,5 +1,5 @@
 import json
-import optimizer.kickoff as kickoff
+import optimizer.cli as kickoff
 
 job_posting_url = "https://app.welcometothejungle.com/dashboard/jobs/oA1SArxV"
 output_directory = "job_postings/automattic"

@@ -646,6 +646,7 @@ The `CvTransformationPlan` model now includes actionable transformation fields:
 **Summary:** Documented how to adapt the existing project prompt so personal GitHub repositories can be captured without implying MultiEmployer affiliation.
 
 **Key Points:**
+
 - Reviewed the knowledge base directory structure to keep personal project docs separate from company materials.
 - Determined that cloning each personal repository locally and prompting an LLM with that context is the most direct path for generating docs.
 - Authored `_docs/personal-project-prompt-plan.md` to capture prompt adjustments and labeling guidance for personal projects.
@@ -769,6 +770,7 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 **Files Updated:**
 
 - `optimizer/models.py` - Enhanced CvTransformationPlan with four primary target fields and removed legacy fields:
+
   ```python
   # PRIMARY TARGET FIELD MODIFICATIONS (schema-aware, highest impact)
   profession_optimization: Optional[str] = Field(
@@ -904,6 +906,7 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 **Files Updated:**
 
 - `optimizer/tools/semantic_search_wrapper.py` - Added SemanticSearchInput Pydantic model with Field description:
+
   ```python
   class SemanticSearchInput(BaseModel):
       query: str = Field(
@@ -940,3 +943,105 @@ The enhanced prompt now focuses on realistic CV modifications within schema cons
 - **Model Capability Variance**: Issue more pronounced with gpt-4o-mini and similar models; more sophisticated models may handle None descriptions better
 
 **Result:** Successfully fixed tool calling issues for "models of all abilities" using minimal Pydantic Field description approach. The SemanticSearchWrapper now provides clear schema guidance that prevents LLM misinterpretation of tool argument structure. All Knowledge base tool calls now succeed with proper string formatting, enabling reliable semantic search functionality across the CV optimization pipeline.
+
+## Project Restructuring to Modern Python Package Layout (October 2025)
+
+**Summary:** Completed comprehensive project reorganization from flat structure to standard Python `src/` layout with proper package separation, eliminating code duplication and establishing clean module boundaries between CV builder and optimizer components.
+
+**Key Changes:**
+
+- Migrated project to standard `src/` layout with three packages: `models` (shared), `builder` (CV generation), and `optimizer` (AI optimization)
+- Created `pyproject.toml` with proper package configuration, dependencies, and CLI entry points
+- Fixed hardcoded config file paths to use relative path resolution with `os.path.dirname(__file__)`
+- Removed `cv_` prefix from all module names for cleaner naming (models, builder, optimizer instead of cv_models, cv_builder, cv_optimizer)
+- Updated all imports throughout codebase to use new module structure
+- Renamed scripts directory files to remove `cv_` prefix (alignment.py, analysis.py, transformation.py)
+
+**Architecture Implementation:**
+
+- **Shared Models Package**: Created `src/models/schema.py` with CurriculumVitae and related Pydantic models accessible to both builder and optimizer
+- **Builder Package**: Extracted LaTeX CV generation logic from `make-cv.py` and `texenv/jinja.py` into `src/builder/` module
+- **Optimizer Package**: Migrated entire `optimizer/` directory to `src/optimizer/` with updated import paths
+- **Configuration Management**: Moved `config.py` to `src/optimizer/config/settings.py` with proper `load_dotenv()` usage
+- **Entry Points**: Created CLI commands via pyproject.toml: `make-cv`, `make-cover-letter`, `optimize-cv`
+- **Relative Path Resolution**: Fixed YAML config loading in agents.py and tasks.py to use `os.path.join(os.path.dirname(__file__), "config", "*.yaml")`
+
+**Migration Process:**
+
+1. Created `src/` directory structure with models, builder, and optimizer packages
+2. Extracted shared CV structure models to `src/models/schema.py`
+3. Migrated builder module from `texenv/` and `make-cv.py` to `src/builder/`
+4. Migrated optimizer module to `src/optimizer/` with updated imports
+5. Updated all imports in scripts directory (alignment.py, analysis.py, transformation.py, etc.)
+6. Created `pyproject.toml` with dependencies and entry points
+7. Updated `pytest.ini` to include `pythonpath = src`
+8. Removed old directories (optimizer/, texenv/) and deprecated files (make-cv.py, make-cover-letter.py, config.py)
+9. Installed package in editable mode with `pip install -e .`
+10. Tested installation and imports
+
+**Files Created:**
+
+- `src/models/schema.py` - Shared Pydantic models (CurriculumVitae, Contact, Education, Experience, etc.)
+- `src/models/__init__.py` - Clean exports of all shared models
+- `src/builder/template_env.py` - Custom Jinja2 environment for LaTeX templates
+- `src/builder/generator.py` - Core CV generation function
+- `src/builder/cover_letter.py` - Cover letter generation logic
+- `src/builder/cli.py` - CLI entry points for make-cv and make-cover-letter
+- `pyproject.toml` - Modern Python packaging configuration
+
+**Files Modified:**
+
+- `src/optimizer/agents.py` - Updated imports and fixed hardcoded config path to use relative resolution
+- `src/optimizer/tasks.py` - Updated imports and fixed hardcoded config path to use relative resolution
+- `src/optimizer/config/settings.py` - Simplified to use `load_dotenv()` without explicit path (searches up directory tree automatically)
+- `src/optimizer/models.py` - Updated to import CurriculumVitae from shared models package
+- `src/optimizer/fakers.py` - Updated imports to separate shared models from optimizer models
+- `scripts/cv_alignment.py` - Updated kickoff import path
+- `scripts/cv_transformation.py` - Updated kickoff import path
+- `scripts/cv_analysis.py` - Updated kickoff import path
+- `scripts/job_analysis.py` - Updated config import path
+- `scripts/embed_kb.py` - Updated config import path
+- `scripts/query_kb.py` - Updated config import path
+- `pytest.ini` - Added `pythonpath = src` for test imports
+
+**Files Deleted:**
+
+- `optimizer/` - Old location, moved to src/optimizer/
+- `texenv/` - Old location, moved to src/builder/template_env.py
+- `make-cv.py` - Logic moved to builder module
+- `make-cover-letter.py` - Logic moved to builder module
+- `config.py` - Moved to src/optimizer/config/settings.py
+
+**Problem Solving:**
+
+- **Import Error Resolution**: Fixed `CvOptimizationCrew` doesn't exist error by correcting class name to `CvOptimization` in `__init__.py`
+- **FileNotFoundError Fix**: Changed hardcoded `"optimizer/config/agents.yaml"` paths to relative resolution using `os.path.join(os.path.dirname(__file__), "config", "agents.yaml")`
+- **Environment Variable Issue**: Identified pre-existing issue where `.env` file has `CV_ADVISOR_MODEL` instead of `CV_ANALYST_MODEL` (not a migration issue)
+- **Unnecessary Change Reversion**: Removed explicit `.env` path specification from settings.py after confirming `load_dotenv()` automatically searches up directory tree
+
+**Testing Validation:**
+
+- Package successfully installs with `pip install -e .`
+- Imports work correctly: `from models import CurriculumVitae`, `from builder import generate_cv`, `from optimizer import CvOptimization`
+- Tests that don't require environment variables pass (e.g., test_vector_db.py)
+- One test still fails due to pre-existing configuration issue (missing env var), not migration-related
+
+**Key Technical Decisions:**
+
+- Used standard `src/` layout for Python packaging
+- Separated shared models from module-specific models
+- Used relative file paths for config loading instead of hardcoded paths
+- Created proper `pyproject.toml` with entry points for CLI commands
+- Updated pytest configuration to include `src/` in pythonpath
+- Removed `cv_` prefix from module names for cleaner, more Pythonic naming
+
+**Migration Plan Documentation:**
+
+- Created comprehensive migration plan at `docs/migration-plan.md` with:
+  - 10-phase migration process
+  - Before/after import examples
+  - Timeline estimates
+  - Tree structure showing new directory layout
+  - Rationale for standard src/ layout
+
+**Result:** Successfully transformed project from flat structure to standard Python package layout with clean module separation. The migration enables proper packaging, clearer imports, and better maintainability while preserving all existing functionality. All components properly organized with one shared Pydantic model (CurriculumVitae) accessible to both builder and optimizer modules, while majority of models remain optimizer-specific as intended.

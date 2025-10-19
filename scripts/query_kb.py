@@ -4,10 +4,8 @@
 import sys
 import warnings
 
-sys.path.append(".")
-
 from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
-from config import get_embedchain_config
+from optimizer.config.settings import get_embedchain_config
 
 
 def run_query(query=None):

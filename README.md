@@ -91,13 +91,26 @@ Initial setup with virtual environment and dependencies:
 # OR manually:
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -e .  # Installs project with dependencies from pyproject.toml
 ```
 
 Build the vector database from knowledge base content:
 
 ```bash
 make vector_db  # Rebuilds ChromaDB from knowledge-base/ content
+```
+
+### Adding New Dependencies
+
+To add a new Python package:
+
+```bash
+# 1. Edit pyproject.toml and add the package to dependencies list
+# 2. Install the updated dependencies
+pip install -e .
+
+# 3. Update the locked requirements file
+pip freeze > requirements.txt
 ```
 
 ## Usage

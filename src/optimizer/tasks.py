@@ -1,12 +1,15 @@
 from crewai import Task
-from optimizer.models import JobPosting, CvTransformationPlan, CurriculumVitae
+from optimizer.models import JobPosting, CvTransformationPlan
+from models import CurriculumVitae
 from optimizer.utils.prompt_utils import render_pydantic_models_in_prompt
 import yaml
 
 
 class CustomTasks:
     def __init__(self):
-        with open("optimizer/config/tasks.yaml", "r") as f:
+        import os
+        config_path = os.path.join(os.path.dirname(__file__), "config", "tasks.yaml")
+        with open(config_path, "r") as f:
             self.tasks_config = yaml.safe_load(f)
 
     def cv_analysis_task(self, agent) -> Task:

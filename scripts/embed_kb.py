@@ -1,5 +1,5 @@
 from optimizer.embedder import KnowledgeBaseEmbedder
-from config import get_config
+from optimizer.config.settings import get_config
 
 embedder = KnowledgeBaseEmbedder(
     knowledge_base_abspath=get_config().knowledge_base_abspath,

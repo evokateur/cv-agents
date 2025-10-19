@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cv-agents"
+version = "0.1.0"
+description = "CV generation and AI-powered optimization system"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic",
+    "beautifulsoup4",
+    "crewai",
+    "crewai-tools",
+    "python-dotenv",
+    "jinja2",
+    "langchain",
+    "langchain-chroma",
+    "langchain_community",
+    "langchain-core",
+    "langchain-openai",
+    "pydantic",
+    "pyyaml",
+    "requests",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio",
+    "ipykernel",
+    "jupyterlab",
+]
+
+[project.scripts]
+make-cv = "builder.cli:main_cv"
+make-cover-letter = "builder.cli:main_cover_letter"
+optimize-cv = "optimizer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*:",
+]
