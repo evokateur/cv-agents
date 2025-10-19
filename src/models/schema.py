@@ -58,3 +58,19 @@ class CurriculumVitae(BaseModel):
     additional_experience: List[AdditionalExperience]
     areas_of_expertise: List[AreaOfExpertise]
     languages: List[Language]
+
+
+class CoverLetterContact(BaseModel):
+    city: str
+    state: str
+    phone: str
+    email: str
+
+
+class CoverLetter(BaseModel):
+    name: str
+    contact: CoverLetterContact
+    company: str
+    position: str
+    paragraphs: List[str]
+    alternate_paragraphs: Optional[List[str]] = None

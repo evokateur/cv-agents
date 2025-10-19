@@ -75,9 +75,8 @@ Here are some links to CrewAI documentation to help us understand the target arc
 
 - `src/builder/` - CV and cover letter generation module
   - `cli.py` - Console scripts entry point (make-cv, make-cover-letter commands)
-  - `generator.py` - Main generation logic that loads YAML/JSON data and renders LaTeX templates
+  - `builder.py` - Unified build logic that loads YAML/JSON data and renders LaTeX templates for any document type
   - `template_env.py` - Custom Jinja2 environment with LaTeX-safe delimiters and escaping
-  - `cover_letter.py` - Cover letter specific generation logic
 - `data/cv.yaml` - Primary CV data source
 - `templates/cv.tex` - LaTeX CV template with custom Jinja2 delimiters
 - `templates/cover-letter.tex` - LaTeX cover letter template
@@ -132,10 +131,10 @@ LaTeX special characters are automatically escaped via the `escape_tex` filter t
 
 ### Data Flow
 
-1. **Simple Generation**: YAML data → Jinja2 template → LaTeX → PDF
-2. **AI Optimization**: Job posting → Job analysis → CV alignment planning → CV optimization → Template → PDF
-3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV transformation → Template → PDF
-4. **LLM Synthesis RAG**: Job posting → AI analysis with chunky tools → LLM-synthesized knowledge retrieval → CV transformation planning → CV optimization → Template → PDF
+1. **Simple Build**: YAML/JSON data → unified builder → Jinja2 template → LaTeX → PDF
+2. **AI Optimization**: Job posting → Job analysis → CV alignment planning → CV optimization → unified builder → Template → PDF
+3. **RAG-Enhanced Optimization**: Job posting → AI analysis with RAG tool → Knowledge-informed CV transformation → unified builder → Template → PDF
+4. **LLM Synthesis RAG**: Job posting → AI analysis with chunky tools → LLM-synthesized knowledge retrieval → CV transformation planning → CV optimization → unified builder → Template → PDF
 5. **Vector Database**: Knowledge base content stored in `vector_db/` using ChromaDB with automatic embedding and retrieval
 
 ### Crew Architecture Details
