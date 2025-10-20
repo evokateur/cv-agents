@@ -1,5 +1,5 @@
 import json
-import optimizer.kickoff as kickoff
+import optimizer.cli as kickoff
 
 candidate_cv_path = "data/cv.yaml"
 output_directory = "job_postings/automattic"

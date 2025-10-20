@@ -5,7 +5,7 @@ from crewai_tools import (
     FileReadTool,
     DirectorySearchTool,
 )
-from config import get_config, get_embedchain_config
+from optimizer.config.settings import get_config, get_embedchain_config
 from optimizer.tools.semantic_search_tool import SemanticSearchTool
 from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
 from optimizer.embedder import KnowledgeBaseEmbedder
@@ -15,7 +15,9 @@ import yaml
 class CustomAgents:
     def __init__(self):
         # Load configs
-        with open("optimizer/config/agents.yaml", "r") as f:
+        import os
+        config_path = os.path.join(os.path.dirname(__file__), "config", "agents.yaml")
+        with open(config_path, "r") as f:
             self.agents_config = yaml.safe_load(f)
 
         # Initialize LLMs

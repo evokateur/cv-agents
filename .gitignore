@@ -24,6 +24,19 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Python packaging
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
