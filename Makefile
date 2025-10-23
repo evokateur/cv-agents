@@ -45,4 +45,4 @@ clean:
 	rm -f output/*.synctex.gz
 
 test:
-	pytest --tb=short
+	pytest tests/ --tb=short

@@ -57,14 +57,13 @@ Abridged project directory structure:
 │       ├── models.py
 │       ├── tasks.py
 │       └── tools
-│           ├── chunky_rag_tool.py
-│           └── semantic_search_wrapper.py
+│           └── knowledge_base_tool.py
 └── templates
     ├── cover-letter.tex
     └── cv.tex
 ```
 
-The CV Strategist uses RAG tools to query a ChromaDB vector store of chunked and embedded knowledge base documents. The CV optimization system includes specialized tools for semantic search, LLM synthesis, and knowledge base queries.
+The CV Strategist uses a knowledge base tool to query a ChromaDB vector store of chunked and embedded knowledge base documents using langchain for RAG-based retrieval.
 
 Knowledge base is kept in a private repository and symlinked to `knowledge-base/`. The vector database is automatically built from this content using ChromaDB embeddings.
 
