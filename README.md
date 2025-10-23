@@ -38,8 +38,7 @@ Abridged project directory structure:
 ├── src
 │   ├── builder
 │   │   ├── cli.py
-│   │   ├── cover_letter.py
-│   │   ├── generator.py
+│   │   ├── builder.py
 │   │   └── template_env.py
 │   ├── models
 │   │   └── schema.py
@@ -97,7 +96,7 @@ Initial setup with virtual environment and dependencies:
 # OR manually:
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .  # Installs project with dependencies from pyproject.toml
+pip install -e ".[dev]"  # Installs project with dependencies and dev tools (pytest, jupyter)
 ```
 
 Build the vector database from knowledge base content:
@@ -113,7 +112,7 @@ To add a new Python package:
 ```bash
 # 1. Edit pyproject.toml and add the package to dependencies list
 # 2. Install the updated dependencies
-pip install -e .
+pip install -e ".[dev]"
 
 # 3. Update the locked requirements file
 pip freeze > requirements.txt
@@ -136,14 +135,11 @@ make clean                 # Remove LaTeX build artifacts
 Run the full CrewAI optimization pipeline:
 
 ```bash
-# With JSON config file
-python kickoff_crew.py --config_path config.json
+# Using the optimize-cv CLI command
+optimize-cv --config_path config.json
 
 # With inline JSON config
-python kickoff_crew.py --config '{"inputs": {...}}'
-
-# Simple test with hardcoded inputs
-python -m scripts.cv_agents
+optimize-cv --config '{"inputs": {...}}'
 ```
 
 ### Testing Individual Components

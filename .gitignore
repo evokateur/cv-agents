@@ -50,6 +50,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# ad hoc backup copies
+*.bak
+
 # docs I won't want in the repo 
 _docs
 
