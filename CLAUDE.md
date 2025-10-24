@@ -178,7 +178,7 @@ The system provides multiple RAG tool implementations:
 3. **ChunkyKnowledgeBaseTool** - Standalone KB query tool with LLM synthesis
 4. **SemanticSearchWrapper** (src/optimizer/tools/semantic_search_wrapper.py:17) - Wraps ChunkyRagTool to provide clean, agent-friendly output format with sources
 
-All tools use the same ChromaDB vector store configured via get_embedchain_config() in settings.py.
+All RAG settings are centrally configured via get_rag_config() in settings.py.
 
 ### Key Files
 

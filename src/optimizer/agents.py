@@ -5,9 +5,8 @@ from crewai_tools import (
     FileReadTool,
     DirectorySearchTool,
 )
-from optimizer.config.settings import get_config, get_embedchain_config
-from optimizer.tools.semantic_search_tool import SemanticSearchTool
-from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
+from optimizer.config.settings import get_config
+from optimizer.tools.knowledge_base_tool import KnowledgeBaseTool
 from optimizer.embedder import KnowledgeBaseEmbedder
 import yaml
 
@@ -47,8 +46,8 @@ class CustomAgents:
             force_rebuild=False,
         )
 
-    def get_semantic_search_tool(self) -> SemanticSearchWrapper:
-        return SemanticSearchWrapper(config=get_embedchain_config())
+    def get_knowledge_base_tool(self) -> KnowledgeBaseTool:
+        return KnowledgeBaseTool(vector_db_path=self.config.vector_db_abspath)
 
     def get_directory_search_tool(self) -> DirectorySearchTool:
         return DirectorySearchTool(
@@ -77,7 +76,7 @@ class CustomAgents:
         return Agent(
             config=self.agents_config["cv_strategist"],
             tools=[
-                self.get_semantic_search_tool(),
+                self.get_knowledge_base_tool(),
                 FileReadTool(),
             ],
             llm=self.llms["cv_strategist"],
@@ -87,7 +86,7 @@ class CustomAgents:
         return Agent(
             config=self.agents_config["cv_rewriter"],
             tools=[
-                self.get_semantic_search_tool(),
+                self.get_knowledge_base_tool(),
                 self.get_directory_search_tool(),
                 self.get_file_read_tool(),
             ],

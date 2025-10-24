@@ -1,8 +1,8 @@
 # chroma_test.py
 
 from dotenv import load_dotenv
-from langchain.vectorstores import Chroma
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
 import os
 
 # UPDATE THIS to point to your existing vector DB path from VectorDbBuilder

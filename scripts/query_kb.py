@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Query KB using SemanticSearchWrapper"""
+"""Query KB using KnowledgeBaseTool"""
 
 import sys
 import warnings
 
-from optimizer.tools.semantic_search_wrapper import SemanticSearchWrapper
-from optimizer.config.settings import get_embedchain_config
+from optimizer.tools.knowledge_base_tool import KnowledgeBaseTool
+from optimizer.config.settings import get_config
 
 
 def run_query(query=None):
     if query is None:
         query = "data analysis experience"
-    tool = SemanticSearchWrapper(config=get_embedchain_config())
+    config = get_config()
+    tool = KnowledgeBaseTool(vector_db_path=config.vector_db_abspath)
     result = tool._run(query)
     print("QUERY RESULT:")
     print(result)

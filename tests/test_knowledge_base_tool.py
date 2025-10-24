@@ -2,10 +2,10 @@ import pytest
 from optimizer.agents import CustomAgents
 
 
-def test_semantic_search_wrapper_returns_sources():
-    """Test that semantic search wrapper returns source paths"""
+def test_knowledge_base_tool_returns_sources():
+    """Test that knowledge base tool returns source paths"""
     agents = CustomAgents()
-    tool = agents.get_semantic_search_tool()
+    tool = agents.get_knowledge_base_tool()
     result = tool._run("PHP")
     assert "Sources:" in result
     assert "/knowledge-base/" in result

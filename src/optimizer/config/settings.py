@@ -73,31 +73,11 @@ def get_config() -> Config:
     return Config()
 
 
-def get_embedchain_config() -> dict:
-    """
-    Returns the embedchain configuration for connecting to the existing vector database.
-    
-    This configuration connects to the existing populated vector database used by
-    the SemanticSearchTool, allowing ChunkyRagTool and ChunkyKnowledgeBaseTool
-    to provide LLM synthesis of the same knowledge base content.
-    """
+def get_rag_config() -> dict:
     return {
-        "llm": {
-            "provider": "openai",
-            "config": {
-                "model": "gpt-4o-mini",
-                "number_documents": 7,
-            },
-        },
-        "embedder": {
-            "provider": "openai",
-            "config": {"model": "text-embedding-ada-002"},
-        },
-        "vectordb": {
-            "provider": "chroma",
-            "config": {
-                "dir": "vector_db",
-                "collection_name": "knowledge_base",
-            },
-        },
+        "embedding_model": os.getenv("RAG_EMBEDDING_MODEL", "text-embedding-ada-002"),
+        "collection_name": os.getenv("RAG_COLLECTION_NAME", "knowledge_base"),
+        "num_results": int(os.getenv("RAG_NUM_RESULTS", "7")),
+        "chunk_size": int(os.getenv("RAG_CHUNK_SIZE", "1000")),
+        "chunk_overlap": int(os.getenv("RAG_CHUNK_OVERLAP", "200")),
     }
