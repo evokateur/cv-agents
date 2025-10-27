@@ -11,7 +11,7 @@ contact:
 profession: Software Engineer
 core_expertise:
   - Backend Development
-  - API Design \& implementation
+  - "API Design & implementation"
   - Data Modeling
 summary_of_qualifications:
   - Backend Engineer with extensive experience in data integration and transformation, skilled in modeling domains and designing relational schemas. Successfully led projects involving complex operations like dues collection and benefits tracking for workers' unions, impacting thousands of employees. Adept at overcoming challenges with inconsistent data and varying system requirements, aiming to leverage expertise in structured, scalable solutions to enhance backend systems.
@@ -38,7 +38,7 @@ experience:
       - Automated deployment tasks using shell scripts and cron jobs, optimized build pipelines for reliable application deployment, and leveraged AWS services (EC2, RDS) for cloud hosting and database management
       - Integrated WordPress with PHP frameworks, developing Git workflow strategy, scripts for plugin dependencies, and scripts for dev environment provisioning and deployment using Migrate DB Pro
 additional_experience:
-  - title: Research Assistant \& Programmer
+  - title: "Research Assistant & Programmer"
     company: Center for the Built Environment
     location: Berkeley, CA
     start_date: "2007"
@@ -67,13 +67,13 @@ areas_of_expertise:
       - Laravel
       - Symfony
       - MySQL
-      - PostgresQL
-      - Microsoft SQL Server
+      - PostgreSQL
+      - MSSQL
       - Nginx
       - Apache
       - Gitlab
       - IIS
-  - name: Patterns \& Principles
+  - name: "Patterns & Principles"
     skills:
       - MVC
       - REST

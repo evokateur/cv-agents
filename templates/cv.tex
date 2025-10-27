@@ -197,7 +197,7 @@
     \section{(( profession ))}
 
         \begin{onecolentry}
-            \textbf{(( core_expertise|join(' \\textbar\\ ') ))}
+            \textbf{(( core_expertise|join( ' | ') ))}
         \end{onecolentry}
 
         \vspace{0.2 cm}
@@ -218,9 +218,11 @@
 
 
         \begin{onecolentry}
-        (# for area in areas_of_expertise #)
-                (( area.name )): (( area.skills|join(' \\textbar\\ ') ))
-        (# endfor #)
+            \begin{highlightsforbulletentries}
+            (# for area in areas_of_expertise #)
+                \item (( area.name )): (( area.skills|join(', ') ))
+            (# endfor #)
+            \end{highlightsforbulletentries}
         \end{onecolentry}
         \vspace{0.2 cm}
 

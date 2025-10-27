@@ -11,7 +11,7 @@
     "profession": "Software Engineer",
     "core_expertise": [
         "Backend Development",
-        "API Design \\& implementation",
+        "API Design & implementation",
         "Data Modeling"
     ],
     "summary_of_qualifications": [
@@ -48,7 +48,7 @@
     ],
     "additional_experience": [
         {
-            "title": "Research Assistant \\& Programmer",
+            "title": "Research Assistant & Programmer",
             "company": "Center for the Built Environment",
             "location": "Berkeley, CA",
             "start_date": "2007",
@@ -96,7 +96,7 @@
             ]
         },
         {
-            "name": "Patterns \\& Principles",
+            "name": "Patterns & Principles",
             "skills": [
                 "MVC",
                 "REST",

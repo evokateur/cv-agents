@@ -1,5 +1,6 @@
 import re
 from jinja2 import Environment, FileSystemLoader
+from markupsafe import Markup
 
 
 def escape_tex(text):
@@ -21,8 +22,23 @@ def escape_tex(text):
     return pattern.sub(lambda match: replacements[match.group()], text)
 
 
+def finalize(value):
+    if isinstance(value, Markup):
+        return value
+    if isinstance(value, str):
+        return escape_tex(value)
+    return "" if value is None else value
+
+
+class TexEnvironment(Environment):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("finalize", finalize)
+        kwargs.setdefault("autoescape", False)
+        super().__init__(*args, **kwargs)
+
+
 def get_tex_env(template_dir="templates"):
-    env = Environment(
+    env = TexEnvironment(
         loader=FileSystemLoader(template_dir),
         block_start_string=r"(#",
         block_end_string="#)",
