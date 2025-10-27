@@ -92,10 +92,7 @@ Here are some links to CrewAI documentation to help us understand the target arc
   - `config/settings.py` - Environment-based configuration for AI model settings
   - `models.py` - Pydantic models for job postings, CV transformation plans, and CV structure
   - `tools/` - Custom CrewAI tool implementations:
-    - `semantic_search_tool.py` - Original RAG tool for semantic search
-    - `chunky_rag_tool.py` - Enhanced RAG tool with LLM synthesis
-    - `chunky_kb_tool.py` - Standalone knowledge base query tool
-    - `semantic_search_wrapper.py` - Clean output formatter for LLM-synthesized results
+    - `knowledge_base_tool.py` - RAG tool using langchain and ChromaDB for semantic search with source attribution
   - `utils/` - Vector database utilities, prompt utilities, and RAG tool management
   - `embedder.py` - Knowledge base embedding and ChromaDB management
   - `logging/console_capture.py` - Console output capture with ANSI code stripping for log files
@@ -120,14 +117,14 @@ Here are some links to CrewAI documentation to help us understand the target arc
 
 ### Template System
 
-Uses custom Jinja2 delimiters to avoid LaTeX conflicts (defined in src/builder/template_env.py:24):
+Uses custom Jinja2 delimiters to avoid LaTeX conflicts (defined in src/builder/template_env.py:41):
 
 - Statements: `(# #)` instead of `{% %}`
 - Expressions: `(( ))` instead of `{{ }}`
 - Comments: `%( )%` instead of `{# #}`
 - Line comments: `%%` instead of `##`
 
-LaTeX special characters are automatically escaped via the `escape_tex` filter to prevent rendering errors.
+LaTeX special characters are automatically escaped via a custom `finalize` function (src/builder/template_env.py:25) that applies the `escape_tex` filter to all template variables, simplifying templates by eliminating the need for manual escaping.
 
 ### Data Flow
 
@@ -165,20 +162,17 @@ Specialized crew classes for testing individual components:
   - `cv_analysis.py` - Test CV analysis agent with CV parsing
   - `job_analysis.py` - Test job analysis functionality independently
   - `embed_kb.py` - Rebuild vector database using embedder
-  - `query_kb.py` - Query knowledge base using SemanticSearchWrapper (accepts optional query argument)
+  - `query_kb.py` - Query knowledge base using KnowledgeBaseTool (accepts optional query argument)
   - `chroma_test.py` - ChromaDB testing utilities
   - `inspect_chroma.py` - Vector database inspection tools
 
 ### RAG Tool Architecture
 
-The system provides multiple RAG tool implementations:
+The system uses a single RAG tool implementation:
 
-1. **SemanticSearchTool** - Basic vector similarity search returning raw chunks
-2. **ChunkyRagTool** - Enhanced RAG with LLM synthesis of retrieved chunks
-3. **ChunkyKnowledgeBaseTool** - Standalone KB query tool with LLM synthesis
-4. **SemanticSearchWrapper** (src/optimizer/tools/semantic_search_wrapper.py:17) - Wraps ChunkyRagTool to provide clean, agent-friendly output format with sources
+- **KnowledgeBaseTool** (src/optimizer/tools/knowledge_base_tool.py:18) - CrewAI tool that uses langchain's Chroma vectorstore for semantic search with configurable number of results and source attribution
 
-All RAG settings are centrally configured via get_rag_config() in settings.py.
+All RAG settings (collection_name, embedding_model, num_results) are centrally configured via get_rag_config() in settings.py.
 
 ### Key Files
 
