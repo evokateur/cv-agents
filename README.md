@@ -48,6 +48,7 @@ Abridged project directory structure:
 │       ├── config
 │       │   ├── agents.yaml
 │       │   ├── settings.py
+│       │   ├── settings.yaml
 │       │   └── tasks.yaml
 │       ├── crew.py
 │       ├── embedder.py
@@ -96,6 +97,14 @@ Initial setup with virtual environment and dependencies:
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"  # Installs project with dependencies and dev tools (pytest, jupyter)
+```
+
+Configure API Keys:
+
+```bash
+cp sample.env .env
+# Edit .env and add your API keys (OPENAI_API_KEY, ANTHROPIC_API_KEY, etc.)
+# Configuration (models, temperatures, RAG settings) is in src/optimizer/config/settings.yaml
 ```
 
 Build the vector database from knowledge base content:

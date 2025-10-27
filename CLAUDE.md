@@ -103,17 +103,29 @@ Here are some links to CrewAI documentation to help us understand the target arc
 **Configuration:**
 
 - `pyproject.toml` - Package configuration with dependencies and console scripts (defines make-cv, make-cover-letter, optimize-cv)
-- `sample.env` - Template for required environment variables
-- `src/optimizer/config/settings.py` - AI model settings loaded from environment variables
-- Required environment variables per agent:
-  - CV_ANALYST_MODEL, CV_ANALYST_TEMPERATURE
-  - JOB_ANALYST_MODEL, JOB_ANALYST_TEMPERATURE
-  - CV_STRATEGIST_MODEL, CV_STRATEGIST_TEMPERATURE
-  - CV_REWRITER_MODEL, CV_REWRITER_TEMPERATURE
-  - CREW_MANAGER_MODEL, CREW_MANAGER_TEMPERATURE
-  - KNOWLEDGE_BASE_PATH (defaults to "knowledge-base")
-  - VECTOR_DB_PATH (defaults to "vector_db")
-- Requires API keys for various providers (Anthropic, OpenAI, Google, DeepSeek, Serper)
+- `src/optimizer/config/settings.yaml` - Default configuration for agents, RAG, and paths (committed)
+- `src/optimizer/config/settings.local.yaml` - Local configuration overrides (gitignored, optional)
+- `src/optimizer/config/settings.py` - Loads YAML configuration with override hierarchy
+- `.env` - API keys only (secrets, gitignored)
+- `sample.env` - Template for API keys
+
+**Configuration hierarchy:**
+1. `settings.yaml` provides committed defaults
+2. `settings.local.yaml` overrides for local experimentation (gitignored)
+3. `.env` provides API keys only (not used for model/temperature configuration)
+
+**Agent configuration (in settings.yaml):**
+- Each agent has `model` and `temperature` settings
+- Agents: cv_analyst, job_analyst, cv_strategist, cv_rewriter, crew_manager
+
+**RAG configuration (in settings.yaml):**
+- embedding_model, collection_name, num_results, chunk_size, chunk_overlap
+
+**Path configuration (in settings.yaml):**
+- knowledge_base, vector_db
+
+**Required API keys (in .env):**
+- ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY, DEEPSEEK_API_KEY, SERPER_API_KEY
 
 ### Template System
 
@@ -182,6 +194,8 @@ All RAG settings (collection_name, embedding_model, num_results) are centrally c
 - `src/optimizer/tasks.py` - CustomTasks class loads YAML configs and creates task instances
 - `src/optimizer/config/agents.yaml` - Agent role, goal, and backstory definitions
 - `src/optimizer/config/tasks.yaml` - Task descriptions with Pydantic schema injection placeholders
+- `src/optimizer/config/settings.yaml` - Agent models, temperatures, RAG config, and paths (YAML is single source of truth)
+- `src/optimizer/config/settings.py` - Loads settings.yaml with optional settings.local.yaml overrides
 - `src/optimizer/fakers.py` - FakeAgents/FakeTasks for testing with pre-generated outputs
 - `src/optimizer/utils/vector_utils.py` - ChromaDB validation and vector database management utilities
 - `src/optimizer/utils/prompt_utils.py` - Pydantic utilities for dynamic task descriptions (schema injection capabilities)

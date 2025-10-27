@@ -1,0 +1,31 @@
+# Default configuration for CV optimization agents and tools
+# Override locally by creating settings.local.yaml (gitignored)
+# Override per-run using environment variables
+
+agents:
+  cv_analyst:
+    model: "gpt-4o-mini"
+    temperature: 0.7
+  job_analyst:
+    model: "gpt-4o-mini"
+    temperature: 0.7
+  cv_strategist:
+    model: "claude-3-5-sonnet-20241022"
+    temperature: 0.7
+  cv_rewriter:
+    model: "claude-3-5-sonnet-20241022"
+    temperature: 0.7
+  crew_manager:
+    model: "gpt-4o-mini"
+    temperature: 0.7
+
+rag:
+  embedding_model: "text-embedding-ada-002"
+  collection_name: "knowledge_base"
+  num_results: 7
+  chunk_size: 1000
+  chunk_overlap: 200
+
+paths:
+  knowledge_base: "knowledge-base"
+  vector_db: "vector_db"
