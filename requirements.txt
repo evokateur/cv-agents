@@ -26,10 +26,10 @@ chromadb==1.1.1
 click==8.3.0
 coloredlogs==15.0.1
 comm==0.2.3
-crewai==1.1.0
-crewai-tools==1.1.0
+crewai==1.2.0
+crewai-tools==1.2.0
 cryptography==46.0.3
--e git+ssh://git@github.com/evokateur/cv-agents.git@cd1b6913075d41612ec4244a3ba7ba87f46be4d8#egg=cv_agents
+-e git+ssh://git@github.com/evokateur/cv-agents.git@84e7bbc43df6dbce9f25342e7471c1afd00c8606#egg=cv_agents
 dataclasses-json==0.6.7
 debugpy==1.8.17
 decorator==5.2.1
@@ -54,7 +54,7 @@ greenlet==3.2.4
 grpcio==1.76.0
 h11==0.16.0
 h2==4.3.0
-hf-xet==1.1.10
+hf-xet==1.2.0
 hpack==4.1.0
 httpcore==1.0.9
 httptools==0.7.1
@@ -100,21 +100,21 @@ langchain==1.0.2
 langchain-chroma==1.0.0
 langchain-classic==1.0.0
 langchain-community==0.4
-langchain-core==1.0.0
+langchain-core==1.0.1
 langchain-openai==1.0.1
 langchain-text-splitters==1.0.0
 langgraph==1.0.1
 langgraph-checkpoint==3.0.0
 langgraph-prebuilt==1.0.1
 langgraph-sdk==0.2.9
-langsmith==0.4.37
+langsmith==0.4.38
 lark==1.3.0
 lxml==6.0.2
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 marshmallow==3.26.1
 matplotlib-inline==0.2.1
-mcp==1.18.0
+mcp==1.19.0
 mdurl==0.1.2
 mistune==3.1.4
 mmh3==5.2.0
@@ -139,7 +139,7 @@ opentelemetry-exporter-otlp-proto-http==1.38.0
 opentelemetry-proto==1.38.0
 opentelemetry-sdk==1.38.0
 opentelemetry-semantic-conventions==0.59b0
-orjson==3.11.3
+orjson==3.11.4
 ormsgpack==1.11.0
 overrides==7.7.0
 packaging==25.0
@@ -157,10 +157,10 @@ prometheus_client==0.23.1
 prompt_toolkit==3.0.52
 propcache==0.4.1
 protobuf==6.33.0
-psutil==7.1.1
+psutil==7.1.2
 ptyprocess==0.7.0
 pure_eval==0.2.3
-pyarrow==21.0.0
+pyarrow==22.0.0
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pybase64==1.4.2
@@ -172,14 +172,14 @@ Pygments==2.19.2
 PyJWT==2.10.1
 pylance==0.38.1
 pypdf==6.1.3
-pypdfium2==4.30.0
+pypdfium2==5.0.0
 PyPika==0.48.9
 pyproject_hooks==1.2.0
 pytest==8.4.2
 pytest-asyncio==1.2.0
 python-dateutil==2.9.0.post0
 python-docx==1.2.0
-python-dotenv==1.1.1
+python-dotenv==1.2.1
 python-json-logger==4.0.0
 python-multipart==0.0.20
 pytube==15.0.0
