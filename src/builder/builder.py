@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 from builder.template_env import get_tex_env
 from models.schema import CurriculumVitae, CoverLetter
-from pydantic import ValidationError
 
 
 def build_cv(input_file: str, output_file: str):
@@ -18,7 +17,7 @@ def build_cv(input_file: str, output_file: str):
     """
     path = Path(input_file)
     with open(input_file) as f:
-        if path.suffix.lower() == '.json':
+        if path.suffix.lower() == ".json":
             data = json.load(f)
         else:
             data = yaml.safe_load(f)
@@ -49,7 +48,7 @@ def build_cover_letter(input_file: str, output_file: str):
     """
     path = Path(input_file)
     with open(input_file) as f:
-        if path.suffix.lower() == '.json':
+        if path.suffix.lower() == ".json":
             data = json.load(f)
         else:
             data = yaml.safe_load(f)
