@@ -74,7 +74,7 @@ Here are some links to CrewAI documentation to help us understand the target arc
 **CV Generation Pipeline:**
 
 - `src/builder/` - CV and cover letter generation module
-  - `cli.py` - Console scripts entry point (make-cv, make-cover-letter commands)
+  - `cli.py` - Console scripts entry point (build-cv, build-cover-letter commands)
   - `builder.py` - Unified build logic that loads YAML/JSON data and renders LaTeX templates for any document type
   - `template_env.py` - Custom Jinja2 environment with LaTeX-safe delimiters and escaping
 - `data/cv.yaml` - Primary CV data source

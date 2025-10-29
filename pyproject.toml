@@ -34,8 +34,8 @@ dev = [
 ]
 
 [project.scripts]
-make-cv = "builder.cli:main_cv"
-make-cover-letter = "builder.cli:main_cover_letter"
+build-cv = "builder.cli:main_cv"
+build-cover-letter = "builder.cli:main_cover_letter"
 optimize-cv = "optimizer.cli:main"
 
 [tool.setuptools.packages.find]

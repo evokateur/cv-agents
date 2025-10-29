@@ -26,12 +26,12 @@ vector_db:
 	python -m scripts.embed_kb
 
 cv:
-	make-cv data/cv.yaml output/cv.tex
+	build-cv data/cv.yaml output/cv.tex
 	pdflatex --output-directory=output output/cv.tex
 	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cv.pdf; fi
 
 cover-letter:
-	make-cover-letter data/cover-letter.json output/cover-letter.tex
+	build-cover-letter data/cover-letter.json output/cover-letter.tex
 	pdflatex --output-directory=output output/cover-letter.tex
 	@if [ -n "$(OPEN)" ]; then $(OPEN) output/cover-letter.pdf; fi
 
