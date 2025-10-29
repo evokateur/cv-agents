@@ -8,4 +8,4 @@ pip install -e ".[dev]"
 echo "Installing Jupyter kernel spec for $(pwd)/.venv.."
 python -m ipykernel install --user --env VIRTUAL_ENV "$(pwd)/.venv" --name=cv-agents --display-name "CV Agents"
 
-echo "Use kernel 'cv-agents' in Jupyter notebooks."
+echo "Use the 'cv-agents' kernel in Jupyter notebooks."
