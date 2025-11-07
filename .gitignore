@@ -56,9 +56,6 @@ settings.local.yaml
 # ad hoc backup copies
 *.bak
 
-# docs I won't want in the repo 
-_docs
-
 knowledge-base
 
 # Vector databases
