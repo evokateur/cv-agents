@@ -66,8 +66,16 @@ def chat_with_kb(message, history, model, temperature, tool_type):
     """Process a chat message and return response."""
     agent = create_kb_agent(model, temperature, tool_type)
 
+    # Build context from conversation history
+    context = ""
+    if history:
+        context = "Previous conversation:\n"
+        for user_msg, bot_msg in history:
+            context += f"User: {user_msg}\nAssistant: {bot_msg}\n"
+        context += "\n"
+
     task = Task(
-        description=f"Answer this question: {message}",
+        description=f"{context}Answer this question: {message}",
         expected_output="A direct, technical answer based on the knowledge base. Avoid business jargon, marketing language, and buzzwords. Be specific and concrete.",
         agent=agent,
     )
