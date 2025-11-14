@@ -57,6 +57,9 @@ settings.local.yaml
 *.bak
 
 knowledge-base
+job_postings
+cvs
+collections
 
 # Vector databases
 *vector_db*
