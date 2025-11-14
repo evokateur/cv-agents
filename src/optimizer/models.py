@@ -5,6 +5,7 @@ from models import CurriculumVitae
 
 class JobPosting(BaseModel):
     # Basic metadata
+    url: str = Field(description="The job posting URL")
     title: str
     company: str
     industry: str

@@ -17,7 +17,7 @@ class CvOptimizationService:
         self.cv_analyzer = CvAnalyzer()
         self.repository = repository or FileSystemRepository()
 
-    def create_job_posting(self, url: str) -> dict[str, Any]:
+    def create_job_posting(self, url: str) -> tuple[dict[str, Any], str]:
         """
         Analyze a job posting URL and create a structured JobPosting.
 
@@ -27,17 +27,11 @@ class CvOptimizationService:
             url: Job posting URL to analyze
 
         Returns:
-            dict with job posting data including identifier and all extracted fields
+            tuple of (job_posting_data, suggested_identifier)
         """
         job_posting = self.job_posting_analyzer.analyze(url)
-
         identifier = self._generate_job_identifier(job_posting.company, job_posting.title)
-
-        result = job_posting.model_dump()
-        result["identifier"] = identifier
-        result["status"] = "success"
-
-        return result
+        return job_posting.model_dump(), identifier
 
     def save_job_posting(self, job_posting_data: dict[str, Any], identifier: str) -> dict[str, Any]:
         """
@@ -52,12 +46,8 @@ class CvOptimizationService:
         """
         from optimizer.models import JobPosting
 
-        job_posting_data = {k: v for k, v in job_posting_data.items() if k not in ["identifier", "status"]}
         job_posting = JobPosting(**job_posting_data)
-
         metadata = self.repository.save_job_posting(job_posting, identifier)
-        metadata["status"] = "success"
-
         return metadata
 
     def _generate_job_identifier(self, company: str, title: str) -> str:
@@ -81,7 +71,7 @@ class CvOptimizationService:
         """
         return self.repository.list_job_postings()
 
-    def create_cv(self, file_path: str) -> dict[str, Any]:
+    def create_cv(self, file_path: str) -> tuple[dict[str, Any], str]:
         """
         Analyze a CV file and create a structured CurriculumVitae.
 
@@ -91,17 +81,11 @@ class CvOptimizationService:
             file_path: Path to CV file (JSON, YAML, or plain text)
 
         Returns:
-            dict with CV data including identifier and all extracted fields
+            tuple of (cv_data, suggested_identifier)
         """
         cv = self.cv_analyzer.analyze(file_path)
-
         identifier = self._generate_cv_identifier(cv.name)
-
-        result = cv.model_dump()
-        result["identifier"] = identifier
-        result["status"] = "success"
-
-        return result
+        return cv.model_dump(), identifier
 
     def save_cv(self, cv_data: dict[str, Any], identifier: str) -> dict[str, Any]:
         """
@@ -116,12 +100,8 @@ class CvOptimizationService:
         """
         from models import CurriculumVitae
 
-        cv_data = {k: v for k, v in cv_data.items() if k not in ["identifier", "status"]}
         cv = CurriculumVitae(**cv_data)
-
         metadata = self.repository.save_cv(cv, identifier)
-        metadata["status"] = "success"
-
         return metadata
 
     def _generate_cv_identifier(self, name: str) -> str:

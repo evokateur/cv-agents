@@ -24,105 +24,99 @@ def create_app():
                 with gr.Group():
                     gr.Markdown("### Results")
                     job_result = gr.JSON(label="Job Posting Details")
-                    job_identifier = gr.Textbox(
-                        label="Save As",
-                        placeholder="company-position",
-                    )
                     job_is_saved = gr.State(value=False)
-                    save_job_btn = gr.Button("Save Job Posting")
-                    save_job_status = gr.Textbox(label="Status", interactive=False)
+
+                    with gr.Group(visible=False) as job_save_controls:
+                        job_identifier = gr.Textbox(
+                            label="Save As",
+                            placeholder="company-position",
+                        )
+                        save_job_btn = gr.Button("Save Job Posting")
+                        save_job_status = gr.Textbox(label="Status", interactive=False)
 
                 with gr.Group():
                     gr.Markdown("### Saved Job Postings")
-                    job_list_dropdown = gr.Dropdown(
-                        label="Select Job Posting to View",
-                        choices=[],
-                        interactive=True,
-                    )
-                    view_job_btn = gr.Button("View Selected")
+                    gr.Markdown("Click a row to view details")
                     job_list = gr.Dataframe(
-                        headers=["Identifier", "Company", "Position"],
+                        headers=["Identifier", "Company", "Position", "URL"],
                         label="All Job Postings",
+                        interactive=False,
                     )
                     refresh_jobs_btn = gr.Button("Refresh List")
 
                 # Event handlers for Job Postings tab
                 def analyze_job(url):
-                    result = service.create_job_posting(url)
-                    identifier = result.get("identifier", "")
+                    job_data, identifier = service.create_job_posting(url)
                     is_saved = False
-                    return result, identifier, is_saved, gr.update(interactive=True)
+                    return job_data, identifier, is_saved, gr.update(visible=True), ""
 
-                def view_saved_job(identifier):
+                def view_saved_job(evt: gr.SelectData):
+                    identifier = evt.row_value[0]  # First column is identifier
+
                     if not identifier:
-                        return None, "", True, gr.update(interactive=False), ""
+                        return None, "", True, gr.update(visible=False), ""
 
                     job_posting = service.repository.get_job_posting(identifier)
                     if not job_posting:
-                        return None, "", True, gr.update(interactive=False), "⚠ Job posting not found"
+                        return None, "", True, gr.update(visible=False), f"⚠ Job posting not found"
 
-                    result = job_posting.model_dump()
-                    result["identifier"] = identifier
-                    result["status"] = "loaded"
+                    job_data = job_posting.model_dump()
                     is_saved = True
 
-                    return result, identifier, is_saved, gr.update(interactive=False), f"✓ Loaded: {identifier}"
+                    return job_data, identifier, is_saved, gr.update(visible=False), f"✓ Loaded: {identifier}"
 
                 def save_job(job_data, identifier, is_saved):
                     if is_saved:
-                        return "ℹ Job posting is already saved", None, True, gr.update(interactive=False)
+                        return "ℹ Job posting is already saved", None, True, gr.update(visible=False)
 
                     if not job_data or not identifier:
-                        return "⚠ Please analyze a job posting first and provide an identifier", None, False, gr.update(interactive=True)
+                        return "⚠ Please analyze a job posting first and provide an identifier", None, False, gr.update(visible=True)
 
                     try:
                         metadata = service.save_job_posting(job_data, identifier)
                         jobs = service.get_job_postings()
                         job_list_data = [
-                            [j.get("identifier", ""), j.get("company", ""), j.get("title", "")]
+                            [j.get("identifier", ""), j.get("company", ""), j.get("title", ""), j.get("url", "")]
                             for j in jobs
                         ]
-                        job_choices = [(f"{j['company']} - {j['title']}", j['identifier']) for j in jobs]
                         return (
                             f"✓ Job posting saved: {metadata['identifier']}",
                             job_list_data,
                             True,
-                            gr.update(interactive=False),
+                            gr.update(visible=False),
                         )
                     except Exception as e:
-                        return f"✗ Error saving job posting: {str(e)}", None, False, gr.update(interactive=True)
+                        return f"✗ Error saving job posting: {str(e)}", None, False, gr.update(visible=True)
 
                 def load_jobs():
                     jobs = service.get_job_postings()
                     job_list_data = [
-                        [j.get("identifier", ""), j.get("company", ""), j.get("title", "")]
+                        [j.get("identifier", ""), j.get("company", ""), j.get("title", ""), j.get("url", "")]
                         for j in jobs
                     ]
-                    job_choices = [(f"{j['company']} - {j['title']}", j['identifier']) for j in jobs]
-                    return job_list_data, gr.update(choices=job_choices)
+                    return job_list_data
 
                 analyze_job_btn.click(
                     fn=analyze_job,
                     inputs=[job_url],
-                    outputs=[job_result, job_identifier, job_is_saved, save_job_btn],
+                    outputs=[job_result, job_identifier, job_is_saved, job_save_controls, save_job_status],
                 )
 
-                view_job_btn.click(
+                job_list.select(
                     fn=view_saved_job,
-                    inputs=[job_list_dropdown],
-                    outputs=[job_result, job_identifier, job_is_saved, save_job_btn, save_job_status],
+                    outputs=[job_result, job_identifier, job_is_saved, job_save_controls, save_job_status],
                 )
 
                 save_job_btn.click(
                     fn=save_job,
                     inputs=[job_result, job_identifier, job_is_saved],
-                    outputs=[save_job_status, job_list, job_is_saved, save_job_btn],
+                    outputs=[save_job_status, job_list, job_is_saved, job_save_controls],
                 )
 
-                refresh_jobs_btn.click(fn=load_jobs, outputs=[job_list, job_list_dropdown])
+                refresh_jobs_btn.click(fn=load_jobs, outputs=[job_list])
 
                 # Load jobs on startup
-                app.load(fn=load_jobs, outputs=[job_list, job_list_dropdown])
+                app.load(fn=load_jobs, outputs=[job_list])
 
             # Tab 2: Curriculum Vitae
             with gr.Tab("Curriculum Vitae"):
@@ -138,25 +132,23 @@ def create_app():
                 with gr.Group():
                     gr.Markdown("### Results")
                     cv_result = gr.JSON(label="CV Details")
-                    cv_identifier = gr.Textbox(
-                        label="Save As",
-                        placeholder="name",
-                    )
                     cv_is_saved = gr.State(value=False)
-                    save_cv_btn = gr.Button("Save CV")
-                    save_cv_status = gr.Textbox(label="Status", interactive=False)
+
+                    with gr.Group(visible=False) as cv_save_controls:
+                        cv_identifier = gr.Textbox(
+                            label="Save As",
+                            placeholder="name",
+                        )
+                        save_cv_btn = gr.Button("Save CV")
+                        save_cv_status = gr.Textbox(label="Status", interactive=False)
 
                 with gr.Group():
                     gr.Markdown("### Saved CVs")
-                    cv_list_dropdown = gr.Dropdown(
-                        label="Select CV to View",
-                        choices=[],
-                        interactive=True,
-                    )
-                    view_cv_btn = gr.Button("View Selected")
+                    gr.Markdown("Click a row to view details")
                     cv_list = gr.Dataframe(
                         headers=["Identifier", "Name", "Profession"],
                         label="All CVs",
+                        interactive=False,
                     )
                     refresh_cvs_btn = gr.Button("Refresh List")
 
@@ -164,34 +156,33 @@ def create_app():
                 def analyze_cv(file, path):
                     file_path = file.name if file else path
                     if not file_path:
-                        return None, "", False, gr.update(interactive=False)
+                        return None, "", False, gr.update(visible=False), ""
 
-                    result = service.create_cv(file_path)
-                    identifier = result.get("identifier", "")
+                    cv_data, identifier = service.create_cv(file_path)
                     is_saved = False
-                    return result, identifier, is_saved, gr.update(interactive=True)
+                    return cv_data, identifier, is_saved, gr.update(visible=True), ""
 
-                def view_saved_cv(identifier):
+                def view_saved_cv(evt: gr.SelectData):
+                    identifier = evt.row_value[0]  # First column is identifier
+
                     if not identifier:
-                        return None, "", True, gr.update(interactive=False), ""
+                        return None, "", True, gr.update(visible=False), ""
 
                     cv = service.repository.get_cv(identifier)
                     if not cv:
-                        return None, "", True, gr.update(interactive=False), "⚠ CV not found"
+                        return None, "", True, gr.update(visible=False), "⚠ CV not found"
 
-                    result = cv.model_dump()
-                    result["identifier"] = identifier
-                    result["status"] = "loaded"
+                    cv_data = cv.model_dump()
                     is_saved = True
 
-                    return result, identifier, is_saved, gr.update(interactive=False), f"✓ Loaded: {identifier}"
+                    return cv_data, identifier, is_saved, gr.update(visible=False), f"✓ Loaded: {identifier}"
 
                 def save_cv(cv_data, identifier, is_saved):
                     if is_saved:
-                        return "ℹ CV is already saved", None, True, gr.update(interactive=False)
+                        return "ℹ CV is already saved", None, True, gr.update(visible=False)
 
                     if not cv_data or not identifier:
-                        return "⚠ Please analyze a CV first and provide an identifier", None, False, gr.update(interactive=True)
+                        return "⚠ Please analyze a CV first and provide an identifier", None, False, gr.update(visible=True)
 
                     try:
                         metadata = service.save_cv(cv_data, identifier)
@@ -204,10 +195,10 @@ def create_app():
                             f"✓ CV saved: {metadata['identifier']}",
                             cv_list_data,
                             True,
-                            gr.update(interactive=False),
+                            gr.update(visible=False),
                         )
                     except Exception as e:
-                        return f"✗ Error saving CV: {str(e)}", None, False, gr.update(interactive=True)
+                        return f"✗ Error saving CV: {str(e)}", None, False, gr.update(visible=True)
 
                 def load_cvs():
                     cvs = service.get_cvs()
@@ -215,31 +206,29 @@ def create_app():
                         [c.get("identifier", ""), c.get("name", ""), c.get("profession", "")]
                         for c in cvs
                     ]
-                    cv_choices = [(f"{c['name']} ({c['profession']})", c['identifier']) for c in cvs]
-                    return cv_list_data, gr.update(choices=cv_choices)
+                    return cv_list_data
 
                 analyze_cv_btn.click(
                     fn=analyze_cv,
                     inputs=[cv_file, cv_path],
-                    outputs=[cv_result, cv_identifier, cv_is_saved, save_cv_btn],
+                    outputs=[cv_result, cv_identifier, cv_is_saved, cv_save_controls, save_cv_status],
                 )
 
-                view_cv_btn.click(
+                cv_list.select(
                     fn=view_saved_cv,
-                    inputs=[cv_list_dropdown],
-                    outputs=[cv_result, cv_identifier, cv_is_saved, save_cv_btn, save_cv_status],
+                    outputs=[cv_result, cv_identifier, cv_is_saved, cv_save_controls, save_cv_status],
                 )
 
                 save_cv_btn.click(
                     fn=save_cv,
                     inputs=[cv_result, cv_identifier, cv_is_saved],
-                    outputs=[save_cv_status, cv_list, cv_is_saved, save_cv_btn],
+                    outputs=[save_cv_status, cv_list, cv_is_saved, cv_save_controls],
                 )
 
-                refresh_cvs_btn.click(fn=load_cvs, outputs=[cv_list, cv_list_dropdown])
+                refresh_cvs_btn.click(fn=load_cvs, outputs=[cv_list])
 
                 # Load CVs on startup
-                app.load(fn=load_cvs, outputs=[cv_list, cv_list_dropdown])
+                app.load(fn=load_cvs, outputs=[cv_list])
 
             # Tab 3: Optimizations
             with gr.Tab("Optimizations"):

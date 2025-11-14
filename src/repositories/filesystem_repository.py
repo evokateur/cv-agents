@@ -84,6 +84,7 @@ class FileSystemRepository:
         metadata = {
             "identifier": identifier,
             "filepath": file_path,
+            "url": job_posting.url,
             "company": job_posting.company,
             "title": job_posting.title,
             "experience_level": job_posting.experience_level,
