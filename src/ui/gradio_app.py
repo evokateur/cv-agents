@@ -54,23 +54,23 @@ def create_app():
                     identifier = evt.row_value[0]  # First column is identifier
 
                     if not identifier:
-                        return None, "", True, gr.update(visible=False), ""
+                        return None, "", "", True, gr.update(visible=False), ""
 
                     job_posting = service.repository.get_job_posting(identifier)
                     if not job_posting:
-                        return None, "", True, gr.update(visible=False), f"⚠ Job posting not found"
+                        return None, "", "", True, gr.update(visible=False), f"⚠ Job posting not found"
 
                     job_data = job_posting.model_dump()
                     is_saved = True
 
-                    return job_data, identifier, is_saved, gr.update(visible=False), f"✓ Loaded: {identifier}"
+                    return job_data, "", identifier, is_saved, gr.update(visible=False), f"✓ Loaded: {identifier}"
 
                 def save_job(job_data, identifier, is_saved):
                     if is_saved:
-                        return "ℹ Job posting is already saved", None, True, gr.update(visible=False)
+                        return "ℹ Job posting is already saved", "", None, True, gr.update(visible=False)
 
                     if not job_data or not identifier:
-                        return "⚠ Please analyze a job posting first and provide an identifier", None, False, gr.update(visible=True)
+                        return "⚠ Please analyze a job posting first and provide an identifier", "", None, False, gr.update(visible=True)
 
                     try:
                         metadata = service.save_job_posting(job_data, identifier)
@@ -81,12 +81,13 @@ def create_app():
                         ]
                         return (
                             f"✓ Job posting saved: {metadata['identifier']}",
+                            "",
                             job_list_data,
                             True,
                             gr.update(visible=False),
                         )
                     except Exception as e:
-                        return f"✗ Error saving job posting: {str(e)}", None, False, gr.update(visible=True)
+                        return f"✗ Error saving job posting: {str(e)}", "", None, False, gr.update(visible=True)
 
                 def load_jobs():
                     jobs = service.get_job_postings()
@@ -96,7 +97,11 @@ def create_app():
                     ]
                     return job_list_data
 
+                # Clear display and show progress when starting analysis
                 analyze_job_btn.click(
+                    fn=lambda: (None, "", "⏳ Analyzing job posting..."),
+                    outputs=[job_result, job_identifier, save_job_status],
+                ).then(
                     fn=analyze_job,
                     inputs=[job_url],
                     outputs=[job_result, job_identifier, job_is_saved, job_save_controls, save_job_status],
@@ -104,13 +109,13 @@ def create_app():
 
                 job_list.select(
                     fn=view_saved_job,
-                    outputs=[job_result, job_identifier, job_is_saved, job_save_controls, save_job_status],
+                    outputs=[job_result, job_url, job_identifier, job_is_saved, job_save_controls, save_job_status],
                 )
 
                 save_job_btn.click(
                     fn=save_job,
                     inputs=[job_result, job_identifier, job_is_saved],
-                    outputs=[save_job_status, job_list, job_is_saved, job_save_controls],
+                    outputs=[save_job_status, job_url, job_list, job_is_saved, job_save_controls],
                 )
 
                 refresh_jobs_btn.click(fn=load_jobs, outputs=[job_list])
