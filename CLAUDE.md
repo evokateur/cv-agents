@@ -100,12 +100,33 @@ Here are some links to CrewAI documentation to help us understand the target arc
 - `src/models/schema.py` - Shared Pydantic models and CV schema definitions
 - `scripts/` - Individual test scripts for each crew component and knowledge base utilities
 
+**Standalone Analyzer Crews:**
+
+- `src/job_posting_analyzer/` - Standalone crew for analyzing job posting URLs
+  - `crew.py` - JobPostingAnalyzer crew with @CrewBase decorator
+  - `config/agents.yaml` - job_analyst agent configuration
+  - `config/tasks.yaml` - job_analysis_task configuration
+  - `config/settings.yaml` - Agent model and temperature settings (independent from optimizer)
+  - `config/settings.py` - YAML configuration loader with local override support
+  - `main.py` - CLI entry point for standalone testing (run, train, replay, test)
+  - `tools/` - Directory for custom tools (SerperDevTool, ScrapeWebsiteTool used)
+
+- `src/cv_analyzer/` - Standalone crew for analyzing CV files
+  - `crew.py` - CvAnalyzer crew with @CrewBase decorator
+  - `config/agents.yaml` - cv_analyst agent configuration
+  - `config/tasks.yaml` - cv_analysis_task configuration
+  - `config/settings.yaml` - Agent model and temperature settings (independent from optimizer)
+  - `config/settings.py` - YAML configuration loader with local override support
+  - `main.py` - CLI entry point for standalone testing (run, train, replay, test)
+  - `tools/` - Directory for custom tools (FileReadTool used)
+
+- `src/services/analyzers/` - Service layer abstractions for GUI integration
+  - `job_posting_analyzer.py` - Service wrapper for JobPostingAnalyzer crew
+  - `cv_analyzer.py` - Service wrapper for CvAnalyzer crew
+
 **Configuration:**
 
 - `pyproject.toml` - Package configuration with dependencies and console scripts (defines make-cv, make-cover-letter, optimize-cv)
-- `src/optimizer/config/settings.yaml` - Default configuration for agents, RAG, and paths (committed)
-- `src/optimizer/config/settings.local.yaml` - Local configuration overrides (gitignored, optional)
-- `src/optimizer/config/settings.py` - Loads YAML configuration with override hierarchy
 - `.env` - API keys only (secrets, gitignored)
 - `sample.env` - Template for API keys
 
@@ -114,15 +135,33 @@ Here are some links to CrewAI documentation to help us understand the target arc
 2. `settings.local.yaml` overrides for local experimentation (gitignored)
 3. `.env` provides API keys only (not used for model/temperature configuration)
 
-**Agent configuration (in settings.yaml):**
+**Optimizer Configuration:**
+
+- `src/optimizer/config/settings.yaml` - Default configuration for agents, RAG, and paths (committed)
+- `src/optimizer/config/settings.local.yaml` - Local configuration overrides (gitignored, optional)
+- `src/optimizer/config/settings.py` - Loads YAML configuration with override hierarchy
+
+**Optimizer agent configuration (in settings.yaml):**
 - Each agent has `model` and `temperature` settings
 - Agents: cv_analyst, job_analyst, cv_strategist, cv_rewriter, crew_manager
 
-**RAG configuration (in settings.yaml):**
+**RAG configuration (in optimizer settings.yaml):**
 - embedding_model, collection_name, num_results, chunk_size, chunk_overlap
 
-**Path configuration (in settings.yaml):**
+**Path configuration (in optimizer settings.yaml):**
 - knowledge_base, vector_db
+
+**Standalone Crew Configuration:**
+
+Each standalone crew has its own independent configuration:
+
+- `src/job_posting_analyzer/config/settings.yaml` - job_analyst agent configuration only
+- `src/job_posting_analyzer/config/settings.local.yaml` - Local overrides (gitignored, optional)
+- `src/job_posting_analyzer/config/settings.py` - Loads YAML configuration with override hierarchy
+
+- `src/cv_analyzer/config/settings.yaml` - cv_analyst agent configuration only
+- `src/cv_analyzer/config/settings.local.yaml` - Local overrides (gitignored, optional)
+- `src/cv_analyzer/config/settings.py` - Loads YAML configuration with override hierarchy
 
 **Required API keys (in .env):**
 - ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY, DEEPSEEK_API_KEY, SERPER_API_KEY
@@ -163,8 +202,35 @@ Specialized crew classes for testing individual components:
 
 ### Testing
 
+**Testing Policy:**
+
+When adding code or making changes that require sanity checks, write tests FIRST or DURING implementation rather than running manual verification commands. This preserves verification logic as automated tests.
+
+**Write tests for:**
+- Refactoring existing code (write tests first for confidence)
+- Fixing bugs (write failing test, then fix)
+- Adding new configuration or settings
+- Modifying crew instantiation or service layer
+- Changing shared utilities that affect multiple systems
+
+**Test types:**
+- **Integration tests** (`@pytest.mark.integration`) - Test multiple components working together
+  - Config loading + validation + crew instantiation
+  - Service layer + crews + config
+  - Located in `tests/integration/`
+- **Unit tests** (`@pytest.mark.unit`) - Test pure functions and business logic
+  - Pydantic model validation
+  - Data transformation functions
+  - Located in `tests/unit/`
+
+**Running tests:**
+- `make test` - Run all tests
+- `pytest -m integration` - Run only integration tests
+- `pytest -m unit` - Run only unit tests
+
+**Test infrastructure:**
 - Uses pytest with custom markers (`unit`, `integration`, `slow`)
-- Test structure mirrors source code in `tests/unit/optimizer/`
+- Test structure mirrors source code in `tests/unit/` and `tests/integration/`
 - Configuration in `pytest.ini` with verbose output and short tracebacks
 - Filters Pydantic deprecation warnings for cleaner test output
 - Individual crew testing scripts in `scripts/` directory for isolated testing:
