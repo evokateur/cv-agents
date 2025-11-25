@@ -4,7 +4,8 @@ import yaml
 import tempfile
 import shutil
 from pydantic import ValidationError
-from optimizer.config.settings import _load_yaml_config, Settings
+from shared.config import load_yaml_config
+from optimizer.config.settings import Settings
 
 
 @pytest.mark.integration
@@ -38,7 +39,7 @@ def test_settings_local_yaml_overrides():
             yaml.dump(test_overrides, f)
 
         # Load config and verify overrides applied
-        config = _load_yaml_config()
+        config = load_yaml_config(config_dir)
 
         assert config["agents"]["cv_analyst"]["model"] == "test-model-override"
         assert config["agents"]["cv_analyst"]["temperature"] == 0.123
