@@ -1,0 +1,35 @@
+job_analysis_task:
+  description: >
+    Analyze the job posting URL provided ({job_posting_url}) and extract structured
+    information into the JobPosting schema. Follow these rules:
+
+    **1. Metadata**
+    - Extract job title, company name, industry, full description, and experience level.
+
+    **2. Requirements**
+    - Extract degrees, certifications, and explicit "years of experience" requirements.
+    - Identify hard requirements (licenses, mandatory credentials).
+
+    **3. Skills**
+    - Technical skills: programming languages, frameworks, cloud platforms, tools.
+    - Soft skills: communication, teamwork, leadership, problem-solving.
+    - Preferred skills: "nice-to-have" extras.
+
+    **4. Responsibilities**
+    - Bullet out day-to-day tasks, focusing on specific duties (not vague culture blurbs).
+
+    **5. ATS Alignment**
+    - Keywords: important phrases used in the posting for filtering.
+    - Tools/tech stack: specific named technologies (AWS, Docker, React, etc).
+
+    **6. Normalization**
+    - Deduplicate terms (merge "Python 3" and "Python").
+    - Expand acronyms if possible (e.g., "CI/CD" -> "Continuous Integration / Continuous Deployment").
+    - Filter out vague corporate jargon ("fast-paced environment", "great culture").
+
+    Output must be a valid JobPosting object.
+  expected_output: >
+    A validated JobPosting object with all fields populated where possible,
+    ensuring consistency and ATS-awareness.
+  output_file: "{output_directory}/job_posting.json"
+  agent: job_analyst

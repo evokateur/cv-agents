@@ -4,13 +4,13 @@ import tempfile
 # Disable CrewAI tracing to prevent 20s timeout prompt
 os.environ["CREWAI_TRACING_ENABLED"] = "false"
 
-from optimizer.crew import JobAnalysis
+from job_posting_analyzer.crew import JobPostingAnalyzer as JobPostingAnalyzerCrew
 from optimizer.models import JobPosting
 
 
 class JobPostingAnalyzer:
     """
-    Analyzer that wraps the JobAnalysis crew to extract structured job posting data.
+    Analyzer that wraps the JobPostingAnalyzer crew to extract structured job posting data.
 
     This class abstracts the CrewAI implementation details from the service layer.
     """
@@ -31,7 +31,12 @@ class JobPostingAnalyzer:
                 "output_directory": temp_dir,
             }
 
-            crew = JobAnalysis()
+            crew = JobPostingAnalyzerCrew()
             result = crew.crew().kickoff(inputs=inputs)
+
+            if not isinstance(result.pydantic, JobPosting):
+                raise TypeError(
+                    "Expected JobPosting, got {}".format(type(result.pydantic))
+                )
 
             return result.pydantic
