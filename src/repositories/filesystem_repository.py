@@ -73,7 +73,7 @@ class FileSystemRepository:
         Path(file_path).parent.mkdir(parents=True, exist_ok=True)
 
         with open(file_path, "w") as f:
-            json.dump(job_posting.model_dump(), f, indent=2)
+            json.dump(job_posting.model_dump(mode='json'), f, indent=2)
 
         collection = self._load_collection(self.job_postings_collection)
 
@@ -175,7 +175,7 @@ class FileSystemRepository:
         Path(file_path).parent.mkdir(parents=True, exist_ok=True)
 
         with open(file_path, "w") as f:
-            json.dump(cv.model_dump(), f, indent=2)
+            json.dump(cv.model_dump(mode='json'), f, indent=2)
 
         collection = self._load_collection(self.cvs_collection)
 
