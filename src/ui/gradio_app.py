@@ -38,7 +38,7 @@ def create_app():
                     gr.Markdown("### Saved Job Postings")
                     gr.Markdown("Click a row to view details")
                     job_list = gr.Dataframe(
-                        headers=["Identifier", "Company", "Position", "URL"],
+                        headers=["Identifier", "Company", "Position", "Date", "URL"],
                         label="All Job Postings",
                         interactive=False,
                     )
@@ -46,9 +46,12 @@ def create_app():
 
                 # Event handlers for Job Postings tab
                 def analyze_job(url):
+                    if not url:
+                        return None, "", False, gr.update(visible=False), "⚠ Please enter a URL"
+
                     job_data, identifier = service.create_job_posting(url)
                     is_saved = False
-                    return job_data, identifier, is_saved, gr.update(visible=True), ""
+                    return job_data, identifier, is_saved, gr.update(visible=True), "✓ Analysis complete"
 
                 def view_saved_job(evt: gr.SelectData):
                     identifier = evt.row_value[0]  # First column is identifier
@@ -76,7 +79,13 @@ def create_app():
                         metadata = service.save_job_posting(job_data, identifier)
                         jobs = service.get_job_postings()
                         job_list_data = [
-                            [j.get("identifier", ""), j.get("company", ""), j.get("title", ""), j.get("url", "")]
+                            [
+                                j.get("identifier", ""),
+                                j.get("company", ""),
+                                j.get("title", ""),
+                                j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
+                                j.get("url", "")
+                            ]
                             for j in jobs
                         ]
                         return (
@@ -92,15 +101,21 @@ def create_app():
                 def load_jobs():
                     jobs = service.get_job_postings()
                     job_list_data = [
-                        [j.get("identifier", ""), j.get("company", ""), j.get("title", ""), j.get("url", "")]
+                        [
+                            j.get("identifier", ""),
+                            j.get("company", ""),
+                            j.get("title", ""),
+                            j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
+                            j.get("url", "")
+                        ]
                         for j in jobs
                     ]
                     return job_list_data
 
-                # Clear display and show progress when starting analysis
+                # Analyze job posting - clear previous results first, then run analysis
                 analyze_job_btn.click(
-                    fn=lambda: (None, "", "⏳ Analyzing job posting..."),
-                    outputs=[job_result, job_identifier, save_job_status],
+                    fn=lambda: (None, "", False, gr.update(visible=False), "⏳ Analyzing job posting..."),
+                    outputs=[job_result, job_identifier, job_is_saved, job_save_controls, save_job_status],
                 ).then(
                     fn=analyze_job,
                     inputs=[job_url],
