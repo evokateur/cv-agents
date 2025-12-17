@@ -38,9 +38,10 @@ def create_app():
                     gr.Markdown("### Saved Job Postings")
                     gr.Markdown("Click a row to view details")
                     job_list = gr.Dataframe(
-                        headers=["Identifier", "Company", "Position", "Date", "URL"],
+                        headers=["Date", "Company", "Position", "URL", "Identifier"],
                         label="All Job Postings",
                         interactive=False,
+                        column_widths=["10%", "15%", "20%", "35%", "20%"],
                     )
                     refresh_jobs_btn = gr.Button("Refresh List")
 
@@ -54,7 +55,7 @@ def create_app():
                     return job_data, identifier, is_saved, gr.update(visible=True), "✓ Analysis complete"
 
                 def view_saved_job(evt: gr.SelectData):
-                    identifier = evt.row_value[0]  # First column is identifier
+                    identifier = evt.row_value[4]  # Last column is identifier
 
                     if not identifier:
                         return None, "", "", True, gr.update(visible=False), ""
@@ -80,11 +81,11 @@ def create_app():
                         jobs = service.get_job_postings()
                         job_list_data = [
                             [
-                                j.get("identifier", ""),
+                                j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
                                 j.get("company", ""),
                                 j.get("title", ""),
-                                j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
-                                j.get("url", "")
+                                j.get("url", ""),
+                                j.get("identifier", "")
                             ]
                             for j in jobs
                         ]
@@ -102,11 +103,11 @@ def create_app():
                     jobs = service.get_job_postings()
                     job_list_data = [
                         [
-                            j.get("identifier", ""),
+                            j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
                             j.get("company", ""),
                             j.get("title", ""),
-                            j.get("created_at", "")[:10] if j.get("created_at") else "",  # Just the date part
-                            j.get("url", "")
+                            j.get("url", ""),
+                            j.get("identifier", "")
                         ]
                         for j in jobs
                     ]
