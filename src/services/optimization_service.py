@@ -37,6 +37,11 @@ class CvOptimizationService:
         """
         Save a job posting to the repository.
 
+        Handles identifier collisions by appending a number suffix if the
+        identifier already exists. This allows re-analyzing the same job posting
+        (e.g., after KB changes, prompt updates, or job posting changes) without
+        overwriting the previous analysis.
+
         Args:
             job_posting_data: Job posting data dict (from create_job_posting)
             identifier: Identifier to use for this job posting
@@ -47,6 +52,19 @@ class CvOptimizationService:
         from optimizer.models import JobPosting
 
         job_posting = JobPosting(**job_posting_data)
+
+        # Check for identifier collision
+        if self.repository.get_job_posting(identifier):
+            # Find next available identifier by appending number
+            counter = 2
+            original_identifier = identifier
+            while True:
+                candidate_identifier = f"{original_identifier}-{counter}"
+                if not self.repository.get_job_posting(candidate_identifier):
+                    identifier = candidate_identifier
+                    break
+                counter += 1
+
         metadata = self.repository.save_job_posting(job_posting, identifier)
         return metadata
 
