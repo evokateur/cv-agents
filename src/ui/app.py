@@ -412,12 +412,18 @@ def create_app():
                             placeholder="e.g., What experience do I have with React? Tell me about my GraphQL projects...",
                             show_label=False,
                         )
+                        with gr.Row():
+                            export_btn = gr.Button("📥 Export to Markdown", size="sm")
+                            export_file = gr.File(label="Download", visible=False)
 
                     with gr.Column(scale=1):
                         context_display = gr.Markdown(
                             label="Retrieved Context",
                             value="*Retrieved context will appear here after you ask a question*",
                         )
+
+                # State to track full conversation with sources
+                chat_exchanges = gr.State(value=[])
 
                 # Event handlers for Knowledge Chat
                 def format_context(context_docs):
@@ -432,20 +438,58 @@ def create_app():
                         result += doc.page_content + "\n\n---\n\n"
                     return result
 
-                def chat(history):
+                def chat(history, exchanges):
                     """Handle chat interaction with RAG."""
                     if not history:
-                        return history, "*No context retrieved*"
+                        return history, "*No context retrieved*", exchanges
 
                     last_message = history[-1]["content"]
                     prior = history[:-1]
                     answer, context_docs = chat_service.answer_question(last_message, prior)
                     history.append({"role": "assistant", "content": answer})
-                    return history, format_context(context_docs)
+
+                    # Track this exchange with its sources
+                    exchanges.append({
+                        "question": last_message,
+                        "answer": answer,
+                        "context_docs": context_docs
+                    })
+
+                    return history, format_context(context_docs), exchanges
 
                 def put_message_in_chatbot(message_text, history):
                     """Add user message to chat history."""
                     return "", history + [{"role": "user", "content": message_text}]
+
+                def export_chat(exchanges):
+                    """Export conversation to markdown file."""
+                    if not exchanges:
+                        return gr.update(visible=False)
+
+                    markdown = "# Knowledge Base Chat Export\n\n"
+                    markdown += f"*Exported: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n\n"
+                    markdown += "---\n\n"
+
+                    for i, exchange in enumerate(exchanges, 1):
+                        markdown += f"## Q{i}: {exchange['question']}\n\n"
+                        markdown += f"**Answer:**\n\n{exchange['answer']}\n\n"
+
+                        if exchange['context_docs']:
+                            markdown += "**Sources:**\n\n"
+                            for doc in exchange['context_docs']:
+                                source = doc.metadata.get('source', 'Unknown source')
+                                markdown += f"- `{source}`\n"
+                                markdown += f"  > {doc.page_content[:200]}...\n\n"
+
+                        markdown += "---\n\n"
+
+                    # Write to temporary file
+                    import tempfile
+                    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+                        f.write(markdown)
+                        temp_path = f.name
+
+                    return gr.update(value=temp_path, visible=True)
 
                 message.submit(
                     fn=put_message_in_chatbot,
@@ -453,8 +497,14 @@ def create_app():
                     outputs=[message, chatbot],
                 ).then(
                     fn=chat,
-                    inputs=chatbot,
-                    outputs=[chatbot, context_display],
+                    inputs=[chatbot, chat_exchanges],
+                    outputs=[chatbot, context_display, chat_exchanges],
+                )
+
+                export_btn.click(
+                    fn=export_chat,
+                    inputs=[chat_exchanges],
+                    outputs=[export_file],
                 )
 
     return app
