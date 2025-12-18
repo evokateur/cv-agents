@@ -28,6 +28,13 @@ class RagSettings(BaseModel):
         return v
 
 
+class ChatSettings(BaseModel):
+    """Configuration for chat/conversation models"""
+
+    model: str = Field(min_length=1, description="LLM model name for chat")
+    temperature: float = Field(ge=0.0, le=2.0, description="LLM temperature (0.0-2.0)")
+
+
 class PathSettings(BaseModel):
     """Configuration for file paths"""
 

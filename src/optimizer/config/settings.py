@@ -1,13 +1,14 @@
 import os
 from pathlib import Path
 from pydantic import BaseModel
-from shared.config import AgentSettings, RagSettings, PathSettings, BaseConfig, load_yaml_config
+from shared.config import AgentSettings, RagSettings, ChatSettings, PathSettings, BaseConfig, load_yaml_config
 
 
 class Settings(BaseModel):
     """Top-level configuration model"""
     agents: dict[str, AgentSettings]
     rag: RagSettings
+    chat: ChatSettings
     paths: PathSettings
 
 
@@ -80,4 +81,16 @@ def get_rag_config() -> dict:
         "num_results": settings.rag.num_results,
         "chunk_size": settings.rag.chunk_size,
         "chunk_overlap": settings.rag.chunk_overlap,
+    }
+
+
+def get_chat_config() -> dict:
+    """Get chat configuration from YAML, validated with Pydantic"""
+    config_dir = Path(__file__).parent
+    yaml_config = load_yaml_config(config_dir)
+    settings = Settings(**yaml_config)
+
+    return {
+        "model": settings.chat.model,
+        "temperature": settings.chat.temperature,
     }

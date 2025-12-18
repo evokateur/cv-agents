@@ -1,11 +1,13 @@
 import gradio as gr
 from services.optimization_service import CvOptimizationService
+from services.knowledge_chat import KnowledgeChatService
 
 
 def create_app():
     """Create and configure the Gradio application."""
 
     service = CvOptimizationService()
+    chat_service = KnowledgeChatService()
 
     with gr.Blocks(title="CV Agents") as app:
         gr.Markdown("# CV Agents - Job-Optimized CV Generation")
@@ -388,6 +390,72 @@ def create_app():
 
                 # Load optimization choices on startup
                 app.load(fn=load_optimization_choices, outputs=[optimization_dropdown])
+
+            # Tab 5: Knowledge Chat
+            with gr.Tab("Knowledge Chat"):
+                gr.Markdown("### 💬 Chat with Your Knowledge Base")
+                gr.Markdown(
+                    "Ask questions about your experience, skills, and projects. "
+                    "The AI will search your knowledge base and provide relevant answers."
+                )
+
+                with gr.Row():
+                    with gr.Column(scale=1):
+                        chatbot = gr.Chatbot(
+                            label="Conversation",
+                            height=600,
+                            type="messages",
+                            show_copy_button=True,
+                        )
+                        message = gr.Textbox(
+                            label="Your Question",
+                            placeholder="e.g., What experience do I have with React? Tell me about my GraphQL projects...",
+                            show_label=False,
+                        )
+
+                    with gr.Column(scale=1):
+                        context_display = gr.Markdown(
+                            label="Retrieved Context",
+                            value="*Retrieved context will appear here after you ask a question*",
+                        )
+
+                # Event handlers for Knowledge Chat
+                def format_context(context_docs):
+                    """Format retrieved documents for display."""
+                    if not context_docs:
+                        return "*No context retrieved*"
+
+                    result = "**📚 Retrieved Context:**\n\n"
+                    for doc in context_docs:
+                        source = doc.metadata.get('source', 'Unknown source')
+                        result += f"**Source:** `{source}`\n\n"
+                        result += doc.page_content + "\n\n---\n\n"
+                    return result
+
+                def chat(history):
+                    """Handle chat interaction with RAG."""
+                    if not history:
+                        return history, "*No context retrieved*"
+
+                    last_message = history[-1]["content"]
+                    prior = history[:-1]
+                    answer, context_docs = chat_service.answer_question(last_message, prior)
+                    history.append({"role": "assistant", "content": answer})
+                    return history, format_context(context_docs)
+
+                def put_message_in_chatbot(message_text, history):
+                    """Add user message to chat history."""
+                    return "", history + [{"role": "user", "content": message_text}]
+
+                message.submit(
+                    fn=put_message_in_chatbot,
+                    inputs=[message, chatbot],
+                    outputs=[message, chatbot],
+                ).then(
+                    fn=chat,
+                    inputs=chatbot,
+                    outputs=[chatbot, context_display],
+                )
 
     return app
 
