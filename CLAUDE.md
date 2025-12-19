@@ -22,7 +22,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `make job_analysis` - Test job analysis functionality
 - `make cv_analysis` - Test CV analysis agent with CV parsing
 - `make cv_optimization` - Run CV optimization with default configuration
-- `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content (runs `scripts/embed_kb.py`)
+- `make vector_db` - Rebuild the ChromaDB vector database from knowledge base content (runs `embed-kb`)
 
 ### Development Setup
 
@@ -40,7 +40,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Knowledge Base Utilities
 
-- `python -m scripts.embed_kb` - Rebuild ChromaDB vector database from knowledge base content
+- `embed-kb` - Rebuild ChromaDB vector database from knowledge base content (console script)
 - `python -m scripts.query_kb [query]` - Query knowledge base using semantic search (optional query parameter)
 - `python -m scripts.inspect_chroma` - Inspect ChromaDB vector database contents
 - `python -m scripts.chroma_test` - Test ChromaDB functionality
@@ -257,7 +257,6 @@ When adding code or making changes that require sanity checks, write tests FIRST
   - `cv_transformation.py` - Test CV transformation task using pre-generated outputs
   - `cv_analysis.py` - Test CV analysis agent with CV parsing
   - `job_analysis.py` - Test job analysis functionality independently
-  - `embed_kb.py` - Rebuild vector database using embedder
   - `query_kb.py` - Query knowledge base using KnowledgeBaseTool (accepts optional query argument)
   - `chroma_test.py` - ChromaDB testing utilities
   - `inspect_chroma.py` - Vector database inspection tools

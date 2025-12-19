@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from shared.vector_utils import is_valid_chroma_vector_db, get_chroma_vector_db
-from optimizer.config.settings import get_rag_config
+from config.settings import get_rag_config
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders import DirectoryLoader, TextLoader

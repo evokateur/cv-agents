@@ -23,7 +23,7 @@ cv_transformation:
 	python -m scripts.cv_transformation
 
 vector_db:
-	python -m scripts.embed_kb
+	embed-kb
 
 cv:
 	build-cv data/cv.yaml output/cv.tex

@@ -1,20 +1,19 @@
-import os
 from pathlib import Path
 from pydantic import BaseModel
-from shared.config import AgentSettings, RagSettings, ChatSettings, PathSettings, BaseConfig, load_yaml_config
+from shared.config import AgentSettings, BaseConfig, load_yaml_config
+from config.settings import get_config as get_shared_config
 
 
 class Settings(BaseModel):
-    """Top-level configuration model"""
+    """Optimizer-specific configuration model (agents only)"""
     agents: dict[str, AgentSettings]
-    rag: RagSettings
-    chat: ChatSettings
-    paths: PathSettings
 
 
 class Config(BaseConfig):
     def __init__(self):
         super().__init__(Path(__file__).parent, Settings)
+        # Import shared config for paths
+        self._shared_config = get_shared_config()
 
     @property
     def cv_analyst_model(self) -> str:
@@ -58,39 +57,13 @@ class Config(BaseConfig):
 
     @property
     def knowledge_base_abspath(self) -> str:
-        return os.path.abspath(self._settings.paths.knowledge_base)
+        return self._shared_config.knowledge_base_abspath
 
     @property
     def vector_db_abspath(self) -> str:
-        return os.path.abspath(self._settings.paths.vector_db)
+        return self._shared_config.vector_db_abspath
 
 
 def get_config() -> Config:
+    """Get optimizer configuration (includes shared config via delegation)"""
     return Config()
-
-
-def get_rag_config() -> dict:
-    """Get RAG configuration from YAML, validated with Pydantic"""
-    config_dir = Path(__file__).parent
-    yaml_config = load_yaml_config(config_dir)
-    settings = Settings(**yaml_config)
-
-    return {
-        "embedding_model": settings.rag.embedding_model,
-        "collection_name": settings.rag.collection_name,
-        "num_results": settings.rag.num_results,
-        "chunk_size": settings.rag.chunk_size,
-        "chunk_overlap": settings.rag.chunk_overlap,
-    }
-
-
-def get_chat_config() -> dict:
-    """Get chat configuration from YAML, validated with Pydantic"""
-    config_dir = Path(__file__).parent
-    yaml_config = load_yaml_config(config_dir)
-    settings = Settings(**yaml_config)
-
-    return {
-        "model": settings.chat.model,
-        "temperature": settings.chat.temperature,
-    }

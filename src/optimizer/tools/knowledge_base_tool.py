@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 from typing import Type
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
-from optimizer.config.settings import get_rag_config
+from config.settings import get_rag_config
 
 
 class KnowledgeBaseInput(BaseModel):

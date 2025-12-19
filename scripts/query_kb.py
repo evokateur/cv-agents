@@ -5,7 +5,7 @@ import sys
 import warnings
 
 from optimizer.tools.knowledge_base_tool import KnowledgeBaseTool
-from optimizer.config.settings import get_config
+from config.settings import get_config
 
 
 def run_query(query=None):

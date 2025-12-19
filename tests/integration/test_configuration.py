@@ -5,7 +5,8 @@ import tempfile
 import shutil
 from pydantic import ValidationError
 from shared.config import load_yaml_config
-from optimizer.config.settings import Settings
+from optimizer.config.settings import Settings as OptimizerSettings
+from config.settings import Settings as SharedSettings
 
 
 @pytest.mark.integration
@@ -29,9 +30,6 @@ def test_settings_local_yaml_overrides():
                     "model": "test-model-override",
                     "temperature": 0.123
                 }
-            },
-            "rag": {
-                "num_results": 999
             }
         }
 
@@ -43,14 +41,12 @@ def test_settings_local_yaml_overrides():
 
         assert config["agents"]["cv_analyst"]["model"] == "test-model-override"
         assert config["agents"]["cv_analyst"]["temperature"] == 0.123
-        assert config["rag"]["num_results"] == 999
 
         # Verify non-overridden values still come from settings.yaml
         with open(settings_file) as f:
             base_config = yaml.safe_load(f)
 
         assert config["agents"]["job_analyst"]["model"] == base_config["agents"]["job_analyst"]["model"]
-        assert config["rag"]["embedding_model"] == base_config["rag"]["embedding_model"]
 
     finally:
         # Restore original settings.local.yaml if it existed
@@ -66,19 +62,15 @@ def test_invalid_temperature_raises_validation_error():
     """Test that invalid temperature values raise ValidationError"""
     # Temperature too high
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "gpt-4", "temperature": 3.0}},
-            rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 5, "chunk_size": 1000, "chunk_overlap": 200},
-            paths={"knowledge_base": "kb", "vector_db": "vdb"}
+        OptimizerSettings(
+            agents={"cv_analyst": {"model": "gpt-4", "temperature": 3.0}}
         )
     assert "temperature" in str(exc_info.value).lower()
 
     # Temperature too low
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "gpt-4", "temperature": -0.1}},
-            rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 5, "chunk_size": 1000, "chunk_overlap": 200},
-            paths={"knowledge_base": "kb", "vector_db": "vdb"}
+        OptimizerSettings(
+            agents={"cv_analyst": {"model": "gpt-4", "temperature": -0.1}}
         )
     assert "temperature" in str(exc_info.value).lower()
 
@@ -87,10 +79,8 @@ def test_invalid_temperature_raises_validation_error():
 def test_empty_model_name_raises_validation_error():
     """Test that empty model name raises ValidationError"""
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "", "temperature": 0.7}},
-            rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 5, "chunk_size": 1000, "chunk_overlap": 200},
-            paths={"knowledge_base": "kb", "vector_db": "vdb"}
+        OptimizerSettings(
+            agents={"cv_analyst": {"model": "", "temperature": 0.7}}
         )
     assert "model" in str(exc_info.value).lower()
 
@@ -99,9 +89,9 @@ def test_empty_model_name_raises_validation_error():
 def test_invalid_chunk_overlap_raises_validation_error():
     """Test that chunk_overlap >= chunk_size raises ValidationError"""
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "gpt-4", "temperature": 0.7}},
+        SharedSettings(
             rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 5, "chunk_size": 1000, "chunk_overlap": 1000},
+            chat={"model": "gpt-4", "temperature": 0.7},
             paths={"knowledge_base": "kb", "vector_db": "vdb"}
         )
     assert "chunk_overlap" in str(exc_info.value).lower()
@@ -111,9 +101,9 @@ def test_invalid_chunk_overlap_raises_validation_error():
 def test_invalid_num_results_raises_validation_error():
     """Test that num_results <= 0 raises ValidationError"""
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "gpt-4", "temperature": 0.7}},
+        SharedSettings(
             rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 0, "chunk_size": 1000, "chunk_overlap": 200},
+            chat={"model": "gpt-4", "temperature": 0.7},
             paths={"knowledge_base": "kb", "vector_db": "vdb"}
         )
     assert "num_results" in str(exc_info.value).lower()
@@ -123,9 +113,9 @@ def test_invalid_num_results_raises_validation_error():
 def test_invalid_chunk_size_raises_validation_error():
     """Test that chunk_size < 100 raises ValidationError"""
     with pytest.raises(ValidationError) as exc_info:
-        Settings(
-            agents={"cv_analyst": {"model": "gpt-4", "temperature": 0.7}},
+        SharedSettings(
             rag={"embedding_model": "text-embedding-ada-002", "collection_name": "kb", "num_results": 5, "chunk_size": 50, "chunk_overlap": 10},
+            chat={"model": "gpt-4", "temperature": 0.7},
             paths={"knowledge_base": "kb", "vector_db": "vdb"}
         )
     assert "chunk_size" in str(exc_info.value).lower()

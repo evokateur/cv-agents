@@ -39,6 +39,7 @@ build-cv = "builder.cli:main_cv"
 build-cover-letter = "builder.cli:main_cover_letter"
 optimize-cv = "optimizer.cli:main"
 cv-agents = "ui.cli:main"
+embed-kb = "shared.cli:embed_kb"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -6,7 +6,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.messages import SystemMessage, HumanMessage, convert_to_messages
 from langchain_core.documents import Document
-from optimizer.config.settings import get_config, get_rag_config, get_chat_config
+from config.settings import get_config, get_rag_config, get_chat_config
 
 
 class KnowledgeChatService:

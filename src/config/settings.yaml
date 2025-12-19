@@ -1,0 +1,17 @@
+# Shared configuration for RAG, chat, and paths
+# Override locally by creating settings.local.yaml (gitignored)
+
+rag:
+  embedding_model: "text-embedding-ada-002"
+  collection_name: "knowledge_base"
+  num_results: 7
+  chunk_size: 1000
+  chunk_overlap: 200
+
+chat:
+  model: "gpt-4o-mini"
+  temperature: 0.7
+
+paths:
+  knowledge_base: "knowledge-base"
+  vector_db: "vector_db"
