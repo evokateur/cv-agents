@@ -1,6 +1,6 @@
 from crewai import Task
-from optimizer.models import JobPosting, CvTransformationPlan
-from models import CurriculumVitae
+from optimizer.models import CvTransformationPlan
+from models.schema import JobPosting, CurriculumVitae
 from optimizer.utils.prompt_utils import render_pydantic_models_in_prompt
 import yaml
 

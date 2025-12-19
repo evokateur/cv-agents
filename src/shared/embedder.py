@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from optimizer.utils.vector_utils import is_valid_chroma_vector_db, get_chroma_vector_db
+from shared.vector_utils import is_valid_chroma_vector_db, get_chroma_vector_db
 from optimizer.config.settings import get_rag_config
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
@@ -29,7 +29,7 @@ class KnowledgeBaseEmbedder:
         if self.force_rebuild or not is_valid_chroma_vector_db(self.vector_db_path):
             if self.force_rebuild and is_valid_chroma_vector_db(self.vector_db_path):
                 # Delete existing DB to avoid ChromaDB conflicts
-                from optimizer.utils.vector_utils import delete_vector_db
+                from shared.vector_utils import delete_vector_db
 
                 delete_vector_db(self.vector_db_path)
             print("🛠️ Building or rebuilding vector DB from knowledge base...")

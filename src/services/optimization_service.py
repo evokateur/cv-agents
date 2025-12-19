@@ -49,7 +49,7 @@ class CvOptimizationService:
         Returns:
             Collection metadata dict
         """
-        from optimizer.models import JobPosting
+        from models.schema import JobPosting
 
         job_posting = JobPosting(**job_posting_data)
 

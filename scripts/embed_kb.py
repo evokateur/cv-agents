@@ -1,4 +1,4 @@
-from optimizer.embedder import KnowledgeBaseEmbedder
+from shared.embedder import KnowledgeBaseEmbedder
 from optimizer.config.settings import get_config
 
 embedder = KnowledgeBaseEmbedder(

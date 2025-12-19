@@ -4,8 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from optimizer.models import JobPosting
-from models import CurriculumVitae
+from models.schema import JobPosting, CurriculumVitae
 
 
 class FileSystemRepository:

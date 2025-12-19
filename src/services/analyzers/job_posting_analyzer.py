@@ -5,7 +5,7 @@ import tempfile
 os.environ["CREWAI_TRACING_ENABLED"] = "false"
 
 from job_posting_analyzer.crew import JobPostingAnalyzer as JobPostingAnalyzerCrew
-from optimizer.models import JobPosting
+from models.schema import JobPosting
 
 
 class JobPostingAnalyzer:

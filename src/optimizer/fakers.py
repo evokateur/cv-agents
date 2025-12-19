@@ -1,7 +1,7 @@
 from crewai import Agent, Task
 from crewai_tools import FileReadTool
-from optimizer.models import JobPosting, CvTransformationPlan
-from models import CurriculumVitae
+from optimizer.models import CvTransformationPlan
+from models.schema import JobPosting, CurriculumVitae
 
 
 class FakeAgents:

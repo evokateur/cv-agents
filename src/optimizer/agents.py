@@ -7,7 +7,6 @@ from crewai_tools import (
 )
 from optimizer.config.settings import get_config
 from optimizer.tools.knowledge_base_tool import KnowledgeBaseTool
-from optimizer.embedder import KnowledgeBaseEmbedder
 import yaml
 
 
@@ -40,6 +39,8 @@ class CustomAgents:
             ),
         }
 
+        # Import here to avoid circular dependency
+        from shared.embedder import KnowledgeBaseEmbedder
         self.embedder = KnowledgeBaseEmbedder(
             knowledge_base_abspath=self.config.knowledge_base_abspath,
             vector_db_abspath=self.config.vector_db_abspath,

@@ -71,6 +71,21 @@ Here are some links to CrewAI documentation to help us understand the target arc
 
 ### Core Components
 
+**Shared Infrastructure:**
+
+- `src/shared/` - Shared utilities and infrastructure used across all crews and services
+  - `config.py` - Base configuration classes and YAML loading utilities with override hierarchy
+  - `embedder.py` - Knowledge base embedding and ChromaDB management for RAG
+  - `vector_utils.py` - ChromaDB validation and vector database management utilities
+
+**Domain Models:**
+
+- `src/models/schema.py` - Shared Pydantic models defining the domain
+  - `CurriculumVitae` - CV structure used by CV analyzer, optimizer, and builder
+  - `JobPosting` - Job posting structure used by job posting analyzer and optimizer
+  - `CoverLetter` - Cover letter structure used by builder
+  - Component models: `Contact`, `Education`, `Experience`, `AreaOfExpertise`, `Language`
+
 **CV Generation Pipeline:**
 
 - `src/builder/` - CV and cover letter generation module
@@ -90,14 +105,12 @@ Here are some links to CrewAI documentation to help us understand the target arc
   - `config/agents.yaml` - YAML agent configurations (job_analyst, cv_analyst, cv_strategist, cv_rewriter)
   - `config/tasks.yaml` - YAML task configurations with dependencies and RAG tool instructions
   - `config/settings.py` - Environment-based configuration for AI model settings
-  - `models.py` - Pydantic models for job postings, CV transformation plans, and CV structure
+  - `models.py` - Optimizer-specific Pydantic models (CvTransformationPlan)
   - `tools/` - Custom CrewAI tool implementations:
     - `knowledge_base_tool.py` - RAG tool using langchain and ChromaDB for semantic search with source attribution
-  - `utils/` - Vector database utilities, prompt utilities, and RAG tool management
-  - `embedder.py` - Knowledge base embedding and ChromaDB management
+  - `utils/` - Prompt utilities for dynamic task descriptions
   - `logging/console_capture.py` - Console output capture with ANSI code stripping for log files
   - `cli.py` - Command-line interface for optimize-cv console script
-- `src/models/schema.py` - Shared Pydantic models and CV schema definitions
 - `scripts/` - Individual test scripts for each crew component and knowledge base utilities
 
 **Standalone Analyzer Crews:**
@@ -120,9 +133,14 @@ Here are some links to CrewAI documentation to help us understand the target arc
   - `main.py` - CLI entry point for standalone testing (run, train, replay, test)
   - `tools/` - Directory for custom tools (FileReadTool used)
 
-- `src/services/analyzers/` - Service layer abstractions for GUI integration
-  - `job_posting_analyzer.py` - Service wrapper for JobPostingAnalyzer crew
-  - `cv_analyzer.py` - Service wrapper for CvAnalyzer crew
+**Service Layer:**
+
+- `src/services/` - Service layer providing application boundaries between UI and domain logic
+  - `optimization_service.py` - CV optimization workflow coordination with filesystem repository
+  - `knowledge_chat.py` - RAG-equipped chat service for exploring candidate knowledge base
+  - `analyzers/` - Service wrappers for standalone analyzer crews
+    - `job_posting_analyzer.py` - Service wrapper for JobPostingAnalyzer crew
+    - `cv_analyzer.py` - Service wrapper for CvAnalyzer crew
 
 **Configuration:**
 
@@ -254,6 +272,10 @@ All RAG settings (collection_name, embedding_model, num_results) are centrally c
 
 ### Key Files
 
+- `src/models/schema.py` - Shared domain models (CurriculumVitae, JobPosting, CoverLetter)
+- `src/optimizer/models.py` - Optimizer-specific models (CvTransformationPlan)
+- `src/shared/embedder.py` - Knowledge base embedding and ChromaDB management
+- `src/shared/vector_utils.py` - ChromaDB validation and vector database management utilities
 - `src/builder/template_env.py` - Custom Jinja2 environment with LaTeX escaping functions
 - `src/optimizer/crew.py` - Multiple crew implementations (@CrewBase decorator for main crew, plain classes for test crews)
 - `src/optimizer/agents.py` - CustomAgents class loads YAML configs and initializes LLMs per agent
@@ -263,7 +285,6 @@ All RAG settings (collection_name, embedding_model, num_results) are centrally c
 - `src/optimizer/config/settings.yaml` - Agent models, temperatures, RAG config, and paths (YAML is single source of truth)
 - `src/optimizer/config/settings.py` - Loads settings.yaml with optional settings.local.yaml overrides
 - `src/optimizer/fakers.py` - FakeAgents/FakeTasks for testing with pre-generated outputs
-- `src/optimizer/utils/vector_utils.py` - ChromaDB validation and vector database management utilities
 - `src/optimizer/utils/prompt_utils.py` - Pydantic utilities for dynamic task descriptions (schema injection capabilities)
 - `src/optimizer/logging/console_capture.py` - Console output capture with ANSI code stripping for log files
 - `cv-agents.ipynb` - Jupyter notebook for experimentation and development

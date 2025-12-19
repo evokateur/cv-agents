@@ -1,4 +1,5 @@
 from .crew import CvOptimization
-from .models import JobPosting, CvTransformationPlan
+from .models import CvTransformationPlan
+from models.schema import JobPosting
 
 __all__ = ["CvOptimization", "JobPosting", "CvTransformationPlan"]
