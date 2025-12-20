@@ -1,6 +1,7 @@
 import gradio as gr
 from services.optimization_service import CvOptimizationService
 from services.knowledge_chat import KnowledgeChatService
+from config.settings import get_chat_config
 
 
 def create_app():
@@ -8,6 +9,7 @@ def create_app():
 
     service = CvOptimizationService()
     chat_service = KnowledgeChatService()
+    chat_config = get_chat_config()
 
     with gr.Blocks(title="CV Agents") as app:
         gr.Markdown("# CV Agents - Job-Optimized CV Generation")
@@ -392,7 +394,7 @@ def create_app():
                 app.load(fn=load_optimization_choices, outputs=[optimization_dropdown])
 
             # Tab 5: Knowledge Chat
-            with gr.Tab("Knowledge Chat"):
+            with gr.Tab(f"Knowledge Chat ({chat_config['model']})"):
                 gr.Markdown("### 💬 Chat with Your Knowledge Base")
                 gr.Markdown(
                     "Ask questions about your experience, skills, and projects. "
