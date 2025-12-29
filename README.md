@@ -1,4 +1,4 @@
-# CV Generator/Optimizer
+# Experimental CV Generator/Optimizer
 
 Generates a LaTeX CV from JSON/YAML data using a Jinja2 environment that plays well with LaTeX.
 
