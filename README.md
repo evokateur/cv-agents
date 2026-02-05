@@ -174,5 +174,3 @@ jupyter lab                # Start Jupyter for cv-agents.ipynb experimentation
 make test                  # Run test suite
 pytest tests/unit/         # Run unit tests only
 ```
-
-Claude's latest [`/init`](/CLAUDE.md) probably explains all this better than I do.
